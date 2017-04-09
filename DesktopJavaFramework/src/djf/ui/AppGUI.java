@@ -62,6 +62,8 @@ public class AppGUI {
     protected Button redoButton;
     protected Button aboutButton;
     
+    protected FlowPane toolbars;
+    
     // THIS DIALOG IS USED FOR GIVING FEEDBACK TO THE USER
     protected AppYesNoCancelDialogSingleton yesNoCancelDialog;
     
@@ -136,6 +138,8 @@ public class AppGUI {
 	exitButton.setDisable(false);
         saveAsButton.setDisable(false);
         exportButton.setDisable(false);
+        undoButton.setDisable(true);
+        redoButton.setDisable(true);
 
         // NOTE THAT THE NEW, LOAD, AND EXIT BUTTONS
         // ARE NEVER DISABLED SO WE NEVER HAVE TO TOUCH THEM
@@ -227,7 +231,9 @@ public class AppGUI {
         // HAS BEEN CONSTRUCTED, BUT WON'T BE ADDED UNTIL
         // THE USER STARTS EDITING A COURSE
         appPane = new BorderPane();
-        appPane.setTop(fileToolbarPane);
+        toolbars = new FlowPane();
+        toolbars.getChildren().addAll(fileToolbarPane, editToolbarPane);
+        appPane.setTop(toolbars);
         primaryScene = new Scene(appPane);
         
         // SET THE APP ICON
@@ -281,11 +287,14 @@ public class AppGUI {
      * by this framework.
      */
     public void initFileToolbarStyle() {
-	fileToolbarPane.getStyleClass().add(CLASS_BORDERED_PANE);
+        toolbars.getStyleClass().add(CLASS_BORDERED_PANE);
 	newButton.getStyleClass().add(CLASS_FILE_BUTTON);
 	loadButton.getStyleClass().add(CLASS_FILE_BUTTON);
 	saveButton.getStyleClass().add(CLASS_FILE_BUTTON);
 	exitButton.getStyleClass().add(CLASS_FILE_BUTTON);
+	undoButton.getStyleClass().add(CLASS_FILE_BUTTON);
+	redoButton.getStyleClass().add(CLASS_FILE_BUTTON);
+	aboutButton.getStyleClass().add(CLASS_FILE_BUTTON);
     }
     
     public AppFileController getAppFileController() {return fileController;}
