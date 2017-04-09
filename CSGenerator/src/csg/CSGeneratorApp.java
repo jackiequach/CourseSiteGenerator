@@ -13,7 +13,7 @@ import static javafx.application.Application.launch;
  *
  * @author Jackie Quach
  */
-public class CSGenerator extends AppTemplate {
+public class CSGeneratorApp extends AppTemplate {
     
     /**
      * @param args the command line arguments
