@@ -25,88 +25,88 @@
         <property name="REDO_ICON"          value="Redo.png"></property>
         
         <!-- TOOLTIPS FOR BUTTONS -->
-        <property name = "NEW_TOOLTIP"      value = "Créer un nouveau site de cours"></property>
-        <property name = "LOAD_TOOLTIP"     value = "Charger un site de cours existant"></property>
-        <property name = "SAVE_TOOLTIP"     value = "Enregistrer le site du cours"></property>
-        <property name = "SAVE_AS_TOOLTIP"  value = "Enregistrer le site du cours"></property>
-        <property name = "EXPORT_TOOLTIP"   value = "Exporter le site du cours"></property>
-        <property name = "EXIT_TOOLTIP"     value = "Quitter l'application"></property>
-        <property name = "ABOUT_TOOLTIP"    value = "À propos de l'application"></property>
-        <property name = "UNDO_TOOLTIP"     value = "Annuler dernière action"></property>
-        <property name = "REDO_TOOLTIP"     value = "Rétablir l'action sans titre"></property>
+        <property name="NEW_TOOLTIP"		value="Créer un nouveau site de cours"></property>
+        <property name="LOAD_TOOLTIP"		value="Charger un site de cours existant"></property>
+        <property name="SAVE_TOOLTIP"		value="Enregistrer le site du cours"></property>
+        <property name="SAVE_AS_TOOLTIP"        value="Enregistrer le site du cours"></property>
+        <property name="EXPORT_TOOLTIP"         value="Exporter le site du cours"></property>
+        <property name="EXIT_TOOLTIP"		value="Quitter l'application"></property>
+        <property name="ABOUT_TOOLTIP"         value="À propos de l'application"></property>
+        <property name="UNDO_TOOLTIP"          value="Annuler dernière action"></property>
+        <property name="REDO_TOOLTIP"          value="Rétablir l'action sans titre"></property>
         
         <!-- ERROR MESSAGES -->
-        <property name = "CLOSE_BUTTON_TEXT" value ="Fermer"></property>
+        <property name="CLOSE_BUTTON_TEXT"              value="Fermer"></property>
 
-        <property name = "NEW_ERROR_MESSAGE"            value = "Une erreur s'est produite lors de la création de New work."></property>
-        <property name = "NEW_ERROR_TITLE"              value = "Nouvelle erreur de travail"></property>
-        <property name = "LOAD_ERROR_MESSAGE"           value = "Une erreur s'est produite lors du chargement des travaux."></property>
-        <property name = "LOAD_ERROR_TITLE"             value = "Erreur de chargement des travaux"></property>
-        <property name = "SAVE_ERROR_MESSAGE"           value = "Une erreur s'est produite lors de l'enregistrement du travail."></property>
-        <property name = "SAVE_ERROR_TITLE"             value = "Enregistrer l'erreur de travail"></property>
-        <property name = "EXPORT_ERROR_TITLE"           value = "Exporter les erreurs de travail"></property>
-        <property name = "EXPORT_ERROR_MESSAGE"         value = "Une erreur s'est produite lors de l'exportation du travail."></property>
-        <property name = "PROPERTIES_LOAD_ERROR_MESSAGE"value = "Une erreur s'est produite lors du chargement d'un fichier de propriétés."></property>
-        <property name = "PROPERTIES_LOAD_ERROR_TITLE"  value = "Erreur de chargement du fichier de propriétés"></property>
-        <property name = "INVALID_START_TIME_TITLE"     value = "L'heure de début est après l'heure de fin"></property>
-        <property name = "INVALID_START_TIME_MESSAGE"   value = "Vous devez choisir une heure de début avant l'heure de fin"></property>
-        <property name = "INVALID_END_TIME_TITLE"       value = "L'heure de fin est avant l'heure de début"></property>
-        <property name = "INVALID_END_TIME_MESSAGE"     value = "Vous devez choisir une heure de fin qui est après l'heure de début"></property>
+        <property name="NEW_ERROR_MESSAGE"              value="Une erreur s'est produite lors de la création de nouveaux travaux."></property>
+        <property name="NEW_ERROR_TITLE"		value="Nouvelle erreur de travail"></property>
+        <property name="LOAD_ERROR_MESSAGE"             value="Une erreur s'est produite lors du chargement des travaux."></property>
+        <property name="LOAD_ERROR_TITLE"		value="Erreur de chargement des travaux"></property>
+        <property name="SAVE_ERROR_MESSAGE"             value="Une erreur s'est produite lors de l'enregistrement du travail."></property>
+        <property name="SAVE_ERROR_TITLE"		value="Enregistrer l'erreur de travail"></property>
+        <property name="EXPORT_ERROR_TITLE"             value="Exporter les erreurs de travail"></property>
+        <property name="EXPORT_ERROR_MESSAGE"           value="Une erreur s'est produite lors de l'exportation du travail."></property>
+        <property name="PROPERTIES_LOAD_ERROR_MESSAGE"	value="Une erreur s'est produite lors du chargement d'un fichier de propriétés."></property>	
+        <property name="PROPERTIES_LOAD_ERROR_TITLE"	value="Erreur de chargement du fichier de propriétés"></property>
+        <property name="INVALID_START_TIME_TITLE"       value="L'heure de début est après l'heure de fin"></property>
+        <property name="INVALID_START_TIME_MESSAGE"     value="Vous devez choisir une heure de début avant l'heure de fin"></property>
+        <property name="INVALID_END_TIME_TITLE"         value="L'heure de fin est avant l'heure de début"></property>
+        <property name="INVALID_END_TIME_MESSAGE"       value="Vous devez choisir une heure de fin qui est après l'heure de début"></property>
 	
         <!-- VERIFICATION MESSAGES -->
 	
-        <property name = "NEW_COMPLETED_MESSAGE"        value = "Nouveau travail prêt à être modifié"></property>
-        <property name = "NEW_COMPLETED_TITLE"          value = "Nouveau travail créé"></property>
-        <property name = "LOAD_COMPLETED_MESSAGE"       value = "Chargement du fichier terminé et prêt à être édité"></property>
-        <property name = "LOAD_COMPLETED_TITLE"         value = "Chargement terminé"></property>
-        <property name = "SAVE_COMPLETED_MESSAGE"       value = "Enregistrement de fichier terminé"></property>
-        <property name = "SAVE_COMPLETED_TITLE"         value = "Enregistrement terminé"></property>
-        <property name = "EXPORT_COMPLETED_TITLE"       value = "Exportation terminée"></property>
-        <property name = "EXPORT_COMPLETED_MESSAGE"     value = "Exportation de fichier terminé"></property>
-        <property name = "SAVE_UNSAVED_WORK_MESSAGE"    value = "Voulez-vous enregistrer votre travail non enregistré d'abord?"></property>
-        <property name = "SAVE_UNSAVED_WORK_TITLE"      value = "Enregistrer les travaux non enregistrés?"></property>
-
-        <property name = "NEW_CREATED_MESSAGE"          value = "Nouveau travail créé mais pas encore enregistré"></property>
-        <property name = "WORK_LOADED_MESSAGE"          value = "The Work a été chargé"></property>
-        <property name = "WORK_SAVED_MESSAGE"           value = "The Work a été enregistré"></property>
-        <property name = "SAVE_UNSAVED_WORK_MESSAGE"    value = "Voulez-vous enregistrer votre travail non enregistré d'abord?"></property>
-        <property name = "SAVE_WORK_TITLE"              value = "Enregistrer votre travail"></property>
-        <property name = "LOAD_WORK_TITLE"              value = "Sélectionnez le fichier de travail à charger"></property>
-        <property name = "EXPORT_WORK_TITLE"            value = "Exporter votre travail"></property>
-        <property name = "WORK_FILE_EXT"                value = ".json"></property>
-        <property name = "WORK_FILE_EXT_DESC"           value = "Horaires de bureau TA"></property>
-        
-        <property name = "DELETE_TIME_TITLE"            value = "Continuer à supprimer les heures de bureau?"></property>
-        <property name = "DELETE_TIME_MESSAGE"          value = "Voulez-vous continuer et supprimer les heures de bureau?"></property>
+        <property name="NEW_COMPLETED_MESSAGE"		value="Nouveau travail prêt à être modifié"></property>
+        <property name="NEW_COMPLETED_TITLE"		value="Nouveau travail créé"></property>
+        <property name="LOAD_COMPLETED_MESSAGE"		value="Chargement du fichier terminé et prêt à être édité"></property>
+        <property name="LOAD_COMPLETED_TITLE"		value="Chargement terminé"></property>
+        <property name="SAVE_COMPLETED_MESSAGE"		value="Enregistrement de fichier terminé"></property>
+        <property name="SAVE_COMPLETED_TITLE"		value="Enregistrement terminé"></property>
+        <property name="EXPORT_COMPLETED_TITLE"         value="Exportation terminée"></property>
+        <property name="EXPORT_COMPLETED_MESSAGE"       value="Exportation de fichier terminé"></property>
+        <property name="SAVE_UNSAVED_WORK_MESSAGE"	value="Voulez-vous enregistrer votre travail non enregistré d'abord?"></property>
+        <property name="SAVE_UNSAVED_WORK_TITLE"	value="Enregistrer les travaux non enregistrés?"></property>
+	
+        <property name="NEW_CREATED_MESSAGE"		value="Nouveau travail créé mais pas encore enregistré"></property>
+        <property name="WORK_LOADED_MESSAGE"		value="Le travail a été chargé"></property>
+        <property name="WORK_SAVED_MESSAGE"		value="Le travail a été sauvegardé"></property>
+        <property name="SAVE_UNSAVED_WORK_MESSAGE"	value="Voulez-vous enregistrer votre travail non enregistré d'abord?"></property>
+	<property name="SAVE_WORK_TITLE"		value="Enregistrer votre travail"></property>
+	<property name="LOAD_WORK_TITLE"		value="Sélectionnez le fichier de travail à charger"></property>
+        <property name="EXPORT_WORK_TITLE"              value="Exporter votre travail"></property>
+	<property name="WORK_FILE_EXT"			value=".json"></property>
+	<property name="WORK_FILE_EXT_DESC"		value="Horaires de bureau TA"></property>
+        
+        <property name="DELETE_TIME_TITLE"              value="Continuer à supprimer les heures de bureau?"></property>
+        <property name="DELETE_TIME_MESSAGE"            value="Voulez-vous continuer et supprimer les heures de bureau?"></property>
 
         <!-- WORKSPACE CONTROLS STUFF -->
-        <property name = "COURSEDETAILS_TAB_TEXT"   value = "Détails du cours"></property>
-        <property name = "TADATA_TAB_TEXT"          value = "Données TA"></property>
-        <property name = "RECITATIONDATA_TAB_TEXT"  value = "Données de récitation"></property>
-        <property name = "SCHEDULEDATA_TAB_TEXT"    value = "Données de planification"></property>
-        <property name = "PROJECTDATA_TAB_TEXT"     value = "Données du projet"></property>
-        
-        <property name = "TAS_HEADER_TEXT"          value = "Enseignants"></property>
-        <property name = "NAME_COLUMN_TEXT"         value = "Nom"></property>
-        <property name = "EMAIL_COLUMN_TEXT"        value = "Email"></property>
-        <property name = "NAME_PROMPT_TEXT"         value = "Nom"></property>
-        <property name = "EMAIL_PROMPT_TEXT"        value = "Email"></property>
-        <property name = "ADD_BUTTON_TEXT"          value = "Ajouter TA"></property>
-        <property name = "UPDATE_BUTTON_TEXT"       value = "Mise à jour TA"></property>
-        <property name = "CLEAR_BUTTON_TEXT"        value = "Nettoyer"></property>
-        <property name = "OFFICE_HOURS_SUBHEADER"   value = "Grille des heures de bureau"></property>
-        <property name = "START_TIME_TEXT"          value = "Heure de début:"></property>
-        <property name = "END_TIME_TEXT"            value = "Heure de fin:"></property>
+        <property name="COURSEDETAILS_TAB_TEXT"         value="Détails du cours"></property>
+        <property name="TADATA_TAB_TEXT"                value="Données TA"></property>
+        <property name="RECITATIONDATA_TAB_TEXT"        value="Données de récitation"></property>
+        <property name="SCHEDULEDATA_TAB_TEXT"          value="Données de planification"></property>
+        <property name="PROJECTDATA_TAB_TEXT"           value="Données du projet"></property>
+        
+        <property name="TAS_HEADER_TEXT"                value="Enseignants"></property>
+        <property name="NAME_COLUMN_TEXT"               value="Nom"></property>
+        <property name="EMAIL_COLUMN_TEXT"              value="Email"></property>
+        <property name="NAME_PROMPT_TEXT"               value="Nom"></property>
+        <property name="EMAIL_PROMPT_TEXT"              value="Email"></property>
+        <property name="ADD_BUTTON_TEXT"                value="Ajouter TA"></property>
+        <property name="UPDATE_BUTTON_TEXT"             value="Mise à jour TA"></property>
+        <property name="CLEAR_BUTTON_TEXT"              value="Nettoyer"></property>
+        <property name="OFFICE_HOURS_SUBHEADER"         value="Grille des heures de bureau"></property>
+        <property name="START_TIME_TEXT"                value="Heure de début:"></property>
+        <property name="END_TIME_TEXT"                  value="Heure de fin:"></property>
         
         <!-- WORKSPACE ERROR MESSAGES -->
-        <property name = "MISSING_TA_NAME_TITLE"                value = "Nom de l'utilisateur manquant"></property>
-        <property name = "MISSING_TA_NAME_MESSAGE"              value = "Vous devez fournir un nom TA"></property>
-        <property name = "MISSING_TA_EMAIL_TITLE"               value = "Missing TA Email"></property>
-        <property name = "MISSING_TA_EMAIL_MESSAGE"             value = "Vous devez fournir un courrier électronique de TA"></property>
-        <property name = "INVALID_TA_EMAIL_TITLE"               value = "Email de la TA invalide"></property>
-        <property name = "INVALID_TA_EMAIL_MESSAGE"             value = "Vous devez fournir un courrier électronique valide"></property>
-        <property name = "TA_NAME_AND_EMAIL_NOT_UNIQUE_TITLE"   value = "Nom et adresse électronique non unique"></property>
-        <property name = "TA_NAME_AND_EMAIL_NOT_UNIQUE_MESSAGE" value = "Vous devez fournir un nom et un email de l'AT unique"></property>
+        <property name="MISSING_TA_NAME_TITLE"          value="Nom de l'utilisateur manquant"></property>
+        <property name="MISSING_TA_NAME_MESSAGE"        value="Vous devez fournir un nom TA"></property>
+        <property name="MISSING_TA_EMAIL_TITLE"         value="E-mail de réception manquant"></property>
+        <property name="MISSING_TA_EMAIL_MESSAGE"       value="Vous devez fournir un courrier électronique de TA"></property>
+        <property name="INVALID_TA_EMAIL_TITLE"         value="Email de la TA invalide"></property>
+        <property name="INVALID_TA_EMAIL_MESSAGE"       value="Vous devez fournir un courrier électronique valide"></property>
+        <property name="TA_NAME_AND_EMAIL_NOT_UNIQUE_TITLE"     value="Nom et adresse électronique non unique"></property>
+        <property name="TA_NAME_AND_EMAIL_NOT_UNIQUE_MESSAGE"   value="Vous devez fournir un nom et un email de l'AT unique"></property>
         
     </property_list>
     <property_options_list>
