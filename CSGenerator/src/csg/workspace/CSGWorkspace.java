@@ -47,13 +47,18 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     
     CSGController controller;
     
+    jTPS transactions = new jTPS();
+    
     TabPane tabs;
     Tab courseDetailsTab;
     Tab taDataTab;
-    Pane taDataPane;
+    BorderPane taDataPane;
     Tab recitationDataTab;
     Tab scheduleDataTab;
     Tab projectDataTab;
+    
+    // FOR COURSE DETAILS TAB
+    
     
     // FOR TA DATA TAB
     HBox tasHeaderBox;
@@ -88,8 +93,6 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     HashMap<String, Pane> officeHoursGridTACellPanes;
     HashMap<String, Label> officeHoursGridTACellLabels;
     
-    jTPS transactions;
-    
     public CSGWorkspace(CSGeneratorApp initApp) {
         app = initApp;
         
@@ -104,6 +107,35 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         taDataTab = new Tab();
         taDataTab.setText(props.getProperty(CSGProperty.TADATA_TAB_TEXT.toString()));
         taDataTab.setContent(generateCSGDataTab());
+        
+        recitationDataTab = new Tab();
+        recitationDataTab.setText(props.getProperty(CSGProperty.RECITATIONDATA_TAB_TEXT.toString()));
+        recitationDataTab.setContent(generateRecitationDataTab());
+        
+        scheduleDataTab = new Tab();
+        scheduleDataTab.setText(props.getProperty(CSGProperty.SCHEDULEDATA_TAB_TEXT.toString()));
+        scheduleDataTab.setContent(generateScheduleDataTab());
+        
+        projectDataTab = new Tab();
+        projectDataTab.setText(props.getProperty(CSGProperty.PROJECTDATA_TAB_TEXT.toString()));
+        projectDataTab.setContent(generateProjectDataTab());
+        
+        tabs.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+        tabs.getTabs().addAll(courseDetailsTab, taDataTab, recitationDataTab, scheduleDataTab, projectDataTab);
+        
+        workspace = new BorderPane();
+        ((BorderPane) workspace).setCenter(tabs);
+    }
+    
+    private Pane generateCourseDetailsTab() {
+        BorderPane border = new BorderPane();
+        border.setPadding(new Insets(20, 0, 20, 20));
+        
+        return border;
+    }
+    
+    private Pane generateCSGDataTab() {
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
         tasHeaderBox = new HBox();
         String tasHeaderText = props.getProperty(CSGProperty.TAS_HEADER_TEXT.toString());
         tasHeaderLabel = new Label(tasHeaderText);
@@ -198,12 +230,8 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         SplitPane sPane = new SplitPane(leftPane, new ScrollPane(rightPane));
         taDataPane = new BorderPane();
         
-        workspace.setOnKeyPressed(e -> {
-            controller.handleKeyPress(e);
-        });
-        
-        // AND PUT EVERYTHING IN THE WORKSPACE
-        ((BorderPane) taDataPane).setCenter(sPane);
+        // AND PUT EVERYTHING IN THE TA DATA TAB
+        taDataPane.setCenter(sPane);
 
         // MAKE SURE THE TABLE EXTENDS DOWN FAR ENOUGH
         taTable.prefHeightProperty().bind(taDataPane.heightProperty().multiply(1.9));
@@ -240,33 +268,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         endTime.setOnAction(e -> {
             controller.handleEnd();
         });
-        
-        recitationDataTab = new Tab();
-        recitationDataTab.setText(props.getProperty(CSGProperty.RECITATIONDATA_TAB_TEXT.toString()));
-        recitationDataTab.setContent(generateRecitationDataTab());
-        
-        scheduleDataTab = new Tab();
-        scheduleDataTab.setText(props.getProperty(CSGProperty.SCHEDULEDATA_TAB_TEXT.toString()));
-        scheduleDataTab.setContent(generateScheduleDataTab());
-        
-        projectDataTab = new Tab();
-        projectDataTab.setText(props.getProperty(CSGProperty.PROJECTDATA_TAB_TEXT.toString()));
-        projectDataTab.setContent(generateProjectDataTab());
-        
-        workspace = new BorderPane();
-        ((BorderPane) workspace).setCenter(tabs);
-    }
-    
-    private Pane generateCourseDetailsTab() {
-        BorderPane border = new BorderPane();
-        border.setPadding(new Insets(20, 0, 20, 20));
-        
-        return border;
-    }
-    
-    private Pane generateCSGDataTab() {
-        return null;
-        
+        return taDataPane;
     }
     
     private Pane generateRecitationDataTab() {
