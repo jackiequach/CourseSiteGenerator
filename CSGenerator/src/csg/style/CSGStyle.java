@@ -46,9 +46,10 @@ public class CSGStyle extends AppStyleComponent {
     public static String CLASS_OFFICE_HOURS_GRID_TA_CELL_PANE = "office_hours_grid_ta_cell_pane";
     public static String CLASS_OFFICE_HOURS_GRID_TA_CELL_LABEL = "office_hours_grid_ta_cell_label";
 
-    // FOR HIGHLIGHTING CELLS, COLUMNS, AND ROWS
-    public static String CLASS_HIGHLIGHTED_GRID_CELL = "highlighted_grid_cell";
-    public static String CLASS_HIGHLIGHTED_GRID_ROW_OR_COLUMN = "highlighted_grid_row_or_column";
+    public static String START_TIME_COMBOBOX = "start_time_combobox";
+    public static String START_TIME_LABEL = "start_time_label";
+    public static String END_TIME_COMBOBOX = "end_time_combobox";
+    public static String END_TIME_LABEL = "end_time_label";
     
     private AppTemplate app;
     
@@ -58,7 +59,8 @@ public class CSGStyle extends AppStyleComponent {
         super.initStylesheet(app);
 
         app.getGUI().initFileToolbarStyle();
-        app.getGUI().initEditToolbarStyle();
+        
+        initCSGWorkspaceStyle();
     }
     
     /**
@@ -88,6 +90,10 @@ public class CSGStyle extends AppStyleComponent {
         // RIGHT SIDE - THE HEADER
         workspaceComponent.getOfficeHoursSubheaderBox().getStyleClass().add(CLASS_HEADER_PANE);
         workspaceComponent.getOfficeHoursSubheaderLabel().getStyleClass().add(CLASS_HEADER_LABEL);
+        workspaceComponent.getStartTimeComboBox().getStyleClass().add(START_TIME_COMBOBOX);
+        workspaceComponent.getStartTimeLabel().getStyleClass().add(START_TIME_LABEL);
+        workspaceComponent.getEndTimeComboBox().getStyleClass().add(END_TIME_COMBOBOX);
+        workspaceComponent.getEndTimeLabel().getStyleClass().add(END_TIME_LABEL);
     }
     
     /**
