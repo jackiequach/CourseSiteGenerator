@@ -5,6 +5,10 @@
  */
 package csg;
 
+import csg.data.CSGData;
+import csg.file.CSGFiles;
+import csg.style.CSGStyle;
+import csg.workspace.CSGWorkspace;
 import djf.AppTemplate;
 import java.util.Locale;
 import static javafx.application.Application.launch;
@@ -25,7 +29,10 @@ public class CSGeneratorApp extends AppTemplate {
 
     @Override
     public void buildAppComponentsHook() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        dataComponent = new CSGData(this);
+        workspaceComponent = new CSGWorkspace(this);
+        fileComponent = new CSGFiles(this);
+        styleComponent = new CSGStyle(this);
     }
     
 }

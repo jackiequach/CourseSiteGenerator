@@ -5,6 +5,7 @@
  */
 package csg.file;
 
+import csg.CSGeneratorApp;
 import djf.components.AppDataComponent;
 import djf.components.AppFileComponent;
 import java.io.IOException;
@@ -14,6 +15,11 @@ import java.io.IOException;
  * @author Jackie
  */
 public class CSGFiles implements AppFileComponent {
+    CSGeneratorApp app;
+    
+    public CSGFiles(CSGeneratorApp initApp) {
+        app = initApp;
+    }
 
     @Override
     public void saveData(AppDataComponent data, String filePath) throws IOException {
