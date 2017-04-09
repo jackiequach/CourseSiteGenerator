@@ -31,6 +31,9 @@
         <property name="SAVE_AS_TOOLTIP"        value="Save the current Course Site"></property>
         <property name="EXPORT_TOOLTIP"         value="Export the current Course Site"></property>
         <property name="EXIT_TOOLTIP"		value="Exit the Application"></property>
+        <property name="ABOUT_TOOLTIP"         value="About the Application"></property>
+        <property name="UNDO_TOOLTIP"          value="Undo last action"></property>
+        <property name="REDO_TOOLTIP"          value="Redo Undone action"></property>
         
         <!-- ERROR MESSAGES -->
         <property name="CLOSE_BUTTON_TEXT"              value="Close"></property>
