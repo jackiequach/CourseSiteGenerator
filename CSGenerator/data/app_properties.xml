@@ -128,6 +128,20 @@
         <property name="START_TIME_TEXT"                value="Start Time:"></property>
         <property name="END_TIME_TEXT"                  value="End Time:"></property>
         
+        <property name="RECIT_HEADER_TEXT"              value="Recitations"></property>
+        <property name="SECTION_COLUMN_TEXT"            value="Section"></property>
+        <property name="INSTRUCT_COLUMN_TEXT"           value="Instructor"></property>
+        <property name="DAY_COLUMN_TEXT"                value="Day/Time"></property>
+        <property name="LOCATION_COLUMN_TEXT"           value="Location"></property>
+        <property name="TA_COLUMN_TEXT"                 value="TA"></property>
+        <property name="ADDEDIT_LABEL_TEXT"             value="Add/Edit"></property>
+        <property name="SECTION_LABEL_TEXT"             value="Section:"></property>
+        <property name="INSTRUC_LABEL_TEXT"             value="Instructor:"></property>
+        <property name="DAY_LABEL_TEXT"                 value="Day/Time:"></property>
+        <property name="LOCATION_LABEL_TEXT"            value="Location:"></property>
+        <property name="SUPTA_LABEL_TEXT"               value="Supervising TA:"></property>
+        
+        
         <!-- WORKSPACE ERROR MESSAGES -->
         <property name="MISSING_TA_NAME_TITLE"          value="Missing TA Name"></property>
         <property name="MISSING_TA_NAME_MESSAGE"        value="You must provide a TA Name"></property>
