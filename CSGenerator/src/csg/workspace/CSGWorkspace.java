@@ -31,6 +31,7 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -141,6 +142,8 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     // FOR TA DATA TAB
     HBox tasHeaderBox;
     Label tasHeaderLabel;
+    
+    Button deleteTAButton;
     
     TableView<TeachingAssistant> taTable;
     TableColumn<TeachingAssistant, String> nameColumn;
@@ -365,7 +368,10 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         tasHeaderBox = new HBox();
         String tasHeaderText = props.getProperty(CSGProperty.TAS_HEADER_TEXT.toString());
         tasHeaderLabel = new Label(tasHeaderText);
-        tasHeaderBox.getChildren().add(tasHeaderLabel);
+        String deleteButtonText = props.getProperty(CSGProperty.DELETE_BUTTON_TEXT.toString());
+        deleteTAButton = new Button(deleteButtonText);
+        deleteTAButton.prefHeightProperty().bind(tasHeaderBox.heightProperty().multiply(1));
+        tasHeaderBox.getChildren().addAll(tasHeaderLabel, deleteTAButton);
 
         // MAKE THE TABLE AND SETUP THE DATA MODEL
         taTable = new TableView();
@@ -465,6 +471,10 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         // NOW LET'S SETUP THE EVENT HANDLING
         controller = new CSGController(app);
 
+        deleteTAButton.setOnAction(e -> {
+            controller.handleDelete(KeyCode.DELETE);
+        });
+        
         // CONTROLS FOR ADDING TAs
         nameTextField.setOnAction(e -> {
             controller.handleAddTA();
