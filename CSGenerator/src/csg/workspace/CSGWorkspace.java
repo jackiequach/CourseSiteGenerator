@@ -8,6 +8,7 @@ package csg.workspace;
 import csg.CSGProperty;
 import csg.CSGeneratorApp;
 import csg.data.CSGData;
+import csg.data.SitePage;
 import csg.data.TeachingAssistant;
 import csg.style.CSGStyle;
 import djf.components.AppDataComponent;
@@ -51,6 +52,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     
     TabPane tabs;
     Tab courseDetailsTab;
+    BorderPane courseDetailsPane;
     Tab taDataTab;
     BorderPane taDataPane;
     Tab recitationDataTab;
@@ -58,7 +60,83 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     Tab projectDataTab;
     
     // FOR COURSE DETAILS TAB
+    VBox courseInfoBox;
     
+    HBox courseInfoHeaderBox;
+    Label ciHeaderLabel;
+    
+    HBox subjectBox;
+    Label subjectLabel;
+    ComboBox subjectComboBox;
+    
+    HBox numberBox;
+    Label numberLabel;
+    ComboBox numberComboBox;
+    
+    HBox semesterBox;
+    Label semesterLabel;
+    ComboBox semesterComboBox;
+    
+    HBox yearBox;
+    Label yearLabel;
+    ComboBox yearComboBox;
+    
+    HBox titleBox;
+    Label titleLabel;
+    TextField titleTextField;
+    
+    HBox instructorNameBox;
+    Label instructorNameLabel;
+    TextField instructorNameTextField;
+    
+    HBox instructorHomeBox;
+    Label instructorHomeLabel;
+    TextField instructorHomeTextField;
+    
+    HBox exportDirBox;
+    Label exportDirLabel;
+    Button changeExportDirButton;
+    
+    VBox siteTemplateBox;
+    
+    HBox siteTemplateHeaderBox;
+    Label siteTemplateHeaderLabel;
+    
+    HBox siteTemplateInfoBox;
+    Label siteTemplateInfoLabel;
+    
+    Button selectTemplateDirButton;
+    
+    HBox sitePagesBox;
+    Label sitePagesHeaderLabel;
+    
+    TableView<SitePage> siteTable;
+    TableColumn<SitePage, String> useColumn;
+    TableColumn<SitePage, String> navbarColumn;
+    TableColumn<SitePage, String> fileColumn;
+    TableColumn<SitePage, String> scriptColumn;
+    
+    VBox pageStyleBox;
+    
+    HBox pageStyleHeaderBox;
+    Label pageStyleHeaderLabel;
+    
+    HBox bannerSchoolImgBox;
+    Label bannerSchoolImgLabel;
+    Button changeBannerButton;
+    
+    HBox leftFooterImgBox;
+    Label leftFooterImgLabel;
+    Button changeLeftFooterButton;
+    
+    HBox rightFooterImgBox;
+    Label rightFooterImgLabel;
+    Button changeRightFooterButton;
+    
+    HBox stylesheetBox;
+    Label stylesheetLabel;
+    ComboBox stylesheetComboBox;
+    Label ssNoteLabel;
     
     // FOR TA DATA TAB
     HBox tasHeaderBox;
@@ -128,10 +206,158 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     }
     
     private Pane generateCourseDetailsTab() {
-        BorderPane border = new BorderPane();
-        border.setPadding(new Insets(20, 0, 20, 20));
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        courseInfoHeaderBox = new HBox();
+        String courseInfoHeaderText = props.getProperty(CSGProperty.COURSEINFO_HEADER_TEXT.toString());
+        ciHeaderLabel = new Label(courseInfoHeaderText);
+        courseInfoHeaderBox.getChildren().add(ciHeaderLabel);
         
-        return border;
+        subjectBox = new HBox();
+        String subjectLabelText = props.getProperty(CSGProperty.SUBJECT_LABEL_TEXT.toString());
+        subjectLabel = new Label(subjectLabelText);
+        subjectComboBox = new ComboBox();
+        subjectBox.getChildren().addAll(subjectLabel, subjectComboBox);
+        
+        numberBox = new HBox();
+        String numberLabelText = props.getProperty(CSGProperty.NUMBER_LABEL_TEXT.toString());
+        numberLabel = new Label(numberLabelText);
+        numberComboBox = new ComboBox();
+        numberBox.getChildren().addAll(numberLabel, numberComboBox);
+        
+        HBox subNumBox = new HBox();
+        subNumBox.getChildren().addAll(subjectBox, numberBox);
+        
+        semesterBox = new HBox();
+        String semesterLabelText = props.getProperty(CSGProperty.SEMESTER_LABEL_TEXT.toString());
+        semesterLabel = new Label(semesterLabelText);
+        semesterComboBox = new ComboBox();
+        semesterBox.getChildren().addAll(semesterLabel, semesterComboBox);
+        
+        yearBox = new HBox();
+        String yearLabelText = props.getProperty(CSGProperty.YEAR_LABEL_TEXT.toString());
+        yearLabel = new Label(yearLabelText);
+        yearComboBox = new ComboBox();
+        yearBox.getChildren().addAll(yearLabel, yearComboBox);
+        
+        HBox semeYearBox = new HBox();
+        semeYearBox.getChildren().addAll(semesterBox, yearBox);
+        
+        titleBox = new HBox();
+        String titleLabelText = props.getProperty(CSGProperty.TITLE_LABEL_TEXT.toString());
+        titleLabel = new Label(titleLabelText);
+        titleTextField = new TextField();
+        String titlePromptText = props.getProperty(CSGProperty.TITLE_PROMPT_TEXT.toString());
+        titleTextField.setPromptText(titlePromptText);
+        titleBox.getChildren().addAll(titleLabel, titleTextField);
+        
+        instructorNameBox = new HBox();
+        String instructorNameLabelText = props.getProperty(CSGProperty.INSTRUCTORNAME_LABEL_TEXT.toString());
+        instructorNameLabel = new Label(instructorNameLabelText);
+        instructorNameTextField = new TextField();
+        String instructorNamePromptText = props.getProperty(CSGProperty.INSTRUCTORNAME_PROMPT_TEXT.toString());
+        instructorNameTextField.setPromptText(instructorNamePromptText);
+        instructorNameBox.getChildren().addAll(instructorNameLabel, instructorNameTextField);
+        
+        instructorHomeBox = new HBox();
+        String instructorHomeLabelText = props.getProperty(CSGProperty.INSTRUCTORHOME_LABEL_TEXT.toString());
+        instructorHomeLabel = new Label(instructorHomeLabelText);
+        instructorHomeTextField = new TextField();
+        String instructorHomePromptText = props.getProperty(CSGProperty.INSTRUCTORHOME_PROMPT_TEXT.toString());
+        instructorHomeTextField.setPromptText(instructorHomePromptText);
+        instructorHomeBox.getChildren().addAll(instructorHomeLabel, instructorHomeTextField);
+        
+        courseInfoBox = new VBox();
+        courseInfoBox.getChildren().addAll(courseInfoHeaderBox, subNumBox, semeYearBox, titleBox, instructorNameBox, instructorHomeBox);
+        
+        siteTemplateHeaderBox = new HBox();
+        String siteTemplateHeaderText = props.getProperty(CSGProperty.SITETEMPLATE_HEADER_TEXT.toString());
+        siteTemplateHeaderLabel = new Label(siteTemplateHeaderText);
+        siteTemplateHeaderBox.getChildren().add(siteTemplateHeaderLabel);
+        
+        siteTemplateInfoBox = new HBox();
+        String siteTemplateInfoText = props.getProperty(CSGProperty.SITETEMPLATE_LABEL_TEXT.toString());
+        siteTemplateInfoLabel = new Label(siteTemplateInfoText);
+        siteTemplateInfoBox.getChildren().add(siteTemplateInfoLabel);
+        
+        selectTemplateDirButton = new Button(props.getProperty(CSGProperty.SELECT_TEMPLATE_BUTTON_TEXT.toString()));
+        
+        sitePagesBox = new HBox();
+        String sitePagesHeaderText = props.getProperty(CSGProperty.SITEPAGES_LABEL_TEXT.toString());
+        sitePagesHeaderLabel = new Label(sitePagesHeaderText);
+        sitePagesBox.getChildren().add(sitePagesHeaderLabel);
+        
+        siteTable = new TableView();CSGData data = (CSGData) app.getDataComponent();
+        ObservableList<SitePage> siteData = data.getSitePages();
+        siteTable.setItems(siteData);
+        String useColumnText = props.getProperty(CSGProperty.USE_COLUMN_TEXT.toString());
+        String navbarColumnText = props.getProperty(CSGProperty.NAVBAR_COLUMN_TEXT.toString());
+        String fileColumnText = props.getProperty(CSGProperty.FILENAME_COLUMN_TEXT.toString());
+        String scriptColumnText = props.getProperty(CSGProperty.SCRIPT_COLUMN_TEXT.toString());
+        useColumn = new TableColumn(useColumnText);
+        useColumn.setCellValueFactory(
+                new PropertyValueFactory<>("use")
+        );
+        siteTable.getColumns().add(useColumn);
+        navbarColumn = new TableColumn(navbarColumnText);
+        navbarColumn.setCellValueFactory(
+                new PropertyValueFactory<>("navbar")
+        );
+        siteTable.getColumns().add(navbarColumn);
+        fileColumn = new TableColumn(fileColumnText);
+        fileColumn.setCellValueFactory(
+                new PropertyValueFactory<>("file")
+        );
+        siteTable.getColumns().add(fileColumn);
+        scriptColumn = new TableColumn(scriptColumnText);
+        scriptColumn.setCellValueFactory(
+                new PropertyValueFactory<>("script")
+        );
+        siteTable.getColumns().add(scriptColumn);
+        
+        siteTemplateBox = new VBox();
+        siteTemplateBox.getChildren().addAll(siteTemplateHeaderBox, siteTemplateInfoBox, selectTemplateDirButton, sitePagesBox, siteTable);
+        
+        pageStyleHeaderBox = new HBox();
+        String pageStyleHeaderText = props.getProperty(CSGProperty.PAGESTYLE_HEADER_TEXT.toString());
+        pageStyleHeaderLabel = new Label(pageStyleHeaderText);
+        pageStyleHeaderBox.getChildren().add(pageStyleHeaderLabel);
+        
+        bannerSchoolImgBox = new HBox();
+        String bannerSchoolImgText = props.getProperty(CSGProperty.BANNERSCHOOLIMG_LABEL_TEXT.toString());
+        bannerSchoolImgLabel = new Label(bannerSchoolImgText);
+        changeBannerButton = new Button(props.getProperty(CSGProperty.CHANGE_BUTTON_TEXT.toString()));
+        bannerSchoolImgBox.getChildren().addAll(bannerSchoolImgLabel, changeBannerButton);
+
+        leftFooterImgBox = new HBox();
+        String leftFooterImgText = props.getProperty(CSGProperty.LF_LABEL_TEXT.toString());
+        leftFooterImgLabel = new Label(leftFooterImgText);
+        changeLeftFooterButton = new Button(props.getProperty(CSGProperty.CHANGE_BUTTON_TEXT.toString()));
+        leftFooterImgBox.getChildren().addAll(leftFooterImgLabel, changeLeftFooterButton);
+
+        rightFooterImgBox = new HBox();
+        String rightFooterImgText = props.getProperty(CSGProperty.RF_LABEL_TEXT.toString());
+        rightFooterImgLabel = new Label(rightFooterImgText);
+        changeRightFooterButton = new Button(props.getProperty(CSGProperty.CHANGE_BUTTON_TEXT.toString()));
+        rightFooterImgBox.getChildren().addAll(rightFooterImgLabel, changeRightFooterButton);
+
+        stylesheetBox = new HBox();
+        String stylesheetText = props.getProperty(CSGProperty.SS_LABEL_TEXT.toString()); 
+        stylesheetLabel = new Label(stylesheetText);
+        stylesheetComboBox = new ComboBox();
+        String ssNoteText = props.getProperty(CSGProperty.SS_NOTE_TEXT.toString());
+        stylesheetBox.getChildren().addAll(stylesheetLabel, stylesheetComboBox);
+        
+        ssNoteLabel = new Label(ssNoteText);
+        
+        pageStyleBox = new VBox();
+        pageStyleBox.getChildren().addAll(pageStyleHeaderBox, bannerSchoolImgBox, leftFooterImgBox, rightFooterImgBox, stylesheetBox, ssNoteLabel);
+        
+        courseDetailsPane = new BorderPane();
+        courseDetailsPane.setTop(courseInfoBox);
+        courseDetailsPane.setCenter(siteTemplateBox);
+        courseDetailsPane.setBottom(pageStyleBox);
+        
+        return courseDetailsPane;
     }
     
     private Pane generateCSGDataTab() {
