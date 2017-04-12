@@ -86,6 +86,35 @@
         <property name="SCHEDULEDATA_TAB_TEXT"          value="Schedule Data"></property>
         <property name="PROJECTDATA_TAB_TEXT"           value="Project Data"></property>
         
+        <property name="COURSEINFO_HEADER_TEXT"         value="Course Info"></property>
+        <property name="SITETEMPLATE_HEADER_TEXT"       value="Site Template"></property>
+        <property name="PAGESTYLE_HEADER_TEXT"          value="Page Style"></property>
+        <property name="SUBJECT_LABEL_TEXT"            value="Subject:"></property>
+        <property name="SEMESTER_LABEL_TEXT"           value="Semester:"></property>
+        <property name="NUMBER_LABEL_TEXT"             value="Number:"></property>
+        <property name="YEAR_LABEL_TEXT"               value="Year:"></property>
+        <property name="TITLE_LABEL_TEXT"              value="Title:"></property>
+        <property name="TITLE_PROMPT_TEXT"              value="Title"></property>
+        <property name="INSTRUCTORNAME_LABEL_TEXT"     value="Instructor Name:"></property>
+        <property name="INSTRUCTORNAME_PROMPT_TEXT"     value="Instructor Name"></property>
+        <property name="INSTRUCTORHOME_LABEL_TEXT"     value="Instructor Home:"></property>
+        <property name="INSTRUCTORHOME_PROMPT_TEXT"     value="Instructor Home"></property>
+        <property name="EXPORTDIR_LABEL_TEXT"          value="Export Dir:"></property>
+        <property name="SITETEMPLATE_LABEL_TEXT"       value="The selected directory should contain the full site template, including the HTML files."></property>
+        <property name="SELECT_TEMPLATE_BUTTON_TEXT"    value="Select Template Directory"></property>
+        <property name="SITEPAGES_LABEL_TEXT"           value="Site Pages:"></property>
+        <property name="USE_COLUMN_TEXT"                value="Use"></property>
+        <property name="NAVBAR_COLUMN_TEXT"             value="Navbar Title"></property>
+        <property name="FILENAME_COLUMN_TEXT"           value="File Name"></property>
+        <property name="SCRIPT_COLUMN_TEXT"             value="Script"></property>
+        <property name="BANNERSCHOOLIMG_LABEL_TEXT"    value="Banner School Image:"></property>
+        <property name="LF_LABEL_TEXT"                 value="Left Footer Image:"></property>
+        <property name="RF_LABEL_TEXT"                 value="Right Footer Image:"></property>
+        <property name="SS_LABEL_TEXT"                 value="Stylesheet:"></property>
+        <property name="SS_NOTE_TEXT"                   value="NOTE: New stylesheets may be placed in work/css to be selectable"></property>
+        <property name="SELECT_TEMPLATE_DIR_TEXT"       value="Select Template Directory"></property>
+        <property name="CHANGE_BUTTON_TEXT"             value="Change"></property>
+        
         <property name="TAS_HEADER_TEXT"                value="Teaching Assistants"></property>
         <property name="NAME_COLUMN_TEXT"               value="Name"></property>
         <property name="EMAIL_COLUMN_TEXT"              value="Email"></property>
