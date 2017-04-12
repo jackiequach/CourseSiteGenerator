@@ -40,6 +40,8 @@ public class CSGData implements AppDataComponent {
     CSGeneratorApp app;
 
     ObservableList<TeachingAssistant> teachingAssistants;
+    
+    ObservableList<SitePage> sitePages;
 
     HashMap<String, StringProperty> officeHours;
     
@@ -524,5 +526,9 @@ public class CSGData implements AppDataComponent {
                 cellProp.setValue(cellText);
             }
         }
+    }
+    
+    public ObservableList<SitePage> getSitePages() {
+        return sitePages;
     }
 }
