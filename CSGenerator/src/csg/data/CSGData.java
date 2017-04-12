@@ -42,6 +42,8 @@ public class CSGData implements AppDataComponent {
     ObservableList<TeachingAssistant> teachingAssistants;
     
     ObservableList<SitePage> sitePages;
+    
+    ObservableList<Recitation> recitations;
 
     HashMap<String, StringProperty> officeHours;
     
@@ -530,5 +532,9 @@ public class CSGData implements AppDataComponent {
     
     public ObservableList<SitePage> getSitePages() {
         return sitePages;
+    }
+    
+    public ObservableList<Recitation> getRecitations() {
+        return recitations;
     }
 }

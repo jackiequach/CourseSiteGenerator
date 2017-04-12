@@ -8,6 +8,7 @@ package csg.workspace;
 import csg.CSGProperty;
 import csg.CSGeneratorApp;
 import csg.data.CSGData;
+import csg.data.Recitation;
 import csg.data.SitePage;
 import csg.data.TeachingAssistant;
 import csg.style.CSGStyle;
@@ -57,6 +58,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     Tab taDataTab;
     BorderPane taDataPane;
     Tab recitationDataTab;
+    BorderPane recitationDataPane;
     Tab scheduleDataTab;
     Tab projectDataTab;
     
@@ -173,6 +175,49 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     HashMap<String, Label> officeHoursGridTimeCellLabels;
     HashMap<String, Pane> officeHoursGridTACellPanes;
     HashMap<String, Label> officeHoursGridTACellLabels;
+    
+    // FOR RECITATION DATA TAB
+    HBox recitationHeaderBox;
+    Label recitationHeaderLabel;
+    
+    Button deleteRecitationButton;
+    
+    TableView<Recitation> recitationTable;
+    TableColumn<Recitation, String> sectionColumn;
+    TableColumn<Recitation, String> instructorColumn;
+    TableColumn<Recitation, String> dayColumn;
+    TableColumn<Recitation, String> locationColumn;
+    TableColumn<Recitation, String> supervisingTAColumnOne;
+    TableColumn<Recitation, String> supervisingTAColumnTwo;
+    
+    VBox addEditBox;
+    
+    HBox addEditHeaderBox;
+    Label addEditHeaderLabel;
+    
+    HBox sectionBox;
+    Label sectionLabel;
+    TextField sectionTextField;
+    
+    HBox instructorBox;
+    Label instructorLabel;
+    TextField instructorTextField;
+    
+    HBox dayBox;
+    Label dayLabel;
+    TextField dayTextField;
+    
+    HBox locationBox;
+    Label locationLabel;
+    TextField locationTextField;
+    
+    HBox supervisingTABoxOne;
+    HBox supervisingTABoxTwo;
+    Label supervisingLabelOne;
+    Label supervisingLabelTwo;
+    ComboBox supervisingTAComboBoxOne;
+    ComboBox supervisingTAComboBoxTwo;
+    
     
     public CSGWorkspace(CSGeneratorApp initApp) {
         app = initApp;
@@ -508,7 +553,106 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     }
     
     private Pane generateRecitationDataTab() {
-        return null;
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        recitationHeaderBox = new HBox();
+        String recitationHeaderText = props.getProperty(CSGProperty.RECIT_HEADER_TEXT.toString());
+        recitationHeaderLabel = new Label(recitationHeaderText);
+
+        String deleteButtonText = props.getProperty(CSGProperty.DELETE_BUTTON_TEXT.toString());
+        deleteRecitationButton = new Button(deleteButtonText);
+        deleteRecitationButton.prefHeightProperty().bind(recitationHeaderBox.heightProperty().multiply(1.5));
+        recitationHeaderBox.getChildren().addAll(recitationHeaderLabel, deleteRecitationButton);
+
+        recitationTable = new TableView();
+        recitationTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        CSGData data = (CSGData) app.getDataComponent();
+        ObservableList<Recitation> tableData = data.getRecitations();
+        recitationTable.setItems(tableData);
+        String sectionColumnText = props.getProperty(CSGProperty.SECTION_COLUMN_TEXT.toString());
+        String instructorColumnText = props.getProperty(CSGProperty.INSTRUCT_COLUMN_TEXT.toString());
+        String dayColumnText = props.getProperty(CSGProperty.DAY_COLUMN_TEXT.toString());
+        String locationColumnText = props.getProperty(CSGProperty.LOCATION_COLUMN_TEXT.toString());
+        String taColumnText = props.getProperty(CSGProperty.TA_COLUMN_TEXT.toString());
+        sectionColumn = new TableColumn(sectionColumnText);
+        sectionColumn.setCellValueFactory(
+                new PropertyValueFactory<>("section")
+        );
+        recitationTable.getColumns().add(sectionColumn);
+        instructorColumn = new TableColumn(instructorColumnText);
+        instructorColumn.setCellValueFactory(
+                new PropertyValueFactory<>("instructor")
+        );
+        recitationTable.getColumns().add(instructorColumn);
+        dayColumn = new TableColumn(dayColumnText);
+        dayColumn.setCellValueFactory(
+                new PropertyValueFactory<>("day")
+        );
+        recitationTable.getColumns().add(dayColumn);
+        locationColumn = new TableColumn(locationColumnText);
+        locationColumn.setCellValueFactory(
+                new PropertyValueFactory<>("location")
+        );
+        recitationTable.getColumns().add(locationColumn);
+        supervisingTAColumnOne = new TableColumn(taColumnText);
+        supervisingTAColumnOne.setCellValueFactory(
+                new PropertyValueFactory<>("ta")
+        );
+        recitationTable.getColumns().add(supervisingTAColumnOne);
+        supervisingTAColumnTwo = new TableColumn(taColumnText);
+        supervisingTAColumnTwo.setCellValueFactory(
+                new PropertyValueFactory<>("ta")
+        );
+        recitationTable.getColumns().add(supervisingTAColumnTwo);
+
+        addEditBox = new VBox();
+
+        addEditHeaderBox = new HBox();
+        String addEditLabelText = props.getProperty(CSGProperty.ADDEDIT_LABEL_TEXT.toString());
+        addEditHeaderLabel = new Label(addEditLabelText);
+        addEditHeaderBox.getChildren().add(addEditHeaderLabel);
+
+        sectionBox = new HBox();
+        String sectionLabelText = props.getProperty(CSGProperty.SECTION_LABEL_TEXT.toString());
+        sectionLabel = new Label(sectionLabelText);
+        sectionTextField = new TextField();
+        sectionBox.getChildren().addAll(sectionLabel, sectionTextField);
+
+        instructorBox = new HBox();
+        String instructorLabelText = props.getProperty(CSGProperty.INSTRUC_LABEL_TEXT.toString());
+        instructorLabel = new Label(instructorLabelText);
+        instructorTextField = new TextField();
+        instructorBox.getChildren().addAll(instructorLabel, instructorTextField);
+
+        dayBox = new HBox();
+        String dayLabelText = props.getProperty(CSGProperty.DAY_LABEL_TEXT.toString());
+        dayLabel = new Label(dayLabelText);
+        dayTextField = new TextField();
+        dayBox.getChildren().addAll(dayLabel, dayTextField);
+
+        locationBox = new HBox();
+        String locationLabelText = props.getProperty(CSGProperty.LOCATION_LABEL_TEXT.toString());
+        locationLabel = new Label(locationLabelText);
+        locationTextField = new TextField();
+        locationBox.getChildren().addAll(locationLabel, locationTextField);
+
+        supervisingTABoxOne = new HBox();
+        supervisingTABoxTwo = new HBox();
+        String supervisingLabelText = props.getProperty(CSGProperty.SUPTA_LABEL_TEXT.toString());
+        supervisingLabelOne = new Label(supervisingLabelText);
+        supervisingLabelTwo = new Label(supervisingLabelText);
+        supervisingTAComboBoxOne = new ComboBox();
+        supervisingTAComboBoxTwo = new ComboBox();
+        supervisingTABoxOne.getChildren().addAll(supervisingLabelOne, supervisingTAComboBoxOne);
+        supervisingTABoxTwo.getChildren().addAll(supervisingLabelTwo, supervisingTAComboBoxTwo);
+        
+        addEditBox.getChildren().addAll(addEditHeaderBox, sectionBox, instructorBox, dayBox, locationBox, supervisingTABoxOne, supervisingTABoxTwo);
+        
+        recitationDataPane = new BorderPane();
+        recitationDataPane.setTop(recitationHeaderBox);
+        recitationDataPane.setCenter(recitationTable);
+        recitationDataPane.setBottom(addEditBox);
+        
+        return recitationDataPane;
     }
     
     private Pane generateScheduleDataTab() {
