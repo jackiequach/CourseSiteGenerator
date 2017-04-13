@@ -9,6 +9,7 @@ import csg.CSGProperty;
 import csg.CSGeneratorApp;
 import csg.data.CSGData;
 import csg.data.Recitation;
+import csg.data.ScheduleItem;
 import csg.data.SitePage;
 import csg.data.TeachingAssistant;
 import csg.style.CSGStyle;
@@ -21,6 +22,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SelectionMode;
@@ -37,6 +39,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import jtps.jTPS;
 import properties_manager.PropertiesManager;
@@ -54,63 +57,59 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     
     TabPane tabs;
     Tab courseDetailsTab;
+    GridPane courseInfoGridPane;
+    GridPane siteTemplateGridPane;
+    GridPane pageStyleGridPane;
     BorderPane courseDetailsPane;
     Tab taDataTab;
     BorderPane taDataPane;
+    GridPane recitationGridPane;
+    GridPane addEditrecitationGridPane;
     Tab recitationDataTab;
     BorderPane recitationDataPane;
+    GridPane scheduleGridPane;
+    GridPane calendarBoundariesGridPane;
+    GridPane scheduleItemsGridPane;
+    GridPane addScheduleGridPane;
     Tab scheduleDataTab;
+    BorderPane scheduleDataPane;
     Tab projectDataTab;
     
     // FOR COURSE DETAILS TAB
-    VBox courseInfoBox;
-    
     HBox courseInfoHeaderBox;
     Label ciHeaderLabel;
     
-    HBox subjectBox;
     Label subjectLabel;
     ComboBox subjectComboBox;
     
-    HBox numberBox;
     Label numberLabel;
     ComboBox numberComboBox;
     
-    HBox semesterBox;
     Label semesterLabel;
     ComboBox semesterComboBox;
     
-    HBox yearBox;
     Label yearLabel;
     ComboBox yearComboBox;
     
-    HBox titleBox;
     Label titleLabel;
     TextField titleTextField;
     
-    HBox instructorNameBox;
     Label instructorNameLabel;
     TextField instructorNameTextField;
     
-    HBox instructorHomeBox;
     Label instructorHomeLabel;
     TextField instructorHomeTextField;
     
-    HBox exportDirBox;
     Label exportDirLabel;
     Button changeExportDirButton;
-    
-    VBox siteTemplateBox;
     
     HBox siteTemplateHeaderBox;
     Label siteTemplateHeaderLabel;
     
-    HBox siteTemplateInfoBox;
     Label siteTemplateInfoLabel;
     
     Button selectTemplateDirButton;
     
-    HBox sitePagesBox;
     Label sitePagesHeaderLabel;
     
     TableView<SitePage> siteTable;
@@ -119,24 +118,18 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     TableColumn<SitePage, String> fileColumn;
     TableColumn<SitePage, String> scriptColumn;
     
-    VBox pageStyleBox;
-    
     HBox pageStyleHeaderBox;
     Label pageStyleHeaderLabel;
     
-    HBox bannerSchoolImgBox;
     Label bannerSchoolImgLabel;
     Button changeBannerButton;
     
-    HBox leftFooterImgBox;
     Label leftFooterImgLabel;
     Button changeLeftFooterButton;
     
-    HBox rightFooterImgBox;
     Label rightFooterImgLabel;
     Button changeRightFooterButton;
     
-    HBox stylesheetBox;
     Label stylesheetLabel;
     ComboBox stylesheetComboBox;
     Label ssNoteLabel;
@@ -218,6 +211,70 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     ComboBox supervisingTAComboBoxOne;
     ComboBox supervisingTAComboBoxTwo;
     
+    Button addRecitationButton;
+    Button clearRecitationButton;
+    
+    // FOR SCHEDULE DATA TAB
+    HBox scheduleHeaderBox;
+    Label scheduleHeaderLabel;
+    
+    VBox calendarBoundariesBox;
+    
+    HBox calendarBoundariesHeaderBox;
+    Label calendarBoundariesHeaderLabel;
+    
+    HBox startingMondayBox;
+    Label startingMondayLabel;
+    DatePicker startingMondayPicker;
+    
+    HBox endingFridayBox;
+    Label endingFridayLabel;
+    DatePicker endingFridayDatePicker;
+    
+    VBox scheduleItemsBox;
+    
+    HBox scheduleItemsHeaderBox;
+    Label scheduleItemsHeaderLabel;
+    Button deleteScheduleItemButton;
+    
+    TableView<ScheduleItem> scheduleItemTable;
+    TableColumn<ScheduleItem, String> typeColumn;
+    TableColumn<ScheduleItem, String> dateColumn;
+    TableColumn<ScheduleItem, String> titleColumn;
+    TableColumn<ScheduleItem, String> topicColumn;
+    
+    VBox addEditScheduleBox;
+    HBox addEditScheduleHeaderBox;
+    Label addEditScheduleHeaderLabel;
+    
+    HBox typeBox;
+    Label typeLabel;
+    ComboBox typeComboBox;
+    
+    HBox dateBox;
+    Label dateLabel;
+    DatePicker dateSchedulePicker;
+    
+    HBox timeBox;
+    Label timeLabel;
+    TextField timeTextField;
+    
+    HBox titleScheduleBox;
+    Label titleScheduleLabel;
+    TextField titleScheduleTextField;
+    
+    HBox topicBox;
+    Label topicLabel;
+    TextField topicTextField;
+    
+    HBox linkBox;
+    Label linkLabel;
+    TextField linkTextField;
+    
+    HBox criteriaBox;
+    Label criteriaLabel;
+    TextField criteriaTextField;
+    
     
     public CSGWorkspace(CSGeneratorApp initApp) {
         app = initApp;
@@ -260,79 +317,78 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         ciHeaderLabel = new Label(courseInfoHeaderText);
         courseInfoHeaderBox.getChildren().add(ciHeaderLabel);
         
-        subjectBox = new HBox();
         String subjectLabelText = props.getProperty(CSGProperty.SUBJECT_LABEL_TEXT.toString());
         subjectLabel = new Label(subjectLabelText);
         subjectComboBox = new ComboBox();
-        subjectBox.getChildren().addAll(subjectLabel, subjectComboBox);
         
-        numberBox = new HBox();
         String numberLabelText = props.getProperty(CSGProperty.NUMBER_LABEL_TEXT.toString());
         numberLabel = new Label(numberLabelText);
         numberComboBox = new ComboBox();
-        numberBox.getChildren().addAll(numberLabel, numberComboBox);
         
-        HBox subNumBox = new HBox();
-        subNumBox.getChildren().addAll(subjectBox, numberBox);
-        
-        semesterBox = new HBox();
         String semesterLabelText = props.getProperty(CSGProperty.SEMESTER_LABEL_TEXT.toString());
         semesterLabel = new Label(semesterLabelText);
         semesterComboBox = new ComboBox();
-        semesterBox.getChildren().addAll(semesterLabel, semesterComboBox);
         
-        yearBox = new HBox();
         String yearLabelText = props.getProperty(CSGProperty.YEAR_LABEL_TEXT.toString());
         yearLabel = new Label(yearLabelText);
         yearComboBox = new ComboBox();
-        yearBox.getChildren().addAll(yearLabel, yearComboBox);
         
-        HBox semeYearBox = new HBox();
-        semeYearBox.getChildren().addAll(semesterBox, yearBox);
-        
-        titleBox = new HBox();
         String titleLabelText = props.getProperty(CSGProperty.TITLE_LABEL_TEXT.toString());
         titleLabel = new Label(titleLabelText);
         titleTextField = new TextField();
         String titlePromptText = props.getProperty(CSGProperty.TITLE_PROMPT_TEXT.toString());
         titleTextField.setPromptText(titlePromptText);
-        titleBox.getChildren().addAll(titleLabel, titleTextField);
         
-        instructorNameBox = new HBox();
         String instructorNameLabelText = props.getProperty(CSGProperty.INSTRUCTORNAME_LABEL_TEXT.toString());
         instructorNameLabel = new Label(instructorNameLabelText);
         instructorNameTextField = new TextField();
         String instructorNamePromptText = props.getProperty(CSGProperty.INSTRUCTORNAME_PROMPT_TEXT.toString());
         instructorNameTextField.setPromptText(instructorNamePromptText);
-        instructorNameBox.getChildren().addAll(instructorNameLabel, instructorNameTextField);
         
-        instructorHomeBox = new HBox();
         String instructorHomeLabelText = props.getProperty(CSGProperty.INSTRUCTORHOME_LABEL_TEXT.toString());
         instructorHomeLabel = new Label(instructorHomeLabelText);
         instructorHomeTextField = new TextField();
         String instructorHomePromptText = props.getProperty(CSGProperty.INSTRUCTORHOME_PROMPT_TEXT.toString());
         instructorHomeTextField.setPromptText(instructorHomePromptText);
-        instructorHomeBox.getChildren().addAll(instructorHomeLabel, instructorHomeTextField);
         
-        courseInfoBox = new VBox();
-        courseInfoBox.getChildren().addAll(courseInfoHeaderBox, subNumBox, semeYearBox, titleBox, instructorNameBox, instructorHomeBox);
+        String exportLabelText = props.getProperty(CSGProperty.EXPORTDIR_LABEL_TEXT.toString());
+        exportDirLabel = new Label(exportLabelText);
+        changeExportDirButton = new Button(props.getProperty(CSGProperty.CHANGE_BUTTON_TEXT.toString()));
+        
+        courseInfoGridPane = new GridPane();
+        courseInfoGridPane.setVgap(5);
+        courseInfoGridPane.setHgap(5);
+        courseInfoGridPane.setPadding(new Insets(10, 10, 10, 10));
+        courseInfoGridPane.add(courseInfoHeaderBox, 0, 0);
+        courseInfoGridPane.add(subjectLabel, 0, 1);
+        courseInfoGridPane.add(subjectComboBox, 1, 1);
+        courseInfoGridPane.add(numberLabel, 2, 1);
+        courseInfoGridPane.add(numberComboBox, 3, 1);
+        courseInfoGridPane.add(semesterLabel, 0, 2);
+        courseInfoGridPane.add(semesterComboBox, 1, 2);
+        courseInfoGridPane.add(yearLabel, 2, 2);
+        courseInfoGridPane.add(yearComboBox, 3, 2);
+        courseInfoGridPane.add(titleLabel, 0, 3);
+        courseInfoGridPane.add(titleTextField, 1, 3, 3, 1);
+        courseInfoGridPane.add(instructorNameLabel, 0, 4);
+        courseInfoGridPane.add(instructorNameTextField, 1, 4, 3, 1);
+        courseInfoGridPane.add(instructorHomeLabel, 0, 5);
+        courseInfoGridPane.add(instructorHomeTextField, 1, 5, 3, 1);
+        courseInfoGridPane.add(exportDirLabel, 0, 6);
+        courseInfoGridPane.add(changeExportDirButton, 3, 6);
         
         siteTemplateHeaderBox = new HBox();
         String siteTemplateHeaderText = props.getProperty(CSGProperty.SITETEMPLATE_HEADER_TEXT.toString());
         siteTemplateHeaderLabel = new Label(siteTemplateHeaderText);
         siteTemplateHeaderBox.getChildren().add(siteTemplateHeaderLabel);
         
-        siteTemplateInfoBox = new HBox();
         String siteTemplateInfoText = props.getProperty(CSGProperty.SITETEMPLATE_LABEL_TEXT.toString());
         siteTemplateInfoLabel = new Label(siteTemplateInfoText);
-        siteTemplateInfoBox.getChildren().add(siteTemplateInfoLabel);
         
         selectTemplateDirButton = new Button(props.getProperty(CSGProperty.SELECT_TEMPLATE_BUTTON_TEXT.toString()));
         
-        sitePagesBox = new HBox();
         String sitePagesHeaderText = props.getProperty(CSGProperty.SITEPAGES_LABEL_TEXT.toString());
         sitePagesHeaderLabel = new Label(sitePagesHeaderText);
-        sitePagesBox.getChildren().add(sitePagesHeaderLabel);
         
         siteTable = new TableView();CSGData data = (CSGData) app.getDataComponent();
         ObservableList<SitePage> siteData = data.getSitePages();
@@ -362,48 +418,57 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         );
         siteTable.getColumns().add(scriptColumn);
         
-        siteTemplateBox = new VBox();
-        siteTemplateBox.getChildren().addAll(siteTemplateHeaderBox, siteTemplateInfoBox, selectTemplateDirButton, sitePagesBox, siteTable);
+        siteTemplateGridPane = new GridPane();
+        siteTemplateGridPane.setVgap(5);
+        siteTemplateGridPane.setPadding(new Insets(10, 10, 10, 10));
+        siteTemplateGridPane.add(siteTemplateHeaderBox, 0, 0);
+        siteTemplateGridPane.add(siteTemplateInfoLabel, 0, 1);
+        siteTemplateGridPane.add(selectTemplateDirButton, 0, 3);
+        siteTemplateGridPane.add(sitePagesHeaderLabel, 0, 4);
+        siteTemplateGridPane.add(siteTable, 0, 5);
+        siteTemplateGridPane.setHgrow(siteTable, Priority.ALWAYS);
         
         pageStyleHeaderBox = new HBox();
         String pageStyleHeaderText = props.getProperty(CSGProperty.PAGESTYLE_HEADER_TEXT.toString());
         pageStyleHeaderLabel = new Label(pageStyleHeaderText);
         pageStyleHeaderBox.getChildren().add(pageStyleHeaderLabel);
         
-        bannerSchoolImgBox = new HBox();
         String bannerSchoolImgText = props.getProperty(CSGProperty.BANNERSCHOOLIMG_LABEL_TEXT.toString());
         bannerSchoolImgLabel = new Label(bannerSchoolImgText);
         changeBannerButton = new Button(props.getProperty(CSGProperty.CHANGE_BUTTON_TEXT.toString()));
-        bannerSchoolImgBox.getChildren().addAll(bannerSchoolImgLabel, changeBannerButton);
-
-        leftFooterImgBox = new HBox();
+        
         String leftFooterImgText = props.getProperty(CSGProperty.LF_LABEL_TEXT.toString());
         leftFooterImgLabel = new Label(leftFooterImgText);
         changeLeftFooterButton = new Button(props.getProperty(CSGProperty.CHANGE_BUTTON_TEXT.toString()));
-        leftFooterImgBox.getChildren().addAll(leftFooterImgLabel, changeLeftFooterButton);
 
-        rightFooterImgBox = new HBox();
         String rightFooterImgText = props.getProperty(CSGProperty.RF_LABEL_TEXT.toString());
         rightFooterImgLabel = new Label(rightFooterImgText);
         changeRightFooterButton = new Button(props.getProperty(CSGProperty.CHANGE_BUTTON_TEXT.toString()));
-        rightFooterImgBox.getChildren().addAll(rightFooterImgLabel, changeRightFooterButton);
 
-        stylesheetBox = new HBox();
         String stylesheetText = props.getProperty(CSGProperty.SS_LABEL_TEXT.toString()); 
         stylesheetLabel = new Label(stylesheetText);
         stylesheetComboBox = new ComboBox();
         String ssNoteText = props.getProperty(CSGProperty.SS_NOTE_TEXT.toString());
-        stylesheetBox.getChildren().addAll(stylesheetLabel, stylesheetComboBox);
         
         ssNoteLabel = new Label(ssNoteText);
         
-        pageStyleBox = new VBox();
-        pageStyleBox.getChildren().addAll(pageStyleHeaderBox, bannerSchoolImgBox, leftFooterImgBox, rightFooterImgBox, stylesheetBox, ssNoteLabel);
+        pageStyleGridPane = new GridPane();
+        pageStyleGridPane.setVgap(5);
+        pageStyleGridPane.setPadding(new Insets(10, 10, 10, 10));
+        pageStyleGridPane.add(pageStyleHeaderBox, 0, 0);
+        pageStyleGridPane.add(bannerSchoolImgLabel, 0, 1);
+        pageStyleGridPane.add(changeBannerButton, 2, 1);
+        pageStyleGridPane.add(leftFooterImgLabel, 0, 2);
+        pageStyleGridPane.add(changeLeftFooterButton, 2, 2);
+        pageStyleGridPane.add(rightFooterImgLabel, 0, 3);
+        pageStyleGridPane.add(changeRightFooterButton, 2, 3);
+        pageStyleGridPane.add(stylesheetLabel, 0, 4);
+        pageStyleGridPane.add(stylesheetComboBox, 1, 4);
         
         courseDetailsPane = new BorderPane();
-        courseDetailsPane.setTop(courseInfoBox);
-        courseDetailsPane.setCenter(siteTemplateBox);
-        courseDetailsPane.setBottom(pageStyleBox);
+        courseDetailsPane.setTop(courseInfoGridPane);
+        courseDetailsPane.setCenter(siteTemplateGridPane);
+        courseDetailsPane.setBottom(pageStyleGridPane);
         
         return courseDetailsPane;
     }
@@ -604,59 +669,195 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         );
         recitationTable.getColumns().add(supervisingTAColumnTwo);
 
-        addEditBox = new VBox();
-
         addEditHeaderBox = new HBox();
         String addEditLabelText = props.getProperty(CSGProperty.ADDEDIT_LABEL_TEXT.toString());
         addEditHeaderLabel = new Label(addEditLabelText);
         addEditHeaderBox.getChildren().add(addEditHeaderLabel);
 
-        sectionBox = new HBox();
         String sectionLabelText = props.getProperty(CSGProperty.SECTION_LABEL_TEXT.toString());
         sectionLabel = new Label(sectionLabelText);
         sectionTextField = new TextField();
-        sectionBox.getChildren().addAll(sectionLabel, sectionTextField);
 
-        instructorBox = new HBox();
         String instructorLabelText = props.getProperty(CSGProperty.INSTRUC_LABEL_TEXT.toString());
         instructorLabel = new Label(instructorLabelText);
         instructorTextField = new TextField();
-        instructorBox.getChildren().addAll(instructorLabel, instructorTextField);
 
-        dayBox = new HBox();
         String dayLabelText = props.getProperty(CSGProperty.DAY_LABEL_TEXT.toString());
         dayLabel = new Label(dayLabelText);
         dayTextField = new TextField();
-        dayBox.getChildren().addAll(dayLabel, dayTextField);
 
-        locationBox = new HBox();
         String locationLabelText = props.getProperty(CSGProperty.LOCATION_LABEL_TEXT.toString());
         locationLabel = new Label(locationLabelText);
         locationTextField = new TextField();
-        locationBox.getChildren().addAll(locationLabel, locationTextField);
 
-        supervisingTABoxOne = new HBox();
-        supervisingTABoxTwo = new HBox();
         String supervisingLabelText = props.getProperty(CSGProperty.SUPTA_LABEL_TEXT.toString());
         supervisingLabelOne = new Label(supervisingLabelText);
         supervisingLabelTwo = new Label(supervisingLabelText);
         supervisingTAComboBoxOne = new ComboBox();
         supervisingTAComboBoxTwo = new ComboBox();
-        supervisingTABoxOne.getChildren().addAll(supervisingLabelOne, supervisingTAComboBoxOne);
-        supervisingTABoxTwo.getChildren().addAll(supervisingLabelTwo, supervisingTAComboBoxTwo);
         
-        addEditBox.getChildren().addAll(addEditHeaderBox, sectionBox, instructorBox, dayBox, locationBox, supervisingTABoxOne, supervisingTABoxTwo);
+        addRecitationButton = new Button(props.getProperty(CSGProperty.ADD_BUTTON_TEXT.toString()));
+        clearRecitationButton = new Button(props.getProperty(CSGProperty.CLEAR_BUTTON_TEXT.toString()));
+       
+        recitationGridPane = new GridPane();
+        recitationGridPane.setPadding(new Insets(10, 10, 10, 10));
+        recitationGridPane.setVgap(5);
+        recitationGridPane.setHgap(5);
+        recitationGridPane.add(recitationHeaderBox, 0, 0);
+        recitationGridPane.add(recitationTable, 0, 1);
+        recitationGridPane.setHgrow(recitationTable, Priority.ALWAYS);
+        
+        addEditrecitationGridPane = new GridPane();
+        addEditrecitationGridPane.setVgap(5);
+        addEditrecitationGridPane.setHgap(5);
+        addEditrecitationGridPane.add(addEditHeaderBox, 0, 0);
+        addEditrecitationGridPane.add(sectionLabel, 0, 1);
+        addEditrecitationGridPane.add(sectionTextField, 1, 1);
+        addEditrecitationGridPane.add(instructorLabel, 0, 2);
+        addEditrecitationGridPane.add(instructorTextField, 1, 2);
+        addEditrecitationGridPane.add(dayLabel, 0, 3);
+        addEditrecitationGridPane.add(dayTextField, 1, 3);
+        addEditrecitationGridPane.add(locationLabel, 0, 4);
+        addEditrecitationGridPane.add(locationTextField, 1, 4);
+        addEditrecitationGridPane.add(supervisingLabelOne, 0, 5);
+        addEditrecitationGridPane.add(supervisingTAComboBoxOne, 1, 5);
+        addEditrecitationGridPane.add(supervisingLabelTwo, 0, 6);
+        addEditrecitationGridPane.add(supervisingTAComboBoxTwo, 1, 6);
+        addEditrecitationGridPane.add(addRecitationButton, 0, 7);
+        addEditrecitationGridPane.add(clearRecitationButton, 1, 7);
+        
+        recitationGridPane.add(addEditrecitationGridPane, 0, 2);
         
         recitationDataPane = new BorderPane();
-        recitationDataPane.setTop(recitationHeaderBox);
-        recitationDataPane.setCenter(recitationTable);
-        recitationDataPane.setBottom(addEditBox);
+        recitationDataPane.setCenter(recitationGridPane);
         
         return recitationDataPane;
     }
     
     private Pane generateScheduleDataTab() {
-        return null;
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        scheduleHeaderBox = new HBox();
+        String scheduleHeaderLabelText = props.getProperty(CSGProperty.SCHEDULE_HEADER_TEXT.toString());
+        scheduleHeaderLabel = new Label(scheduleHeaderLabelText);
+        scheduleHeaderBox.getChildren().add(scheduleHeaderLabel);
+
+        String calendarBoundariesHeaderLabelText = props.getProperty(CSGProperty.CB_HEADER_TEXT.toString());
+        calendarBoundariesHeaderLabel = new Label(calendarBoundariesHeaderLabelText);
+
+        String startingMondayLabelText = props.getProperty(CSGProperty.STMON_LABEL_TEXT.toString());
+        startingMondayLabel = new Label(startingMondayLabelText);
+        startingMondayPicker = new DatePicker();
+
+        String endingFridayLabelText = props.getProperty(CSGProperty.ENFRI_LABEL_TEXT.toString());
+        endingFridayLabel = new Label(endingFridayLabelText);
+        endingFridayDatePicker = new DatePicker();
+        
+        scheduleItemsHeaderBox = new HBox();
+        String scheduleItemsHeaderLabelText = props.getProperty(CSGProperty.SCHIT_HEADER_TEXT.toString());
+        scheduleItemsHeaderLabel = new Label(scheduleItemsHeaderLabelText);
+        deleteScheduleItemButton = new Button(props.getProperty(CSGProperty.DELETE_BUTTON_TEXT.toString()));
+        scheduleItemsHeaderBox.getChildren().addAll(scheduleItemsHeaderLabel, deleteScheduleItemButton);
+
+        scheduleItemTable = new TableView();
+        scheduleItemTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        CSGData data = (CSGData) app.getDataComponent();
+        ObservableList<ScheduleItem> tableData = data.getScheduleItems();
+        scheduleItemTable.setItems(tableData);
+        String typeColumnText = props.getProperty(CSGProperty.TYPE_COLUMN_TEXT.toString());
+        String dateColumnText = props.getProperty(CSGProperty.DATE_COLUMN_TEXT.toString());
+        String titleColumnText = props.getProperty(CSGProperty.TITLE_COLUMN_TEXT.toString());
+        String topicColumnText = props.getProperty(CSGProperty.TOPIC_COLUMN_TEXT.toString());
+        typeColumn = new TableColumn(typeColumnText);
+        typeColumn.setCellValueFactory(
+                new PropertyValueFactory<>("type")
+        );
+        scheduleItemTable.getColumns().add(typeColumn);
+        dateColumn = new TableColumn(dateColumnText);
+        dateColumn.setCellValueFactory(
+                new PropertyValueFactory<>("date")
+        );
+        scheduleItemTable.getColumns().add(dateColumn);
+        titleColumn = new TableColumn(titleColumnText);
+        titleColumn.setCellValueFactory(
+                new PropertyValueFactory<>("title")
+        );
+        scheduleItemTable.getColumns().add(titleColumn);
+        topicColumn = new TableColumn(topicColumnText);
+        topicColumn.setCellValueFactory(
+                new PropertyValueFactory<>("topic")
+        );
+        scheduleItemTable.getColumns().add(topicColumn);
+
+        String addEditScheduleHeaderLabelText = props.getProperty(CSGProperty.ADDEDIT_LABEL_TEXT.toString());
+        addEditScheduleHeaderLabel = new Label(addEditScheduleHeaderLabelText);
+
+        String typeLabelText = props.getProperty(CSGProperty.TYPE_LABEL_TEXT.toString());
+        typeLabel = new Label(typeLabelText);
+        typeComboBox = new ComboBox();
+
+        String dateLabelText = props.getProperty(CSGProperty.DATE_LABEL_TEXT.toString());
+        dateLabel = new Label(dateLabelText);
+        dateSchedulePicker = new DatePicker();
+
+        String timeLabelText = props.getProperty(CSGProperty.TIME_LABEL_TEXT.toString());
+        timeLabel = new Label(timeLabelText);
+        timeTextField = new TextField();
+
+        String titleScheduleLabelText = props.getProperty(CSGProperty.TITLE_LABEL_TEXT.toString());
+        titleScheduleLabel = new Label(titleScheduleLabelText);
+        titleScheduleTextField = new TextField();
+
+        String topicLabelText = props.getProperty(CSGProperty.TOPIC_LABEL_TEXT.toString());
+        topicLabel = new Label(topicLabelText);
+        topicTextField = new TextField();
+
+        String linkLabelText = props.getProperty(CSGProperty.LINK_LABEL_TEXT.toString());
+        linkLabel = new Label(linkLabelText);
+        linkTextField = new TextField();
+
+        String criteriaLabelText = props.getProperty(CSGProperty.CRIT_LABEL_TEXT.toString());
+        criteriaLabel = new Label(criteriaLabelText);
+        criteriaTextField = new TextField();
+        
+        scheduleGridPane = new GridPane();
+        scheduleGridPane.add(scheduleHeaderBox, 0, 0);
+        
+        calendarBoundariesGridPane = new GridPane();
+        calendarBoundariesGridPane.add(calendarBoundariesHeaderLabel, 0, 0);
+        calendarBoundariesGridPane.add(startingMondayLabel, 0, 1);
+        calendarBoundariesGridPane.add(startingMondayPicker, 1, 1);
+        calendarBoundariesGridPane.add(endingFridayLabel, 3, 1);
+        calendarBoundariesGridPane.add(endingFridayDatePicker, 4, 1);
+        
+        scheduleGridPane.add(calendarBoundariesGridPane, 0, 1);
+        
+        scheduleItemsGridPane = new GridPane();
+        scheduleItemsGridPane.add(scheduleItemsHeaderBox, 0, 0);
+        scheduleItemsGridPane.add(scheduleItemTable, 0, 1);
+        scheduleItemsGridPane.setHgrow(scheduleItemTable, Priority.ALWAYS);
+        addScheduleGridPane = new GridPane();
+        addScheduleGridPane.add(addEditScheduleHeaderLabel, 0, 2);
+        addScheduleGridPane.add(typeLabel, 0, 3);
+        addScheduleGridPane.add(typeComboBox, 1, 3);
+        addScheduleGridPane.add(dateLabel, 0, 4);
+        addScheduleGridPane.add(dateSchedulePicker, 1, 4);
+        addScheduleGridPane.add(timeLabel, 0, 5);
+        addScheduleGridPane.add(timeTextField, 1, 5);
+        addScheduleGridPane.add(titleScheduleLabel, 0, 6);
+        addScheduleGridPane.add(titleScheduleTextField, 1, 6);
+        addScheduleGridPane.add(topicLabel, 0, 7);
+        addScheduleGridPane.add(topicTextField, 1, 7);
+        addScheduleGridPane.add(linkLabel, 0, 8);
+        addScheduleGridPane.add(linkTextField, 1, 8);
+        addScheduleGridPane.add(criteriaLabel, 0, 9);
+        addScheduleGridPane.add(criteriaTextField, 1, 9);
+        
+        scheduleDataPane = new BorderPane();
+        scheduleDataPane.setTop(scheduleGridPane);
+        scheduleDataPane.setCenter(scheduleItemsGridPane);
+        scheduleDataPane.setBottom(addScheduleGridPane);
+        
+        return scheduleDataPane;
     }
     
     private Pane generateProjectDataTab() {

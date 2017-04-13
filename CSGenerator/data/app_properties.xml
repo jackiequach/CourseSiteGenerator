@@ -141,6 +141,21 @@
         <property name="LOCATION_LABEL_TEXT"            value="Location:"></property>
         <property name="SUPTA_LABEL_TEXT"               value="Supervising TA:"></property>
         
+        <property name="SCHEDULE_HEADER_TEXT"           value="Schedule"></property>
+        <property name="CB_HEADER_TEXT"                 value="Calendar Boundaries"></property>
+        <property name="SCHIT_HEADER_TEXT"              value="Schedule Items"></property>
+        <property name="TYPE_COLUMN_TEXT"               value="Type"></property>
+        <property name="DATE_COLUMN_TEXT"               value="Date"></property>
+        <property name="TITLE_COLUMN_TEXT"              value="Title"></property>
+        <property name="TOPIC_COLUMN_TEXT"              value="Topic"></property>
+        <property name="STMON_LABEL_TEXT"               value="Starting Monday:"></property>
+        <property name="ENFRI_LABEL_TEXT"               value="Ending Friday:"></property>
+        <property name="TYPE_LABEL_TEXT"                value="Type:"></property>
+        <property name="DATE_LABEL_TEXT"                value="Date:"></property>
+        <property name="TIME_LABEL_TEXT"                value="Time:"></property>
+        <property name="TOPIC_LABEL_TEXT"               value="Topic:"></property>
+        <property name="LINK_LABEL_TEXT"                value="Link:"></property>
+        <property name="CRIT_LABEL_TEXT"                value="Criteria:"></property>
         
         <!-- WORKSPACE ERROR MESSAGES -->
         <property name="MISSING_TA_NAME_TITLE"          value="Missing TA Name"></property>
