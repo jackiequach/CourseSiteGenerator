@@ -86,7 +86,37 @@
         <property name="SCHEDULEDATA_TAB_TEXT"          value="Données de planification"></property>
         <property name="PROJECTDATA_TAB_TEXT"           value="Données du projet"></property>
         
+        <property name="COURSEINFO_HEADER_TEXT"         value="Informations sur les cours"></property>
+        <property name="SITETEMPLATE_HEADER_TEXT"       value="Modèle du site"></property>
+        <property name="PAGESTYLE_HEADER_TEXT"          value="Style de page"></property>
+        <property name="SUBJECT_LABEL_TEXT"            value="Subjet:"></property>
+        <property name="SEMESTER_LABEL_TEXT"           value="Semestre:"></property>
+        <property name="NUMBER_LABEL_TEXT"             value="Nombre:"></property>
+        <property name="YEAR_LABEL_TEXT"               value="An:"></property>
+        <property name="TITLE_LABEL_TEXT"              value="Titre:"></property>
+        <property name="TITLE_PROMPT_TEXT"              value="Titre"></property>
+        <property name="INSTRUCTORNAME_LABEL_TEXT"     value="Nom de l'instructeur:"></property>
+        <property name="INSTRUCTORNAME_PROMPT_TEXT"     value="Nom de l'instructeur"></property>
+        <property name="INSTRUCTORHOME_LABEL_TEXT"     value="Accueil de l'instructeur:"></property>
+        <property name="INSTRUCTORHOME_PROMPT_TEXT"     value="Accueil de l'instructeur"></property>
+        <property name="EXPORTDIR_LABEL_TEXT"          value="Dir d'exportation:"></property>
+        <property name="SITETEMPLATE_LABEL_TEXT"       value="Le répertoire sélectionné doit contenir le modèle de site complet, y compris les fichiers HTML."></property>
+        <property name="SELECT_TEMPLATE_BUTTON_TEXT"    value="Sélectionnez l'annuaire de modèles"></property>
+        <property name="SITEPAGES_LABEL_TEXT"           value="Pages du site:"></property>
+        <property name="USE_COLUMN_TEXT"                value="Utilisation"></property>
+        <property name="NAVBAR_COLUMN_TEXT"             value="Titre Navbar"></property>
+        <property name="FILENAME_COLUMN_TEXT"           value="Nom de fichier"></property>
+        <property name="SCRIPT_COLUMN_TEXT"             value="Scénario"></property>
+        <property name="BANNERSCHOOLIMG_LABEL_TEXT"    value="Image de l'école de bannière:"></property>
+        <property name="LF_LABEL_TEXT"                 value="Image de pied de page gauche:"></property>
+        <property name="RF_LABEL_TEXT"                 value="Image de pied de page droit:"></property>
+        <property name="SS_LABEL_TEXT"                 value="Stylesheet:"></property>
+        <property name="SS_NOTE_TEXT"                   value="REMARQUE: De nouvelles feuilles de style peuvent être placées dans work/css pour pouvoir être sélectionnées"></property>
+        <property name="SELECT_TEMPLATE_DIR_TEXT"       value="Sélectionnez l'annuaire de modèles"></property>
+        <property name="CHANGE_BUTTON_TEXT"             value="Changer"></property>
+        
         <property name="TAS_HEADER_TEXT"                value="Enseignants"></property>
+        <property name="DELETE_BUTTON_TEXT"             value="-"></property>
         <property name="NAME_COLUMN_TEXT"               value="Nom"></property>
         <property name="EMAIL_COLUMN_TEXT"              value="Email"></property>
         <property name="NAME_PROMPT_TEXT"               value="Nom"></property>
@@ -97,6 +127,53 @@
         <property name="OFFICE_HOURS_SUBHEADER"         value="Grille des heures de bureau"></property>
         <property name="START_TIME_TEXT"                value="Heure de début:"></property>
         <property name="END_TIME_TEXT"                  value="Heure de fin:"></property>
+        
+        <property name="RECIT_HEADER_TEXT"              value="Récitations"></property>
+        <property name="SECTION_COLUMN_TEXT"            value="Section"></property>
+        <property name="INSTRUCT_COLUMN_TEXT"           value="Instructeur"></property>
+        <property name="DAY_COLUMN_TEXT"                value="Jour/Temps"></property>
+        <property name="LOCATION_COLUMN_TEXT"           value="Emplacement"></property>
+        <property name="TA_COLUMN_TEXT"                 value="TA"></property>
+        <property name="ADDEDIT_LABEL_TEXT"             value="Ajouter/Modifier"></property>
+        <property name="SECTION_LABEL_TEXT"             value="Section:"></property>
+        <property name="INSTRUC_LABEL_TEXT"             value="Instructeu:r"></property>
+        <property name="DAY_LABEL_TEXT"                 value="Jour/Temps:"></property>
+        <property name="LOCATION_LABEL_TEXT"            value="Emplacement:"></property>
+        <property name="SUPTA_LABEL_TEXT"               value="Superviser le TA:"></property>
+        
+        <property name="SCHEDULE_HEADER_TEXT"           value="Programme"></property>
+        <property name="CB_HEADER_TEXT"                 value="Limites du calendrier"></property>
+        <property name="SCHIT_HEADER_TEXT"              value="Éléments du calendrier"></property>
+        <property name="TYPE_COLUMN_TEXT"               value="Type"></property>
+        <property name="DATE_COLUMN_TEXT"               value="Date"></property>
+        <property name="TITLE_COLUMN_TEXT"              value="Titre"></property>
+        <property name="TOPIC_COLUMN_TEXT"              value="Topique"></property>
+        <property name="STMON_LABEL_TEXT"               value="Démarrage du lundi:"></property>
+        <property name="ENFRI_LABEL_TEXT"               value="Fin vendredi:"></property>
+        <property name="TYPE_LABEL_TEXT"                value="Type:"></property>
+        <property name="DATE_LABEL_TEXT"                value="Date:"></property>
+        <property name="TIME_LABEL_TEXT"                value="Temps:"></property>
+        <property name="TOPIC_LABEL_TEXT"               value="Topique:"></property>
+        <property name="LINK_LABEL_TEXT"                value="Lien:"></property>
+        <property name="CRIT_LABEL_TEXT"                value="Critères:"></property>
+        
+        <property name="PROJECT_HEADER_TEXT"           value="Projets"></property>
+        <property name="TEAM_HEADER_TEXT"              value="Équipes"></property>
+        <property name="STUDENT_HEADER_TEXT"           value="Élèves"></property>
+        <property name="COLOR_COLUMN_TEXT"             value="Couleur(hex #)"></property>
+        <property name="TEXTCOL_COLUMN_TEXT"           value="Couleur du texte(hex #)"></property>
+        <property name="LINK_COLUMN_TEXT"              value="Lien"></property>
+        <property name="NAME_LABEL_TEXT"               value="Nom:"></property>
+        <property name="COLOR_LABEL_TEXT"              value="Couleur: "></property>
+        <property name="TEXTCOL_LABEL_TEXT"            value="Couleur du texte:"></property>
+        <property name="FIRSTN_COLUMN_TEXT"            value="Prénom"></property>
+        <property name="LASTN_COLUMN_TEXT"             value="Nom de famille"></property>
+        <property name="TEAM_COLUMN_TEXT"              value="Team"></property>
+        <property name="ROLE_COLUMN_TEXT"              value="Rôle"></property>
+        <property name="FIRSTN_LABEL_TEXT"             value="Prénom:"></property>
+        <property name="LASTN_LABEL_TEXT"              value="Nom de famille:"></property>
+        <property name="TEAM_LABEL_TEXT"               value="Équipes:"></property>
+        <property name="ROLE_LABEL_TEXT"               value="Rôle:"></property>
         
         <!-- WORKSPACE ERROR MESSAGES -->
         <property name="MISSING_TA_NAME_TITLE"          value="Nom de l'utilisateur manquant"></property>
