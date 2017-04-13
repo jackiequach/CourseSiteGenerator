@@ -61,6 +61,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     TabPane tabs;
     
     Tab courseDetailsTab;
+    GridPane courseGridPane;
     GridPane courseInfoGridPane;
     GridPane siteTemplateGridPane;
     GridPane pageStyleGridPane;
@@ -277,6 +278,9 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     
     Label criteriaLabel;
     TextField criteriaTextField;
+    
+    Button addScheduleItemButton;
+    Button clearScheduleItemButton;
     
     // FOR PROJECT DATA TAB
     HBox projectHeaderBox;
@@ -508,8 +512,8 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         String stylesheetText = props.getProperty(CSGProperty.SS_LABEL_TEXT.toString()); 
         stylesheetLabel = new Label(stylesheetText);
         stylesheetComboBox = new ComboBox();
-        String ssNoteText = props.getProperty(CSGProperty.SS_NOTE_TEXT.toString());
         
+        String ssNoteText = props.getProperty(CSGProperty.SS_NOTE_TEXT.toString());
         ssNoteLabel = new Label(ssNoteText);
         
         pageStyleGridPane = new GridPane();
@@ -524,11 +528,17 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         pageStyleGridPane.add(changeRightFooterButton, 2, 3);
         pageStyleGridPane.add(stylesheetLabel, 0, 4);
         pageStyleGridPane.add(stylesheetComboBox, 1, 4);
+        pageStyleGridPane.add(ssNoteLabel, 0, 5);
         
+        courseGridPane = new GridPane();
+        courseGridPane.setVgap(5);
+        courseGridPane.add(courseInfoGridPane, 0, 0);
+        courseGridPane.setHgrow(courseInfoGridPane, Priority.ALWAYS);
+        courseGridPane.add(siteTemplateGridPane, 0, 1);
+        courseGridPane.add(pageStyleGridPane, 0, 2);
+                
         BorderPane temp = new BorderPane();
-        temp.setTop(courseInfoGridPane);
-        temp.setCenter(siteTemplateGridPane);
-        temp.setBottom(pageStyleGridPane);
+        temp.setTop(courseGridPane);
         
         courseDetailsScroll = new ScrollPane();
         courseDetailsScroll.setFitToWidth(true);
@@ -775,6 +785,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         recitationGridPane.setHgrow(recitationTable, Priority.ALWAYS);
         
         addEditrecitationGridPane = new GridPane();
+        addEditrecitationGridPane.setPadding(new Insets(10, 10, 10, 10));
         addEditrecitationGridPane.setVgap(5);
         addEditrecitationGridPane.setHgap(5);
         addEditrecitationGridPane.add(addEditHeaderBox, 0, 0);
@@ -830,6 +841,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         String scheduleItemsHeaderLabelText = props.getProperty(CSGProperty.SCHIT_HEADER_TEXT.toString());
         scheduleItemsHeaderLabel = new Label(scheduleItemsHeaderLabelText);
         deleteScheduleItemButton = new Button(props.getProperty(CSGProperty.DELETE_BUTTON_TEXT.toString()));
+        deleteScheduleItemButton.prefHeightProperty().bind(scheduleItemsHeaderBox.heightProperty().multiply(1.5));
         scheduleItemsHeaderBox.getChildren().addAll(scheduleItemsHeaderLabel, deleteScheduleItemButton);
 
         scheduleItemTable = new TableView();
@@ -893,9 +905,14 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         criteriaLabel = new Label(criteriaLabelText);
         criteriaTextField = new TextField();
         
+        addScheduleItemButton = new Button(props.getProperty(CSGProperty.ADD_BUTTON_TEXT.toString()));
+        clearScheduleItemButton = new Button(props.getProperty(CSGProperty.CLEAR_BUTTON_TEXT.toString()));
+        
         scheduleGridPane = new GridPane();
+        scheduleGridPane.setVgap(5);
         scheduleGridPane.setPadding(new Insets(10, 10, 10, 10));
         scheduleGridPane.add(scheduleHeaderBox, 0, 0);
+        scheduleGridPane.setHgrow(scheduleHeaderBox, Priority.ALWAYS);
         
         calendarBoundariesGridPane = new GridPane();
         calendarBoundariesGridPane.setPadding(new Insets(10, 10, 10, 10));
@@ -916,30 +933,34 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         scheduleItemsGridPane.add(scheduleItemTable, 0, 1);
         scheduleItemsGridPane.setHgrow(scheduleItemTable, Priority.ALWAYS);
         
+        scheduleGridPane.add(scheduleItemsGridPane, 0, 2);
+        
         addScheduleGridPane = new GridPane();
         addScheduleGridPane.setPadding(new Insets(10, 10, 10, 10));
         addScheduleGridPane.setVgap(5);
         addScheduleGridPane.setHgap(5);
-        addScheduleGridPane.add(addEditScheduleHeaderLabel, 0, 2);
-        addScheduleGridPane.add(typeLabel, 0, 3);
-        addScheduleGridPane.add(typeComboBox, 1, 3);
-        addScheduleGridPane.add(dateLabel, 0, 4);
-        addScheduleGridPane.add(dateSchedulePicker, 1, 4);
-        addScheduleGridPane.add(timeLabel, 0, 5);
-        addScheduleGridPane.add(timeTextField, 1, 5);
-        addScheduleGridPane.add(titleScheduleLabel, 0, 6);
-        addScheduleGridPane.add(titleScheduleTextField, 1, 6);
-        addScheduleGridPane.add(topicLabel, 0, 7);
-        addScheduleGridPane.add(topicTextField, 1, 7);
-        addScheduleGridPane.add(linkLabel, 0, 8);
-        addScheduleGridPane.add(linkTextField, 1, 8);
-        addScheduleGridPane.add(criteriaLabel, 0, 9);
-        addScheduleGridPane.add(criteriaTextField, 1, 9);
+        addScheduleGridPane.add(addEditScheduleHeaderLabel, 0, 1);
+        addScheduleGridPane.add(typeLabel, 0, 2);
+        addScheduleGridPane.add(typeComboBox, 1, 2);
+        addScheduleGridPane.add(dateLabel, 0, 3);
+        addScheduleGridPane.add(dateSchedulePicker, 1, 3);
+        addScheduleGridPane.add(timeLabel, 0, 4);
+        addScheduleGridPane.add(timeTextField, 1, 4);
+        addScheduleGridPane.add(titleScheduleLabel, 0, 5);
+        addScheduleGridPane.add(titleScheduleTextField, 1, 5);
+        addScheduleGridPane.add(topicLabel, 0, 6);
+        addScheduleGridPane.add(topicTextField, 1, 6);
+        addScheduleGridPane.add(linkLabel, 0, 7);
+        addScheduleGridPane.add(linkTextField, 1, 7);
+        addScheduleGridPane.add(criteriaLabel, 0, 8);
+        addScheduleGridPane.add(criteriaTextField, 1, 8);
+        addScheduleGridPane.add(addScheduleItemButton, 0, 9);
+        addScheduleGridPane.add(clearScheduleItemButton, 1, 9);
+        
+        scheduleGridPane.add(addScheduleGridPane, 0, 3);
         
         BorderPane temp = new BorderPane();
         temp.setTop(scheduleGridPane);
-        temp.setCenter(scheduleItemsGridPane);
-        temp.setBottom(addScheduleGridPane);
         
         scheduleDataScroll = new ScrollPane();
         scheduleDataScroll.setFitToWidth(true);
@@ -962,6 +983,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         String teamsHeaderLabelText = props.getProperty(CSGProperty.TEAM_HEADER_TEXT.toString());
         teamsHeaderLabel = new Label(teamsHeaderLabelText);
         teamsDeleteButton = new Button(props.getProperty(CSGProperty.DELETE_BUTTON_TEXT.toString()));
+        teamsDeleteButton.prefHeightProperty().bind(teamsHeaderBox.heightProperty().multiply(1.5));
         teamsHeaderBox.getChildren().addAll(teamsHeaderLabel, teamsDeleteButton);
         
         teamTable = new TableView();
@@ -1020,6 +1042,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         String studentsHeaderLabelText = props.getProperty(CSGProperty.STUDENT_HEADER_TEXT.toString());
         studentsHeaderLabel = new Label(studentsHeaderLabelText);
         studentsDeleteButton = new Button(props.getProperty(CSGProperty.DELETE_BUTTON_TEXT.toString()));
+        studentsDeleteButton.prefHeightProperty().bind(studentsHeaderBox.heightProperty().multiply(1.5));
         studentsHeaderBox.getChildren().addAll(studentsHeaderLabel, studentsDeleteButton);
 
         studentTable = new TableView();
@@ -1075,7 +1098,9 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         
         projectsGridPane = new GridPane();
         projectsGridPane.setPadding(new Insets(10, 10, 10, 10));
+        projectsGridPane.setVgap(5);
         projectsGridPane.add(projectHeaderBox, 0, 0);
+        projectsGridPane.setHgrow(projectHeaderBox, Priority.ALWAYS);
         
         teamsGridPane = new GridPane();
         teamsGridPane.setPadding(new Insets(10, 10, 10, 10));
@@ -1083,6 +1108,8 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         teamsGridPane.add(teamsHeaderBox, 0, 0);
         teamsGridPane.add(teamTable, 0, 1);
         teamsGridPane.setHgrow(teamTable, Priority.ALWAYS);
+        
+        projectsGridPane.add(teamsGridPane, 0, 1);
         
         addTeamsGridPane = new GridPane();
         addTeamsGridPane.setPadding(new Insets(10, 10, 10, 10));
@@ -1100,12 +1127,16 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         addTeamsGridPane.add(addTeamButton, 0, 4);
         addTeamsGridPane.add(clearTeamButton, 1, 4);
         
+        projectsGridPane.add(addTeamsGridPane, 0, 2);
+        
         studentsGridPane = new GridPane();
         studentsGridPane.setPadding(new Insets(10, 10, 10, 10));
         studentsGridPane.setVgap(5);
         studentsGridPane.add(studentsHeaderBox, 0, 0);
         studentsGridPane.add(studentTable, 0, 1);
         studentsGridPane.setHgrow(studentTable, Priority.ALWAYS);
+        
+        projectsGridPane.add(studentsGridPane, 0, 3);
         
         addStudentsGridPane = new GridPane();
         addStudentsGridPane.setPadding(new Insets(10, 10, 10, 10));
@@ -1123,22 +1154,16 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         addStudentsGridPane.add(addStudentButton, 0, 5);
         addStudentsGridPane.add(clearStudentButton, 1, 5);
         
-        projectDataPane = new BorderPane();
+        projectsGridPane.add(addStudentsGridPane, 0, 4);
+        
         BorderPane tempA = new BorderPane();
         tempA.setTop(projectsGridPane);
-        tempA.setCenter(teamsGridPane);
-        
-        BorderPane tempB = new BorderPane();
-        tempB.setTop(addTeamsGridPane);
-        tempB.setCenter(studentsGridPane);
-        tempB.setBottom(addStudentsGridPane);
-        
-        tempA.setBottom(tempB);
         
         projectDataScroll = new ScrollPane();
         projectDataScroll.setContent(tempA);
         projectDataScroll.setFitToWidth(true);
         
+        projectDataPane = new BorderPane();
         projectDataPane.setCenter(projectDataScroll);
         
         return projectDataPane;
@@ -1381,5 +1406,433 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         // AND FINALLY, GIVE THE TEXT PROPERTY TO THE DATA MANAGER
         // SO IT CAN MANAGE ALL CHANGES
         dataComponent.setCellProperty(col, row, cellLabel.textProperty());        
+    }
+    
+    public GridPane getCourseInfoGridPane() {
+        return courseInfoGridPane;
+    }
+    
+    public GridPane getSiteTemplateGridPane() {
+        return siteTemplateGridPane;
+    }
+    
+    public GridPane getPageStyleGridPane() {
+        return pageStyleGridPane;
+    }
+    
+    public GridPane getAddEditrecitationGridPane() {
+        return addEditrecitationGridPane;
+    }
+    
+    public GridPane getCalendarBoundariesGridPane() {
+        return calendarBoundariesGridPane;
+    }
+    
+    public GridPane getScheduleItemsGridPane() {
+        return scheduleItemsGridPane;
+    }
+    
+    public GridPane getAddScheduleGridPane() {
+        return addScheduleGridPane;
+    }
+    
+    public GridPane getTeamsGridPane() {
+        return teamsGridPane;
+    }
+    
+    public GridPane getAddTeamsGridPane() {
+        return addTeamsGridPane;
+    }
+    
+    public GridPane getStudentsGridPane() {
+        return studentsGridPane;
+    }
+    
+    public GridPane getAddStudentsGridPane() {
+        return addStudentsGridPane;
+    }
+    
+    public Pane getRecitationsHeaderPane() {
+        return recitationHeaderBox;
+    }
+    
+    public Pane getScheduleHeaderPane() {
+        return scheduleHeaderBox;
+    }
+    
+    public Pane getProjectHeaderPane() {
+        return projectHeaderBox;
+    }
+    
+    public Label getRecitationsHeaderLabel() {
+        return recitationHeaderLabel;
+    }
+    
+    public Label getScheduleHeaderLabel() {
+        return scheduleHeaderLabel;
+    }
+    
+    public Label getProjectHeaderLabel() {
+        return projectHeaderLabel;
+    }
+    
+    public Pane getTeamsHeaderPane() {
+        return teamsHeaderBox;
+    }
+    
+    public Label getTeamsHeaderLabel() {
+        return teamsHeaderLabel;
+    }
+    
+    public Pane getStudentsHeaderPane() {
+        return studentsHeaderBox;
+    }
+    
+    public Label getStudentsHeaderLabel() {
+        return studentsHeaderLabel;
+    }
+    
+    public Pane getCourseInfoHeaderPane() {
+        return courseInfoHeaderBox;
+    }
+    
+    public Label getCourseInfoHeaderLabel() {
+        return ciHeaderLabel;
+    }
+    
+    public Pane getSiteTemplateHeaderPane() {
+        return siteTemplateHeaderBox;
+    }
+    
+    public Label getSiteTemplateHeaderLabel() {
+        return siteTemplateHeaderLabel;
+    }
+    
+    public Pane getPageStyleHeaderPane() {
+        return pageStyleHeaderBox;
+    }
+    
+    public Label getPageStyleHeaderLabel() {
+        return pageStyleHeaderLabel;
+    }
+    
+    public Label getCalendarBoundariesLabel() {
+        return calendarBoundariesHeaderLabel;
+    }
+    
+    public Pane getScheduleItemsHeaderPane() {
+        return scheduleItemsHeaderBox;
+    }
+    
+    public Label getScheduleItemsHeaderLabel() {
+        return scheduleItemsHeaderLabel;
+    }
+    
+    public TableView<SitePage> getSiteTable() {
+        return siteTable;
+    }
+    
+    public TableView<Recitation> getRecitationTable() {
+        return recitationTable;
+    }
+    
+    public TableView<ScheduleItem> getScheduleItemTable() {
+        return scheduleItemTable;
+    }
+    
+    public TableView<Team> getTeamTable() {
+        return teamTable;
+    }
+    
+    public TableView<Student> getStudentTable() {
+        return studentTable;
+    }
+    
+    public Label getSubjectLabel() {
+        return subjectLabel;
+    }
+    
+    public Label getNumberLabel() {
+        return numberLabel;
+    }
+    
+    public Label getSemesterLabel() {
+        return semesterLabel;
+    }
+    
+    public Label getYearLabel() {
+        return yearLabel;
+    }
+    
+    public Label getTitleLabel() {
+        return titleLabel;
+    }
+    
+    public Label getInstructorNameLabel() {
+        return instructorNameLabel;
+    }
+    
+    public Label getInstructorHomeLabel() {
+        return instructorHomeLabel;
+    }
+    
+    public Label getExportDirLabel() {
+        return exportDirLabel;
+    }
+    
+    public Label getSiteTemplateInfoLabel() {
+        return siteTemplateInfoLabel;
+    }
+    
+    public Label getSitePagesLabel() {
+        return sitePagesHeaderLabel;
+    }
+    
+    public Label getBannerSchoolImgLabel() {
+        return bannerSchoolImgLabel;
+    }
+    
+    public Label getLeftFooterImgLabel() {
+        return leftFooterImgLabel;
+    }
+    
+    public Label getRightFooterImgLabel() {
+        return rightFooterImgLabel;
+    }
+    
+    public Label getStylesheetLabel() {
+        return stylesheetLabel;
+    }
+    
+    public Label getSsNoteLabel() {
+        return ssNoteLabel;
+    }
+    
+    public Label getSectionLabel() {
+        return sectionLabel;
+    }
+    
+    public Label getInstructorLabel() {
+        return instructorLabel;
+    }
+    
+    public Label getDayLabel() {
+        return dayLabel;
+    }
+    
+    public Label getLocationLabel() {
+        return locationLabel;
+    }
+    
+    public Label getSupervisingTALabelOne() {
+        return supervisingLabelOne;
+    }
+    
+    public Label getSupervisingTALabelTwo() {
+        return supervisingLabelTwo;
+    }
+    
+    public Label getStartingMondayLabel() {
+        return startingMondayLabel;
+    }
+    
+    public Label getEndingFridayLabel() {
+        return endingFridayLabel;
+    }
+    
+    public Label getTypeLabel() {
+        return typeLabel;
+    }
+    
+    public Label getDateLabel() {
+        return dateLabel;
+    }
+    
+    public Label getTimeLabel() {
+        return timeLabel;
+    }
+    
+    public Label getTitleScheduleLabel() {
+        return titleScheduleLabel;
+    }
+    
+    public Label getTopicLabel() {
+        return topicLabel;
+    }
+    
+    public Label getLinkLabel() {
+        return linkLabel;
+    }
+    
+    public Label getCriteriaLabel() {
+        return criteriaLabel;
+    }
+    
+    public Label getNameTeamLabel() {
+        return nameLabel;
+    }
+    
+    public Label getColorLabel() {
+        return colorLabel;
+    }
+    
+    public Label getTextColorLabel() {
+        return textColorLabel;
+    }
+    
+    public Label getLinkTeamLabel() {
+        return linkTeamLabel;
+    }
+    
+    public Label getFirstNameLabel() {
+        return firstNameLabel;
+    }
+    
+    public Label getLastNameLabel() {
+        return lastNameLabel;
+    }
+    
+    public Label getTeamLabel() {
+        return teamLabel;
+    }
+    
+    public Label getRoleLabel() {
+        return roleLabel;
+    }
+    
+    public Label getAddEditRecitationHeaderLabelLabel() {
+        return addEditHeaderLabel;
+    }
+    
+    public Label getAddEditScheduleHeaderLabelLabel() {
+        return addEditScheduleHeaderLabel;
+    }
+    
+    public Label getAddStudentHeaderLabel() {
+        return addStudentHeader;
+    }
+    
+    public Label getAddTeamHeaderLabel() {
+        return addTeamHeader;
+    }
+    
+    public Button getChangeExportDirButton() {
+        return changeExportDirButton;
+    }
+    
+    public Button getSelectTemplateDirectoryButton() {
+        return selectTemplateDirButton;
+    }
+    
+    public Button getChangeBannerButton() {
+        return changeBannerButton;
+    }
+    
+    public Button getChangeRightFooterButton() {
+        return changeRightFooterButton;
+    }
+    
+    public Button getChangeLeftFooterButton() {
+        return changeLeftFooterButton;
+    }
+    
+    public Button getAddRecitationButton() {
+        return addRecitationButton;
+    }
+    
+    public Button getClearRecitationButton() {
+        return clearRecitationButton;
+    }
+    
+    public Button getAddScheduleItemButton() {
+        return addScheduleItemButton;
+    }
+    
+    public Button getClearScheduleItemButton() {
+        return clearScheduleItemButton;
+    }
+    
+    public Button getAddTeamButton() {
+        return addTeamButton;
+    }
+    
+    public Button getClearTeamButton() {
+        return clearTeamButton;
+    }
+    
+    public Button getAddStudentButton() {
+        return addStudentButton;
+    }
+    
+    public Button getClearStudentButton() {
+        return clearStudentButton;
+    }
+    
+    public TextField getTitleTextField() {
+        return titleTextField;
+    }
+    
+    public TextField getInstructorNameTextField() {
+        return instructorNameTextField;
+    }
+    
+    public TextField getInstructorHomeTextField() {
+        return instructorHomeTextField;
+    }
+    
+    public TextField getSectionTextField() {
+        return sectionTextField;
+    }
+    
+    public TextField getInstructorTextField() {
+        return instructorTextField;
+    }
+    
+    public TextField getDayTextField() {
+        return dayTextField;
+    }
+    
+    public TextField getLocationTextField() {
+        return locationTextField;
+    }
+    
+    public TextField getTimeTextField() {
+        return timeTextField;
+    }
+    
+    public TextField getTitleScheduleTextField() {
+        return titleScheduleTextField;
+    }
+    
+    public TextField getTopicTextField() {
+        return topicTextField;
+    }
+    
+    public TextField getLinkTextField() {
+        return linkTextField;
+    }
+    
+    public TextField getCriteriaTextField() {
+        return criteriaTextField;
+    }
+    
+    public TextField getNameTeamTextField() {
+        return nameTeamTextField;
+    }
+    
+    public TextField getLinkTeamTextField() {
+        return linkTeamTextField;
+    }
+    
+    public TextField getFirstNameTextField() {
+        return firstNameTextField;
+    }
+    
+    public TextField getLastNameTextField() {
+        return lastNameTextField;
+    }
+    
+    public TextField getRoleTextField() {
+        return roleTextField;
     }
 }
