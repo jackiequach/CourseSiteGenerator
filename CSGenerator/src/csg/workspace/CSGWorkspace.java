@@ -65,6 +65,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     GridPane siteTemplateGridPane;
     GridPane pageStyleGridPane;
     BorderPane courseDetailsPane;
+    ScrollPane courseDetailsScroll;
     
     Tab taDataTab;
     BorderPane taDataPane;
@@ -73,6 +74,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     GridPane addEditrecitationGridPane;
     Tab recitationDataTab;
     BorderPane recitationDataPane;
+    ScrollPane recitationDataScroll;
     
     GridPane scheduleGridPane;
     GridPane calendarBoundariesGridPane;
@@ -80,6 +82,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     GridPane addScheduleGridPane;
     Tab scheduleDataTab;
     BorderPane scheduleDataPane;
+    ScrollPane scheduleDataScroll;
     
     GridPane projectsGridPane;
     GridPane teamsGridPane;
@@ -346,7 +349,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         
         taDataTab = new Tab();
         taDataTab.setText(props.getProperty(CSGProperty.TADATA_TAB_TEXT.toString()));
-        taDataTab.setContent(generateCSGDataTab());
+        taDataTab.setContent(generateTADataTab());
         
         recitationDataTab = new Tab();
         recitationDataTab.setText(props.getProperty(CSGProperty.RECITATIONDATA_TAB_TEXT.toString()));
@@ -522,15 +525,22 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         pageStyleGridPane.add(stylesheetLabel, 0, 4);
         pageStyleGridPane.add(stylesheetComboBox, 1, 4);
         
+        BorderPane temp = new BorderPane();
+        temp.setTop(courseInfoGridPane);
+        temp.setCenter(siteTemplateGridPane);
+        temp.setBottom(pageStyleGridPane);
+        
+        courseDetailsScroll = new ScrollPane();
+        courseDetailsScroll.setFitToWidth(true);
+        courseDetailsScroll.setContent(temp);
+        
         courseDetailsPane = new BorderPane();
-        courseDetailsPane.setTop(courseInfoGridPane);
-        courseDetailsPane.setCenter(siteTemplateGridPane);
-        courseDetailsPane.setBottom(pageStyleGridPane);
+        courseDetailsPane.setCenter(courseDetailsScroll);
         
         return courseDetailsPane;
     }
     
-    private Pane generateCSGDataTab() {
+    private Pane generateTADataTab() {
         PropertiesManager props = PropertiesManager.getPropertiesManager();
         tasHeaderBox = new HBox();
         String tasHeaderText = props.getProperty(CSGProperty.TAS_HEADER_TEXT.toString());
@@ -785,8 +795,15 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         
         recitationGridPane.add(addEditrecitationGridPane, 0, 2);
         
+        BorderPane temp = new BorderPane();
+        temp.setCenter(recitationGridPane);
+        
+        recitationDataScroll = new ScrollPane();
+        recitationDataScroll.setFitToWidth(true);
+        recitationDataScroll.setContent(temp);
+        
         recitationDataPane = new BorderPane();
-        recitationDataPane.setCenter(recitationGridPane);
+        recitationDataPane.setCenter(recitationDataScroll);
         
         return recitationDataPane;
     }
@@ -877,9 +894,13 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         criteriaTextField = new TextField();
         
         scheduleGridPane = new GridPane();
+        scheduleGridPane.setPadding(new Insets(10, 10, 10, 10));
         scheduleGridPane.add(scheduleHeaderBox, 0, 0);
         
         calendarBoundariesGridPane = new GridPane();
+        calendarBoundariesGridPane.setPadding(new Insets(10, 10, 10, 10));
+        calendarBoundariesGridPane.setVgap(5);
+        calendarBoundariesGridPane.setHgap(5);
         calendarBoundariesGridPane.add(calendarBoundariesHeaderLabel, 0, 0);
         calendarBoundariesGridPane.add(startingMondayLabel, 0, 1);
         calendarBoundariesGridPane.add(startingMondayPicker, 1, 1);
@@ -889,10 +910,16 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         scheduleGridPane.add(calendarBoundariesGridPane, 0, 1);
         
         scheduleItemsGridPane = new GridPane();
+        scheduleItemsGridPane.setPadding(new Insets(10, 10, 10, 10));
+        scheduleItemsGridPane.setVgap(5);
         scheduleItemsGridPane.add(scheduleItemsHeaderBox, 0, 0);
         scheduleItemsGridPane.add(scheduleItemTable, 0, 1);
         scheduleItemsGridPane.setHgrow(scheduleItemTable, Priority.ALWAYS);
+        
         addScheduleGridPane = new GridPane();
+        addScheduleGridPane.setPadding(new Insets(10, 10, 10, 10));
+        addScheduleGridPane.setVgap(5);
+        addScheduleGridPane.setHgap(5);
         addScheduleGridPane.add(addEditScheduleHeaderLabel, 0, 2);
         addScheduleGridPane.add(typeLabel, 0, 3);
         addScheduleGridPane.add(typeComboBox, 1, 3);
@@ -909,10 +936,17 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         addScheduleGridPane.add(criteriaLabel, 0, 9);
         addScheduleGridPane.add(criteriaTextField, 1, 9);
         
+        BorderPane temp = new BorderPane();
+        temp.setTop(scheduleGridPane);
+        temp.setCenter(scheduleItemsGridPane);
+        temp.setBottom(addScheduleGridPane);
+        
+        scheduleDataScroll = new ScrollPane();
+        scheduleDataScroll.setFitToWidth(true);
+        scheduleDataScroll.setContent(temp);
+        
         scheduleDataPane = new BorderPane();
-        scheduleDataPane.setTop(scheduleGridPane);
-        scheduleDataPane.setCenter(scheduleItemsGridPane);
-        scheduleDataPane.setBottom(addScheduleGridPane);
+        scheduleDataPane.setCenter(scheduleDataScroll);
         
         return scheduleDataPane;
     }
@@ -928,7 +962,8 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         String teamsHeaderLabelText = props.getProperty(CSGProperty.TEAM_HEADER_TEXT.toString());
         teamsHeaderLabel = new Label(teamsHeaderLabelText);
         teamsDeleteButton = new Button(props.getProperty(CSGProperty.DELETE_BUTTON_TEXT.toString()));
-
+        teamsHeaderBox.getChildren().addAll(teamsHeaderLabel, teamsDeleteButton);
+        
         teamTable = new TableView();
         teamTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         CSGData data = (CSGData) app.getDataComponent();
@@ -1039,14 +1074,20 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         clearStudentButton = new Button(props.getProperty(CSGProperty.CLEAR_BUTTON_TEXT.toString()));
         
         projectsGridPane = new GridPane();
+        projectsGridPane.setPadding(new Insets(10, 10, 10, 10));
         projectsGridPane.add(projectHeaderBox, 0, 0);
         
         teamsGridPane = new GridPane();
+        teamsGridPane.setPadding(new Insets(10, 10, 10, 10));
+        teamsGridPane.setVgap(5);
         teamsGridPane.add(teamsHeaderBox, 0, 0);
         teamsGridPane.add(teamTable, 0, 1);
         teamsGridPane.setHgrow(teamTable, Priority.ALWAYS);
         
         addTeamsGridPane = new GridPane();
+        addTeamsGridPane.setPadding(new Insets(10, 10, 10, 10));
+        addTeamsGridPane.setVgap(5);
+        addTeamsGridPane.setHgap(5);
         addTeamsGridPane.add(addTeamHeader, 0, 0);
         addTeamsGridPane.add(nameLabel, 0, 1);
         addTeamsGridPane.add(nameTeamTextField, 1, 1);
@@ -1060,11 +1101,16 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         addTeamsGridPane.add(clearTeamButton, 1, 4);
         
         studentsGridPane = new GridPane();
+        studentsGridPane.setPadding(new Insets(10, 10, 10, 10));
+        studentsGridPane.setVgap(5);
         studentsGridPane.add(studentsHeaderBox, 0, 0);
         studentsGridPane.add(studentTable, 0, 1);
         studentsGridPane.setHgrow(studentTable, Priority.ALWAYS);
         
         addStudentsGridPane = new GridPane();
+        addStudentsGridPane.setPadding(new Insets(10, 10, 10, 10));
+        addStudentsGridPane.setVgap(5);
+        addStudentsGridPane.setHgap(5);
         addStudentsGridPane.add(addStudentHeader, 0, 0);
         addStudentsGridPane.add(firstNameLabel, 0, 1);
         addStudentsGridPane.add(firstNameTextField, 1, 1);
@@ -1091,6 +1137,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         
         projectDataScroll = new ScrollPane();
         projectDataScroll.setContent(tempA);
+        projectDataScroll.setFitToWidth(true);
         
         projectDataPane.setCenter(projectDataScroll);
         
