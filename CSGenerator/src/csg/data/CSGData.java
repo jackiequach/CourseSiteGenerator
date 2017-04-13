@@ -46,7 +46,11 @@ public class CSGData implements AppDataComponent {
     ObservableList<Recitation> recitations;
     
     ObservableList<ScheduleItem> scheduleItems;
+    
+    ObservableList<Team> teams;
 
+    ObservableList<Student> students;
+    
     HashMap<String, StringProperty> officeHours;
     
     ArrayList<String> gridHeaders;
@@ -542,5 +546,13 @@ public class CSGData implements AppDataComponent {
     
     public ObservableList<ScheduleItem> getScheduleItems() {
         return scheduleItems;
+    }
+    
+    public ObservableList<Team> getTeams() {
+        return teams;
+    }
+    
+    public ObservableList<Student> getStudents() {
+        return students;
     }
 }

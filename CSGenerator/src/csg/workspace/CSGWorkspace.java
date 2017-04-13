@@ -11,7 +11,9 @@ import csg.data.CSGData;
 import csg.data.Recitation;
 import csg.data.ScheduleItem;
 import csg.data.SitePage;
+import csg.data.Student;
 import csg.data.TeachingAssistant;
+import csg.data.Team;
 import csg.style.CSGStyle;
 import djf.components.AppDataComponent;
 import djf.components.AppWorkspaceComponent;
@@ -21,6 +23,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -56,24 +59,36 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     jTPS transactions = new jTPS();
     
     TabPane tabs;
+    
     Tab courseDetailsTab;
     GridPane courseInfoGridPane;
     GridPane siteTemplateGridPane;
     GridPane pageStyleGridPane;
     BorderPane courseDetailsPane;
+    
     Tab taDataTab;
     BorderPane taDataPane;
+    
     GridPane recitationGridPane;
     GridPane addEditrecitationGridPane;
     Tab recitationDataTab;
     BorderPane recitationDataPane;
+    
     GridPane scheduleGridPane;
     GridPane calendarBoundariesGridPane;
     GridPane scheduleItemsGridPane;
     GridPane addScheduleGridPane;
     Tab scheduleDataTab;
     BorderPane scheduleDataPane;
+    
+    GridPane projectsGridPane;
+    GridPane teamsGridPane;
+    GridPane addTeamsGridPane;
+    GridPane studentsGridPane;
+    GridPane addStudentsGridPane;
     Tab projectDataTab;
+    BorderPane projectDataPane;
+    ScrollPane projectDataScroll;
     
     // FOR COURSE DETAILS TAB
     HBox courseInfoHeaderBox;
@@ -218,20 +233,13 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     HBox scheduleHeaderBox;
     Label scheduleHeaderLabel;
     
-    VBox calendarBoundariesBox;
-    
-    HBox calendarBoundariesHeaderBox;
     Label calendarBoundariesHeaderLabel;
     
-    HBox startingMondayBox;
     Label startingMondayLabel;
     DatePicker startingMondayPicker;
     
-    HBox endingFridayBox;
     Label endingFridayLabel;
     DatePicker endingFridayDatePicker;
-    
-    VBox scheduleItemsBox;
     
     HBox scheduleItemsHeaderBox;
     Label scheduleItemsHeaderLabel;
@@ -243,38 +251,87 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     TableColumn<ScheduleItem, String> titleColumn;
     TableColumn<ScheduleItem, String> topicColumn;
     
-    VBox addEditScheduleBox;
     HBox addEditScheduleHeaderBox;
     Label addEditScheduleHeaderLabel;
     
-    HBox typeBox;
     Label typeLabel;
     ComboBox typeComboBox;
     
-    HBox dateBox;
     Label dateLabel;
     DatePicker dateSchedulePicker;
     
-    HBox timeBox;
     Label timeLabel;
     TextField timeTextField;
     
-    HBox titleScheduleBox;
     Label titleScheduleLabel;
     TextField titleScheduleTextField;
     
-    HBox topicBox;
     Label topicLabel;
     TextField topicTextField;
     
-    HBox linkBox;
     Label linkLabel;
     TextField linkTextField;
     
-    HBox criteriaBox;
     Label criteriaLabel;
     TextField criteriaTextField;
     
+    // FOR PROJECT DATA TAB
+    HBox projectHeaderBox;
+    Label projectHeaderLabel;
+    
+    HBox teamsHeaderBox;
+    Label teamsHeaderLabel;
+    Button teamsDeleteButton;
+    
+    TableView<Team> teamTable;
+    TableColumn<Team, String> nameTeamColumn;
+    TableColumn<Team, String> colorColumn;
+    TableColumn<Team, String> textColorColumn;
+    TableColumn<Team, String> linkColumn;
+    
+    Label addTeamHeader;
+    
+    Label nameLabel;
+    TextField nameTeamTextField;
+    
+    Label colorLabel;
+    ColorPicker colorPicker;
+    
+    Label textColorLabel;
+    ColorPicker textColorPicker;
+    
+    Label linkTeamLabel;
+    TextField linkTeamTextField;
+    
+    Button addTeamButton;
+    Button clearTeamButton;
+    
+    HBox studentsHeaderBox;
+    Label studentsHeaderLabel;
+    Button studentsDeleteButton;
+    
+    TableView<Student> studentTable;
+    TableColumn<Student, String> firstNameColumn;
+    TableColumn<Student, String> lastNameColumn;
+    TableColumn<Student, String> teamColumn;
+    TableColumn<Student, String> roleColumn;
+    
+    Label addStudentHeader;
+    
+    Label firstNameLabel;
+    TextField firstNameTextField;
+    
+    Label lastNameLabel;
+    TextField lastNameTextField;
+    
+    Label teamLabel;
+    ComboBox teamComboBox;
+    
+    Label roleLabel;
+    TextField roleTextField;
+    
+    Button addStudentButton;
+    Button clearStudentButton;
     
     public CSGWorkspace(CSGeneratorApp initApp) {
         app = initApp;
@@ -861,7 +918,183 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     }
     
     private Pane generateProjectDataTab() {
-        return null;
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        projectHeaderBox = new HBox();
+        String projectHeaderLabelText = props.getProperty(CSGProperty.PROJECT_HEADER_TEXT.toString());
+        projectHeaderLabel = new Label(projectHeaderLabelText);
+        projectHeaderBox.getChildren().add(projectHeaderLabel);
+
+        teamsHeaderBox = new HBox();
+        String teamsHeaderLabelText = props.getProperty(CSGProperty.TEAM_HEADER_TEXT.toString());
+        teamsHeaderLabel = new Label(teamsHeaderLabelText);
+        teamsDeleteButton = new Button(props.getProperty(CSGProperty.DELETE_BUTTON_TEXT.toString()));
+
+        teamTable = new TableView();
+        teamTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        CSGData data = (CSGData) app.getDataComponent();
+        ObservableList<Team> tableData = data.getTeams();
+        teamTable.setItems(tableData);
+        String nameColumnText = props.getProperty(CSGProperty.NAME_COLUMN_TEXT.toString());
+        String colorColumnText = props.getProperty(CSGProperty.COLOR_COLUMN_TEXT.toString());
+        String textColorColumnText = props.getProperty(CSGProperty.TEXTCOL_COLUMN_TEXT.toString());
+        String linkColumnText = props.getProperty(CSGProperty.LINK_COLUMN_TEXT.toString());
+        nameTeamColumn = new TableColumn(nameColumnText);
+        typeColumn.setCellValueFactory(
+                new PropertyValueFactory<>("name")
+        );
+        teamTable.getColumns().add(nameTeamColumn);
+        colorColumn = new TableColumn(colorColumnText);
+        colorColumn.setCellValueFactory(
+                new PropertyValueFactory<>("color")
+        );
+        teamTable.getColumns().add(colorColumn);
+        textColorColumn = new TableColumn(textColorColumnText);
+        textColorColumn.setCellValueFactory(
+                new PropertyValueFactory<>("textColor")
+        );
+        teamTable.getColumns().add(textColorColumn);
+        linkColumn = new TableColumn(linkColumnText);
+        linkColumn.setCellValueFactory(
+                new PropertyValueFactory<>("link")
+        );
+        teamTable.getColumns().add(linkColumn);
+
+        String addTeamHeaderText = props.getProperty(CSGProperty.ADDEDIT_LABEL_TEXT.toString());
+        addTeamHeader = new Label(addTeamHeaderText);
+
+        String nameLabelText = props.getProperty(CSGProperty.NAME_LABEL_TEXT.toString());
+        nameLabel = new Label(nameLabelText);
+        nameTeamTextField = new TextField();
+
+        String colorLabelText = props.getProperty(CSGProperty.COLOR_LABEL_TEXT.toString());
+        colorLabel = new Label(colorLabelText);
+        colorPicker = new ColorPicker();
+
+        String textColorLabelText = props.getProperty(CSGProperty.TEXTCOL_LABEL_TEXT.toString());
+        textColorLabel = new Label(textColorLabelText);
+        textColorPicker = new ColorPicker();
+
+        String linkTeamLabelText = props.getProperty(CSGProperty.LINK_LABEL_TEXT.toString());
+        linkTeamLabel = new Label(linkTeamLabelText);
+        linkTeamTextField = new TextField();
+
+        addTeamButton = new Button(props.getProperty(CSGProperty.ADD_BUTTON_TEXT.toString()));
+        clearTeamButton = new Button(props.getProperty(CSGProperty.CLEAR_BUTTON_TEXT.toString()));
+
+        studentsHeaderBox = new HBox();
+        String studentsHeaderLabelText = props.getProperty(CSGProperty.STUDENT_HEADER_TEXT.toString());
+        studentsHeaderLabel = new Label(studentsHeaderLabelText);
+        studentsDeleteButton = new Button(props.getProperty(CSGProperty.DELETE_BUTTON_TEXT.toString()));
+        studentsHeaderBox.getChildren().addAll(studentsHeaderLabel, studentsDeleteButton);
+
+        studentTable = new TableView();
+        studentTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        ObservableList<Student> tableDataS = data.getStudents();
+        studentTable.setItems(tableDataS);
+        String firstNameColumnText = props.getProperty(CSGProperty.NAME_COLUMN_TEXT.toString());
+        String lastNameColumnText = props.getProperty(CSGProperty.COLOR_COLUMN_TEXT.toString());
+        String teamColumnText = props.getProperty(CSGProperty.TEXTCOL_COLUMN_TEXT.toString());
+        String roleColumnText = props.getProperty(CSGProperty.LINK_COLUMN_TEXT.toString());
+        firstNameColumn = new TableColumn(firstNameColumnText);
+        firstNameColumn.setCellValueFactory(
+                new PropertyValueFactory<>("firstName")
+        );
+        studentTable.getColumns().add(firstNameColumn);
+        lastNameColumn = new TableColumn(lastNameColumnText);
+        lastNameColumn.setCellValueFactory(
+                new PropertyValueFactory<>("lastName")
+        );
+        studentTable.getColumns().add(lastNameColumn);
+        teamColumn = new TableColumn(teamColumnText);
+        teamColumn.setCellValueFactory(
+                new PropertyValueFactory<>("team")
+        );
+        studentTable.getColumns().add(teamColumn);
+        roleColumn = new TableColumn(roleColumnText);
+        roleColumn.setCellValueFactory(
+                new PropertyValueFactory<>("link")
+        );
+        studentTable.getColumns().add(roleColumn);
+
+        String addStudentHeaderText = props.getProperty(CSGProperty.ADDEDIT_LABEL_TEXT.toString());
+        addStudentHeader = new Label(addStudentHeaderText);
+
+        String firstNameLabelText = props.getProperty(CSGProperty.FIRSTN_LABEL_TEXT.toString());
+        firstNameLabel = new Label(firstNameLabelText);
+        firstNameTextField = new TextField();
+
+        String lastNameLabelText = props.getProperty(CSGProperty.LASTN_LABEL_TEXT.toString());
+        lastNameLabel = new Label(lastNameLabelText);
+        lastNameTextField = new TextField();
+
+        String teamLabelText = props.getProperty(CSGProperty.TEAM_LABEL_TEXT.toString());
+        teamLabel = new Label(teamLabelText);
+        teamComboBox = new ComboBox();
+
+        String roleLabelText = props.getProperty(CSGProperty.ROLE_LABEL_TEXT.toString());
+        roleLabel = new Label(roleLabelText);
+        roleTextField = new TextField();
+        
+        addStudentButton = new Button(props.getProperty(CSGProperty.ADD_BUTTON_TEXT.toString()));
+        clearStudentButton = new Button(props.getProperty(CSGProperty.CLEAR_BUTTON_TEXT.toString()));
+        
+        projectsGridPane = new GridPane();
+        projectsGridPane.add(projectHeaderBox, 0, 0);
+        
+        teamsGridPane = new GridPane();
+        teamsGridPane.add(teamsHeaderBox, 0, 0);
+        teamsGridPane.add(teamTable, 0, 1);
+        teamsGridPane.setHgrow(teamTable, Priority.ALWAYS);
+        
+        addTeamsGridPane = new GridPane();
+        addTeamsGridPane.add(addTeamHeader, 0, 0);
+        addTeamsGridPane.add(nameLabel, 0, 1);
+        addTeamsGridPane.add(nameTeamTextField, 1, 1);
+        addTeamsGridPane.add(colorLabel, 0, 2);
+        addTeamsGridPane.add(colorPicker, 1, 2);
+        addTeamsGridPane.add(textColorLabel, 2, 2);
+        addTeamsGridPane.add(textColorPicker, 3, 2);
+        addTeamsGridPane.add(linkTeamLabel, 0, 3);
+        addTeamsGridPane.add(linkTeamTextField, 1, 3);
+        addTeamsGridPane.add(addTeamButton, 0, 4);
+        addTeamsGridPane.add(clearTeamButton, 1, 4);
+        
+        studentsGridPane = new GridPane();
+        studentsGridPane.add(studentsHeaderBox, 0, 0);
+        studentsGridPane.add(studentTable, 0, 1);
+        studentsGridPane.setHgrow(studentTable, Priority.ALWAYS);
+        
+        addStudentsGridPane = new GridPane();
+        addStudentsGridPane.add(addStudentHeader, 0, 0);
+        addStudentsGridPane.add(firstNameLabel, 0, 1);
+        addStudentsGridPane.add(firstNameTextField, 1, 1);
+        addStudentsGridPane.add(lastNameLabel, 0, 2);
+        addStudentsGridPane.add(lastNameTextField, 1, 2);
+        addStudentsGridPane.add(teamLabel, 0, 3);
+        addStudentsGridPane.add(teamComboBox, 1, 3);
+        addStudentsGridPane.add(roleLabel, 0, 4);
+        addStudentsGridPane.add(roleTextField, 1, 4);
+        addStudentsGridPane.add(addStudentButton, 0, 5);
+        addStudentsGridPane.add(clearStudentButton, 1, 5);
+        
+        projectDataPane = new BorderPane();
+        BorderPane tempA = new BorderPane();
+        tempA.setTop(projectsGridPane);
+        tempA.setCenter(teamsGridPane);
+        
+        BorderPane tempB = new BorderPane();
+        tempB.setTop(addTeamsGridPane);
+        tempB.setCenter(studentsGridPane);
+        tempB.setBottom(addStudentsGridPane);
+        
+        tempA.setBottom(tempB);
+        
+        projectDataScroll = new ScrollPane();
+        projectDataScroll.setContent(tempA);
+        
+        projectDataPane.setCenter(projectDataScroll);
+        
+        return projectDataPane;
     }
     
     public HBox getTAsHeaderBox() {

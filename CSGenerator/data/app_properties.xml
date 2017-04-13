@@ -157,6 +157,24 @@
         <property name="LINK_LABEL_TEXT"                value="Link:"></property>
         <property name="CRIT_LABEL_TEXT"                value="Criteria:"></property>
         
+        <property name="PROJECT_HEADER_TEXT"           value="Projects"></property>
+        <property name="TEAM_HEADER_TEXT"              value="Teams"></property>
+        <property name="STUDENT_HEADER_TEXT"           value="Students"></property>
+        <property name="COLOR_COLUMN_TEXT"             value="Color(hex#)"></property>
+        <property name="TEXTCOL_COLUMN_TEXT"           value="Text Color(hex#)"></property>
+        <property name="LINK_COLUMN_TEXT"              value="Link"></property>
+        <property name="NAME_LABEL_TEXT"               value="Name:"></property>
+        <property name="COLOR_LABEL_TEXT"              value="Color: "></property>
+        <property name="TEXTCOL_LABEL_TEXT"            value="Text Color:"></property>
+        <property name="FIRSTN_COLUMN_TEXT"            value="First Name"></property>
+        <property name="LASTN_COLUMN_TEXT"             value="Last Name"></property>
+        <property name="TEAM_COLUMN_TEXT"              value="Team"></property>
+        <property name="ROLE_COLUMN_TEXT"              value="Role"></property>
+        <property name="FIRSTN_LABEL_TEXT"             value="First Name:"></property>
+        <property name="LASTN_LABEL_TEXT"              value="Last Name:"></property>
+        <property name="TEAM_LABEL_TEXT"               value="Team:"></property>
+        <property name="ROLE_LABEL_TEXT"               value="Role:"></property>
+        
         <!-- WORKSPACE ERROR MESSAGES -->
         <property name="MISSING_TA_NAME_TITLE"          value="Missing TA Name"></property>
         <property name="MISSING_TA_NAME_MESSAGE"        value="You must provide a TA Name"></property>
