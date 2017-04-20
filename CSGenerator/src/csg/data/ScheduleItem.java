@@ -24,4 +24,20 @@ public class ScheduleItem {
         title = new SimpleStringProperty(initTitle);
         topic = new SimpleStringProperty(initTopic);
     }
+    
+    public String getType() {
+        return type.get();
+    }
+    
+    public String getData() {
+        return data.get();
+    }
+    
+    public String getTitle() {
+        return title.get();
+    }
+    
+    public String getTopic() {
+        return topic.get();
+    }
 }
