@@ -26,4 +26,24 @@ public class Recitation {
         location = new SimpleStringProperty(initLocation);
         ta = initTA;
     }
+    
+    public String getSection() {
+        return section.get();
+    }
+    
+    public String getInstructor() {
+        return instructor.get();
+    }
+    
+    public String getDay() {
+        return day.get();
+    }
+    
+    public String getLocation() {
+        return location.get();
+    }
+    
+    public String getTA() {
+        return ta.getName();
+    }
 }
