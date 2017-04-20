@@ -727,7 +727,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         recitationTable.getColumns().add(instructorColumn);
         dayColumn = new TableColumn(dayColumnText);
         dayColumn.setCellValueFactory(
-                new PropertyValueFactory<>("day")
+                new PropertyValueFactory<>("dayRec")
         );
         recitationTable.getColumns().add(dayColumn);
         locationColumn = new TableColumn(locationColumnText);
@@ -737,12 +737,12 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         recitationTable.getColumns().add(locationColumn);
         supervisingTAColumnOne = new TableColumn(taColumnText);
         supervisingTAColumnOne.setCellValueFactory(
-                new PropertyValueFactory<>("ta")
+                new PropertyValueFactory<>("taOne")
         );
         recitationTable.getColumns().add(supervisingTAColumnOne);
         supervisingTAColumnTwo = new TableColumn(taColumnText);
         supervisingTAColumnTwo.setCellValueFactory(
-                new PropertyValueFactory<>("ta")
+                new PropertyValueFactory<>("taTwo")
         );
         recitationTable.getColumns().add(supervisingTAColumnTwo);
 
@@ -996,8 +996,8 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         String textColorColumnText = props.getProperty(CSGProperty.TEXTCOL_COLUMN_TEXT.toString());
         String linkColumnText = props.getProperty(CSGProperty.LINK_COLUMN_TEXT.toString());
         nameTeamColumn = new TableColumn(nameColumnText);
-        typeColumn.setCellValueFactory(
-                new PropertyValueFactory<>("name")
+        nameTeamColumn.setCellValueFactory(
+                new PropertyValueFactory<>("nameTeam")
         );
         teamTable.getColumns().add(nameTeamColumn);
         colorColumn = new TableColumn(colorColumnText);
@@ -1070,7 +1070,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         studentTable.getColumns().add(teamColumn);
         roleColumn = new TableColumn(roleColumnText);
         roleColumn.setCellValueFactory(
-                new PropertyValueFactory<>("link")
+                new PropertyValueFactory<>("role")
         );
         studentTable.getColumns().add(roleColumn);
 
