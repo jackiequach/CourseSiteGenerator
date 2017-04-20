@@ -24,4 +24,20 @@ public class Student {
         team = new SimpleStringProperty(initTeam);
         role = new SimpleStringProperty(initRole);
     }
+    
+    public String getFirstName() {
+        return firstName.get();
+    }
+    
+    public String getLastName() {
+        return lastName.get();
+    }
+    
+    public String getTeam() {
+        return team.get();
+    }
+    
+    public String getRole() {
+        return role.get();
+    }
 }
