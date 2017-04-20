@@ -25,5 +25,19 @@ public class SitePage {
         script = new SimpleStringProperty(initScript);
     }
     
+    public Boolean getUse() {
+        return use;
+    }
     
+    public String getTitle() {
+        return title.get();
+    }
+    
+    public String getFileName() {
+        return fileName.get();
+    }
+    
+    public String getScript() {
+        return script.get();
+    }
 }
