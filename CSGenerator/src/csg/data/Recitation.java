@@ -17,14 +17,16 @@ public class Recitation {
     private final StringProperty instructor;
     private final StringProperty day;
     private final StringProperty location;
-    private final TeachingAssistant ta;
+    private final TeachingAssistant taOne;
+    private final TeachingAssistant taTwo;
     
-    public Recitation(String initSection, String initInstructor, String initDay, String initLocation, TeachingAssistant initTA) {
+    public Recitation(String initSection, String initInstructor, String initDay, String initLocation, TeachingAssistant initTAOne, TeachingAssistant initTATwo) {
         section = new SimpleStringProperty(initSection);
         instructor = new SimpleStringProperty(initInstructor);
         day = new SimpleStringProperty(initDay);
         location = new SimpleStringProperty(initLocation);
-        ta = initTA;
+        taOne = initTAOne;
+        taTwo = initTATwo;
     }
     
     public String getSection() {
@@ -43,7 +45,11 @@ public class Recitation {
         return location.get();
     }
     
-    public String getTA() {
-        return ta.getName();
+    public String getTAOne() {
+        return taOne.getName();
+    }
+    
+    public String getTATwo() {
+        return taTwo.getName();
     }
 }
