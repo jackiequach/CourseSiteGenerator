@@ -19,11 +19,11 @@ public class Team {
     private final StringProperty textColor;
     private final StringProperty link;
     
-    public Team(String initName, String initColor, String initTextColor, StringProperty initLink) {
+    public Team(String initName, String initColor, String initTextColor, String initLink) {
         name = new SimpleStringProperty(initName);
         color = new SimpleStringProperty(initColor);
         textColor = new SimpleStringProperty(initTextColor);
-        link = initLink;
+        link = new SimpleStringProperty(initLink);
     }
     
     public String getName() {
