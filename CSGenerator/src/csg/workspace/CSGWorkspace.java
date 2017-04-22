@@ -6,6 +6,9 @@
 package csg.workspace;
 
 import csg.CSGProperty;
+import static csg.CSGProperty.DEFAULT_BANNER_IMG_PATH;
+import static csg.CSGProperty.DEFAULT_LEFT_IMG_PATH;
+import static csg.CSGProperty.DEFAULT_RIGHT_IMG_PATH;
 import csg.CSGeneratorApp;
 import csg.data.CSGData;
 import csg.data.Recitation;
@@ -17,6 +20,8 @@ import csg.data.Team;
 import csg.style.CSGStyle;
 import djf.components.AppDataComponent;
 import djf.components.AppWorkspaceComponent;
+import static djf.settings.AppStartupConstants.FILE_PROTOCOL;
+import static djf.settings.AppStartupConstants.PATH_IMAGES;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.collections.ObservableList;
@@ -37,6 +42,8 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -120,6 +127,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     TextField instructorHomeTextField;
     
     Label exportDirLabel;
+    Label exportDirPathLabel;
     Button changeExportDirButton;
     
     HBox siteTemplateHeaderBox;
@@ -127,6 +135,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     
     Label siteTemplateInfoLabel;
     
+    Label selectTemplateDirPathLabel;
     Button selectTemplateDirButton;
     
     Label sitePagesHeaderLabel;
@@ -141,12 +150,18 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     Label pageStyleHeaderLabel;
     
     Label bannerSchoolImgLabel;
+    String bannerImgPath;
+    Image bannerSchoolImg;
     Button changeBannerButton;
     
     Label leftFooterImgLabel;
+    String leftFooterImgPath;
+    Image leftFooterImg;
     Button changeLeftFooterButton;
     
     Label rightFooterImgLabel;
+    String rightFooterImgPath;
+    Image rightFooterImg;
     Button changeRightFooterButton;
     
     Label stylesheetLabel;
@@ -417,6 +432,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         
         String exportLabelText = props.getProperty(CSGProperty.EXPORTDIR_LABEL_TEXT.toString());
         exportDirLabel = new Label(exportLabelText);
+        exportDirPathLabel = new Label();
         changeExportDirButton = new Button(props.getProperty(CSGProperty.CHANGE_BUTTON_TEXT.toString()));
         
         courseInfoGridPane = new GridPane();
@@ -439,6 +455,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         courseInfoGridPane.add(instructorHomeLabel, 0, 5);
         courseInfoGridPane.add(instructorHomeTextField, 1, 5, 3, 1);
         courseInfoGridPane.add(exportDirLabel, 0, 6);
+        courseInfoGridPane.add(exportDirPathLabel, 1, 6, 2, 1);
         courseInfoGridPane.add(changeExportDirButton, 3, 6);
         
         siteTemplateHeaderBox = new HBox();
@@ -449,6 +466,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         String siteTemplateInfoText = props.getProperty(CSGProperty.SITETEMPLATE_LABEL_TEXT.toString());
         siteTemplateInfoLabel = new Label(siteTemplateInfoText);
         
+        selectTemplateDirPathLabel = new Label();
         selectTemplateDirButton = new Button(props.getProperty(CSGProperty.SELECT_TEMPLATE_BUTTON_TEXT.toString()));
         
         String sitePagesHeaderText = props.getProperty(CSGProperty.SITEPAGES_LABEL_TEXT.toString());
@@ -487,6 +505,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         siteTemplateGridPane.setPadding(new Insets(10, 10, 10, 10));
         siteTemplateGridPane.add(siteTemplateHeaderBox, 0, 0);
         siteTemplateGridPane.add(siteTemplateInfoLabel, 0, 1);
+        siteTemplateGridPane.add(selectTemplateDirPathLabel, 0, 2);
         siteTemplateGridPane.add(selectTemplateDirButton, 0, 3);
         siteTemplateGridPane.add(sitePagesHeaderLabel, 0, 4);
         siteTemplateGridPane.add(siteTable, 0, 5);
@@ -499,14 +518,20 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         
         String bannerSchoolImgText = props.getProperty(CSGProperty.BANNERSCHOOLIMG_LABEL_TEXT.toString());
         bannerSchoolImgLabel = new Label(bannerSchoolImgText);
+        bannerImgPath = FILE_PROTOCOL + PATH_IMAGES + props.getProperty(DEFAULT_BANNER_IMG_PATH);
+        bannerSchoolImg = new Image(bannerImgPath);
         changeBannerButton = new Button(props.getProperty(CSGProperty.CHANGE_BUTTON_TEXT.toString()));
         
         String leftFooterImgText = props.getProperty(CSGProperty.LF_LABEL_TEXT.toString());
         leftFooterImgLabel = new Label(leftFooterImgText);
+        leftFooterImgPath = FILE_PROTOCOL + PATH_IMAGES + props.getProperty(DEFAULT_LEFT_IMG_PATH);
+        leftFooterImg = new Image(leftFooterImgPath);
         changeLeftFooterButton = new Button(props.getProperty(CSGProperty.CHANGE_BUTTON_TEXT.toString()));
 
         String rightFooterImgText = props.getProperty(CSGProperty.RF_LABEL_TEXT.toString());
         rightFooterImgLabel = new Label(rightFooterImgText);
+        rightFooterImgPath = FILE_PROTOCOL + PATH_IMAGES + props.getProperty(DEFAULT_RIGHT_IMG_PATH);
+        rightFooterImg = new Image(rightFooterImgPath);
         changeRightFooterButton = new Button(props.getProperty(CSGProperty.CHANGE_BUTTON_TEXT.toString()));
 
         String stylesheetText = props.getProperty(CSGProperty.SS_LABEL_TEXT.toString()); 
@@ -521,10 +546,13 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         pageStyleGridPane.setPadding(new Insets(10, 10, 10, 10));
         pageStyleGridPane.add(pageStyleHeaderBox, 0, 0);
         pageStyleGridPane.add(bannerSchoolImgLabel, 0, 1);
+        pageStyleGridPane.add(new ImageView(bannerSchoolImg), 1, 1);
         pageStyleGridPane.add(changeBannerButton, 2, 1);
         pageStyleGridPane.add(leftFooterImgLabel, 0, 2);
+        pageStyleGridPane.add(new ImageView(leftFooterImg), 1, 2);
         pageStyleGridPane.add(changeLeftFooterButton, 2, 2);
         pageStyleGridPane.add(rightFooterImgLabel, 0, 3);
+        pageStyleGridPane.add(new ImageView(rightFooterImg), 1, 3);
         pageStyleGridPane.add(changeRightFooterButton, 2, 3);
         pageStyleGridPane.add(stylesheetLabel, 0, 4);
         pageStyleGridPane.add(stylesheetComboBox, 1, 4);
@@ -1580,8 +1608,16 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         return exportDirLabel;
     }
     
+    public Label getExportDirPathLabel() {
+        return exportDirPathLabel;
+    }
+    
     public Label getSiteTemplateInfoLabel() {
         return siteTemplateInfoLabel;
+    }
+    
+    public Label getSelectTemplateDirPathLabel() {
+        return selectTemplateDirPathLabel;
     }
     
     public Label getSitePagesLabel() {
@@ -1834,5 +1870,37 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     
     public TextField getRoleTextField() {
         return roleTextField;
+    }
+    
+    public ComboBox getSubjectComboBox() {
+        return subjectComboBox;
+    }
+    
+    public ComboBox getNumberComboBox() {
+        return numberComboBox;
+    }
+    
+    public ComboBox getSemesterComboBox() {
+        return semesterComboBox;
+    }
+    
+    public ComboBox getYearComboBox() {
+        return yearComboBox;
+    }
+    
+    public ComboBox getStylesheetComboBox() {
+        return stylesheetComboBox;
+    }
+    
+    public String getBannerImgPath() {
+        return bannerImgPath;
+    }
+    
+    public String getLeftFooterImgPath() {
+        return leftFooterImgPath;
+    }
+    
+    public String getRightFooterImgPath() {
+        return rightFooterImgPath;
     }
 }
