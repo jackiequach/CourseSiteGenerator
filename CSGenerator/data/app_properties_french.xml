@@ -108,8 +108,11 @@
         <property name="FILENAME_COLUMN_TEXT"           value="Nom de fichier"></property>
         <property name="SCRIPT_COLUMN_TEXT"             value="Scénario"></property>
         <property name="BANNERSCHOOLIMG_LABEL_TEXT"    value="Image de l'école de bannière:"></property>
+        <property name="DEFAULT_BANNER_IMG_PATH"        value="SBUDarkRedShieldLogo.png"></property>
         <property name="LF_LABEL_TEXT"                 value="Image de pied de page gauche:"></property>
+        <property name="DEFAULT_LEFT_IMG_PATH"        value="SBUWhiteShieldLogo.jpg"></property>
         <property name="RF_LABEL_TEXT"                 value="Image de pied de page droit:"></property>
+        <property name="DEFAULT_RIGHT_IMG_PATH"        value="CSLogo.png"></property>
         <property name="SS_LABEL_TEXT"                 value="Stylesheet:"></property>
         <property name="SS_NOTE_TEXT"                   value="REMARQUE: De nouvelles feuilles de style peuvent être placées dans work/css pour pouvoir être sélectionnées"></property>
         <property name="SELECT_TEMPLATE_DIR_TEXT"       value="Sélectionnez l'annuaire de modèles"></property>
