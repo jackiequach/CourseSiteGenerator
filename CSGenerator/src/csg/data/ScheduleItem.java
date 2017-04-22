@@ -14,13 +14,13 @@ import javafx.beans.property.StringProperty;
  */
 public class ScheduleItem {
     private final StringProperty type;
-    private final StringProperty data;
+    private final StringProperty date;
     private final StringProperty title;
     private final StringProperty topic;
     
-    public ScheduleItem(String initType, String initData, String initTitle, String initTopic) {
+    public ScheduleItem(String initType, String initDate, String initTitle, String initTopic) {
         type = new SimpleStringProperty(initType);
-        data = new SimpleStringProperty(initData);
+        date = new SimpleStringProperty(initDate);
         title = new SimpleStringProperty(initTitle);
         topic = new SimpleStringProperty(initTopic);
     }
@@ -29,8 +29,8 @@ public class ScheduleItem {
         return type.get();
     }
     
-    public String getData() {
-        return data.get();
+    public String getDate() {
+        return date.get();
     }
     
     public String getTitle() {
