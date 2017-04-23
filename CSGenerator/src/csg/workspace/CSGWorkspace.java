@@ -518,19 +518,19 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         
         String bannerSchoolImgText = props.getProperty(CSGProperty.BANNERSCHOOLIMG_LABEL_TEXT.toString());
         bannerSchoolImgLabel = new Label(bannerSchoolImgText);
-        bannerImgPath = FILE_PROTOCOL + PATH_IMAGES + props.getProperty(DEFAULT_BANNER_IMG_PATH);
+        bannerImgPath = data.getBannerImgPath();
         bannerSchoolImg = new Image(bannerImgPath);
         changeBannerButton = new Button(props.getProperty(CSGProperty.CHANGE_BUTTON_TEXT.toString()));
         
         String leftFooterImgText = props.getProperty(CSGProperty.LF_LABEL_TEXT.toString());
         leftFooterImgLabel = new Label(leftFooterImgText);
-        leftFooterImgPath = FILE_PROTOCOL + PATH_IMAGES + props.getProperty(DEFAULT_LEFT_IMG_PATH);
+        leftFooterImgPath = data.getLeftFooterImgPath();
         leftFooterImg = new Image(leftFooterImgPath);
         changeLeftFooterButton = new Button(props.getProperty(CSGProperty.CHANGE_BUTTON_TEXT.toString()));
 
         String rightFooterImgText = props.getProperty(CSGProperty.RF_LABEL_TEXT.toString());
         rightFooterImgLabel = new Label(rightFooterImgText);
-        rightFooterImgPath = FILE_PROTOCOL + PATH_IMAGES + props.getProperty(DEFAULT_RIGHT_IMG_PATH);
+        rightFooterImgPath = data.getRightFooterImgPath();
         rightFooterImg = new Image(rightFooterImgPath);
         changeRightFooterButton = new Button(props.getProperty(CSGProperty.CHANGE_BUTTON_TEXT.toString()));
 
@@ -1902,5 +1902,13 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     
     public String getRightFooterImgPath() {
         return rightFooterImgPath;
+    }
+    
+    public DatePicker getStartingMondayPicker() {
+        return startingMondayPicker;
+    }
+    
+    public DatePicker getEndingFridayPicker() {
+        return endingFridayDatePicker;
     }
 }
