@@ -119,7 +119,6 @@ public class CSGFiles implements AppFileComponent {
     public void saveData(AppDataComponent data, String filePath) throws IOException {
         // GET THE DATA
 	CSGData dataManager = (CSGData)data;
-        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
         
         JsonArrayBuilder courseInfoArrayBuilder = Json.createArrayBuilder();
         JsonObject courseInfo = Json.createObjectBuilder()
