@@ -31,6 +31,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import properties_manager.PropertiesManager;
 import csg.file.TimeSlot;
+import static djf.settings.AppStartupConstants.FILE_PROTOCOL;
+import static djf.settings.AppStartupConstants.PATH_IMAGES;
 
 /**
  *
@@ -42,10 +44,32 @@ public class CSGData implements AppDataComponent {
     ObservableList<TeachingAssistant> teachingAssistants;
     
     ObservableList<SitePage> sitePages;
+    String subject;
+    String number;
+    String semester;
+    String year;
+    String title;
+    String instructorName;
+    String instructorHome;
+    String exportDirPath;
+    String templateDirPath;
+    String bannerImgPath;
+    String leftFooterImgPath;
+    String rightFooterImgPath;
+    String stylesheet;
+    
+    public static final String DEFAULT_BANNER_IMG = "SBUDarkRedShieldLogo.png";
+    public static final String DEFAULT_LEFT_IMG = "SBUWhiteShieldLogo.jpg";
+    public static final String DEFAULT_RIGHT_IMG = "CSLogo.png";
     
     ObservableList<Recitation> recitations;
     
     ObservableList<ScheduleItem> scheduleItems;
+    String startMonday;
+    String endFriday;
+    String time;
+    String link;
+    String criteria;
     
     ObservableList<Team> teams;
 
@@ -65,7 +89,16 @@ public class CSGData implements AppDataComponent {
         app = initApp;
         
         teachingAssistants = FXCollections.observableArrayList();
-
+        sitePages = FXCollections.observableArrayList();
+        recitations = FXCollections.observableArrayList();
+        scheduleItems = FXCollections.observableArrayList();
+        teams = FXCollections.observableArrayList();
+        students = FXCollections.observableArrayList();
+        
+        bannerImgPath = FILE_PROTOCOL + PATH_IMAGES + DEFAULT_BANNER_IMG;
+        leftFooterImgPath = FILE_PROTOCOL + PATH_IMAGES + DEFAULT_LEFT_IMG;
+        rightFooterImgPath = FILE_PROTOCOL + PATH_IMAGES + DEFAULT_RIGHT_IMG;
+        
         startHour = MIN_START_HOUR;
         endHour = MAX_END_HOUR;
         
@@ -88,7 +121,150 @@ public class CSGData implements AppDataComponent {
     }
     
     // ACCESSOR METHODS
-
+    public String getSubject() {
+        return subject;
+    }
+    
+    public void setSubject(String initSubject) {
+        subject = initSubject;
+    }
+    
+    public String getNumber() {
+        return number;
+    }
+    
+    public void setNumber(String initNumber) {
+        number = initNumber;
+    }
+    
+    public String getSemester() {
+        return semester;
+    }
+    
+    public void setSemester(String initSemester) {
+        semester = initSemester;
+    }
+    
+    public String getYear() {
+        return year;
+    }
+    
+    public void setYear(String initYear) {
+        year = initYear;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public void setTitle(String initTitle) {
+        title = initTitle;
+    }
+    
+    public String getInstructorName() {
+        return instructorName;
+    }
+    
+    public void setInstructorName(String initInstructorName) {
+        instructorName = initInstructorName;
+    }
+    
+    public String getInstructorHome() {
+        return instructorHome;
+    }
+    
+    public void setInstructorHome(String initInstructorHome) {
+        instructorHome = initInstructorHome;
+    }
+    
+    public String getExportDirPath() {
+        return exportDirPath;
+    }
+    
+    public void setExportDirPath(String initExportDirPath) {
+        exportDirPath = initExportDirPath;
+    }
+    
+    public String getTemplateDirPath() {
+        return templateDirPath;
+    }
+    
+    public void setTemplateDirPath(String initTemplateDirPath) {
+        templateDirPath = initTemplateDirPath;
+    }
+    
+    public String getBannerImgPath() {
+        return bannerImgPath;
+    }
+    
+    public void setBannerImgPath(String initBannerImgPath) {
+        bannerImgPath = initBannerImgPath;
+    }
+    
+    public String getLeftFooterImgPath() {
+        return leftFooterImgPath;
+    }
+    
+    public void setLeftFooterImgPath(String initLeftFooterImgPath) {
+        leftFooterImgPath = initLeftFooterImgPath;
+    }
+    
+    public String getRightFooterImgPath() {
+        return rightFooterImgPath;
+    }
+    
+    public void setRightFooterImgPath(String initRightFooterImgPath) {
+        rightFooterImgPath = initRightFooterImgPath;
+    }
+    
+    public String getStylesheet() {
+        return stylesheet;
+    }
+    
+    public void setStylesheet(String initStylesheet) {
+        stylesheet = initStylesheet;
+    }
+    
+    public String getStartMonday() {
+        return startMonday;
+    }
+    
+    public void setStartMonday(String initStartMonday) {
+        startMonday = initStartMonday;
+    }
+    
+    public String getEndFriday() {
+        return endFriday;
+    }
+    
+    public void setEndFriday(String initEndFriday) {
+        endFriday = initEndFriday;
+    }
+    
+    public String getTime() {
+        return time;
+    }
+    
+    public void setTime(String initTime) {
+        time = initTime;
+    }
+    
+    public String getLink() {
+        return link;
+    }
+    
+    public void setLink(String initLink) {
+        link = initLink;
+    }
+    
+    public String getCriteria() {
+        return criteria;
+    }
+    
+    public void setCriteria(String initCriteria) {
+        criteria = initCriteria;
+    }
+    
     public int getStartHour() {
         return startHour;
     }
@@ -221,6 +397,86 @@ public class CSGData implements AppDataComponent {
             }
         }
         return false;
+    }
+    
+    public boolean containsSitePage(String testFile) {
+        for(SitePage site : sitePages) {
+            if(site.getFileName().equals(testFile)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public boolean containsRecitation(String testSection, String testInstructor) {
+        for(Recitation recitation : recitations) {
+            if(recitation.getSection().equals(testSection) && recitation.getInstructor().equals(testInstructor)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public boolean containsScheduleItem(String testType, String testDate) {
+        for(ScheduleItem scheduleItem : scheduleItems) {
+            if(scheduleItem.getType().equals(testType) && scheduleItem.getDate().equals(testDate)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public boolean containsTeam(String testName, String testColor) {
+        for(Team team : teams) {
+            if(team.getName().equals(testName) && team.getColor().equals(testColor)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public boolean containsStudent(String testFirstName, String testLastName) {
+        for(Student student : students) {
+            if(student.getFirstName().equals(testFirstName) && student.getLastName().equals(testLastName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public void addSitePage(Boolean initUse, String initTitle, String initFile, String initScript) {
+        SitePage site = new SitePage(initUse, initTitle, initFile, initScript);
+        if(!containsSitePage(initFile)) {
+            sitePages.add(site);
+        }
+    }
+    
+    public void addRecitation(String initSection, String initInstructor, String initDay, String initLocation, String initTAOne, String initTATwo) {
+        Recitation recitation = new Recitation(initSection, initInstructor, initDay, initLocation, initTAOne, initTATwo);
+        if(!containsRecitation(initSection, initInstructor)) {
+            recitations.add(recitation);
+        }
+    }
+    
+    public void addScheduleItem(String initType, String initDate, String initTitle, String initTopic) {
+        ScheduleItem scheduleItem = new ScheduleItem(initType, initDate, initTitle, initTopic);
+        if(!containsScheduleItem(initType, initDate)) {
+            scheduleItems.add(scheduleItem);
+        }
+    }
+    
+    public void addTeam(String initName, String initColor, String initTextColor, String initLink) {
+        Team team = new Team(initName, initColor, initTextColor, initLink);
+        if(!containsTeam(initName, initColor)) {
+            teams.add(team);
+        }
+    }
+    
+    public void addStudent(String initFirstName, String initLastName, String initTeam, String initRole) {
+        Student student = new Student(initFirstName, initLastName, initTeam, initRole);
+        if(!containsStudent(initFirstName, initFirstName)) {
+            students.add(student);
+        }
     }
 
     public void addTA(String initName, String initEmail) {
