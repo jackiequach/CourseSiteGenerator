@@ -46,7 +46,7 @@ import properties_manager.PropertiesManager;
 
 /**
  *
- * @author Jackie
+ * @author Jackie Quach
  */
 public class CSGController {
     CSGeneratorApp app;
