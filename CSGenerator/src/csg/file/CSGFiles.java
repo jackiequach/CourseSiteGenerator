@@ -8,8 +8,11 @@ package csg.file;
 import csg.CSGeneratorApp;
 import csg.data.CSGData;
 import csg.data.Recitation;
+import csg.data.ScheduleItem;
 import csg.data.SitePage;
+import csg.data.Student;
 import csg.data.TeachingAssistant;
+import csg.data.Team;
 import csg.workspace.CSGWorkspace;
 import djf.components.AppDataComponent;
 import djf.components.AppFileComponent;
@@ -20,6 +23,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -81,8 +85,10 @@ public class CSGFiles implements AppFileComponent {
     static final String JSON_TA_ONE = "taOne";
     static final String JSON_TA_TWO = "taTwo";
     
+    static final String JSON_CALENDAR = "calendar_boundaries";
     static final String JSON_START_MONDAY = "startMonday";
     static final String JSON_END_FRIDAY = "endFriday";
+    static final String JSON_SCHEDULE = "schedule_items";
     static final String JSON_TYPE = "type";
     static final String JSON_DATE = "date";
     static final String JSON_TIME_SI = "time";
@@ -91,10 +97,13 @@ public class CSGFiles implements AppFileComponent {
     static final String JSON_LINK_SI = "link";
     static final String JSON_CRITERIA = "criteria";
     
+    static final String JSON_TEAMS = "teams";
     static final String JSON_NAME_TEAM = "nameTeam";
     static final String JSON_COLOR = "color";
     static final String JSON_TEXT_COLOR = "textColor";
     static final String JSON_LINK = "link";
+    
+    static final String JSON_STUDENTS = "students";
     static final String JSON_FIRST_NAME = "firstName";
     static final String JSON_LAST_NAME = "lastName";
     static final String JSON_TEAM = "team";
@@ -111,57 +120,44 @@ public class CSGFiles implements AppFileComponent {
         // GET THE DATA
 	CSGData dataManager = (CSGData)data;
         CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
-        ComboBox subjectComboBox = workspace.getSubjectComboBox();
-        ComboBox numberComboBox = workspace.getNumberComboBox();
-        ComboBox semesterComboBox = workspace.getSemesterComboBox();
-        ComboBox yearComboBox = workspace.getYearComboBox();
-        TextField titleTextField = workspace.getTitleTextField();
-        TextField instructorNameTextField = workspace.getInstructorNameTextField();
-        TextField instructorHomeTextField = workspace.getInstructorHomeTextField();
-        Label exportDirPath = workspace.getExportDirPathLabel();
-        Label selectTemplateDirPathLabel = workspace.getSelectTemplateDirPathLabel();
         
         JsonArrayBuilder courseInfoArrayBuilder = Json.createArrayBuilder();
         JsonObject courseInfo = Json.createObjectBuilder()
-                .add(JSON_SUBJECT, (String) subjectComboBox.getSelectionModel().getSelectedItem())
-                .add(JSON_NUMBER, (String) numberComboBox.getSelectionModel().getSelectedItem())
-                .add(JSON_SEMESTER, (String) semesterComboBox.getSelectionModel().getSelectedItem())
-                .add(JSON_YEAR, (String) yearComboBox.getSelectionModel().getSelectedItem())
-                .add(JSON_TITLE_CI, titleTextField.getText())
-                .add(JSON_INSTRUCTOR_NAME, instructorNameTextField.getText())
-                .add(JSON_INSTRUCTOR_HOME, instructorHomeTextField.getText())
-                .add(JSON_EXPORT_DIR, exportDirPath.getText()).build();
+            .add(JSON_SUBJECT, dataManager.getSubject())
+            .add(JSON_NUMBER, dataManager.getNumber())
+            .add(JSON_SEMESTER, dataManager.getSemester())
+            .add(JSON_YEAR, dataManager.getYear())
+            .add(JSON_TITLE_CI, dataManager.getTitle())
+            .add(JSON_INSTRUCTOR_NAME, dataManager.getInstructorName())
+            .add(JSON_INSTRUCTOR_HOME, dataManager.getInstructorHome())
+            .add(JSON_EXPORT_DIR, dataManager.getExportDirPath()).build();
         courseInfoArrayBuilder.add(courseInfo);
         JsonArray courseInfoArray = courseInfoArrayBuilder.build();
         
         JsonArrayBuilder siteTemplateArrayBuilder = Json.createArrayBuilder();
         JsonObject siteTemplate = Json.createObjectBuilder()
-                .add(JSON_TEMPLATE_DIR, selectTemplateDirPathLabel.getText()).build();
+            .add(JSON_TEMPLATE_DIR, dataManager.getTemplateDirPath()).build();
         siteTemplateArrayBuilder.add(siteTemplate);
         
         JsonArrayBuilder sitePagesArrayBuilder = Json.createArrayBuilder();
         ObservableList<SitePage> sitePages = dataManager.getSitePages();
 	for (SitePage sitePage : sitePages) {	    
 	    JsonObject siteJson = Json.createObjectBuilder()
-		    .add(JSON_USE, sitePage.getUse())
-                    .add(JSON_NAVBAR, sitePage.getTitle())
-                    .add(JSON_FILE, sitePage.getFileName())
-                    .add(JSON_SCRIPT, sitePage.getScript()).build();
+                .add(JSON_USE, sitePage.getUse())
+                .add(JSON_NAVBAR, sitePage.getTitle())
+                .add(JSON_FILE, sitePage.getFileName())
+                .add(JSON_SCRIPT, sitePage.getScript()).build();
 	    sitePagesArrayBuilder.add(siteJson);
 	}
         siteTemplateArrayBuilder.add(sitePagesArrayBuilder);
         JsonArray siteTemplateArray = siteTemplateArrayBuilder.build();
         
-        String bannerImgPath = workspace.getBannerImgPath();
-        String leftFooterImgPath = workspace.getLeftFooterImgPath();
-        String rightFooterImgPath = workspace.getRightFooterImgPath();
-        ComboBox stylesheetComboBox = workspace.getStylesheetComboBox();
         JsonArrayBuilder pageStyleArrayBuilder = Json.createArrayBuilder();
         JsonObject pageStyle = Json.createObjectBuilder()
-            .add(JSON_BANNER_IMG, bannerImgPath)
-            .add(JSON_LEFT_IMG, leftFooterImgPath)
-            .add(JSON_RIGHT_IMG, rightFooterImgPath)
-            .add(JSON_STYLESHEET, (String) stylesheetComboBox.getSelectionModel().getSelectedItem()).build();
+            .add(JSON_BANNER_IMG, dataManager.getBannerImgPath())
+            .add(JSON_LEFT_IMG, dataManager.getLeftFooterImgPath())
+            .add(JSON_RIGHT_IMG, dataManager.getRightFooterImgPath())
+            .add(JSON_STYLESHEET, dataManager.getStylesheet()).build();
         pageStyleArrayBuilder.add(pageStyle);
         JsonArray pageStyleArray = pageStyleArrayBuilder.build();
 
@@ -170,8 +166,8 @@ public class CSGFiles implements AppFileComponent {
 	ObservableList<TeachingAssistant> tas = dataManager.getTeachingAssistants();
 	for (TeachingAssistant ta : tas) {	    
 	    JsonObject taJson = Json.createObjectBuilder()
-		    .add(JSON_NAME, ta.getName())
-                    .add(JSON_EMAIL, ta.getEmail()).build();
+                .add(JSON_NAME, ta.getName())
+                .add(JSON_EMAIL, ta.getEmail()).build();
 	    taArrayBuilder.add(taJson);
 	}
 	JsonArray undergradTAsArray = taArrayBuilder.build();
@@ -181,9 +177,9 @@ public class CSGFiles implements AppFileComponent {
 	ArrayList<TimeSlot> officeHours = TimeSlot.buildOfficeHoursList(dataManager);
 	for (TimeSlot ts : officeHours) {	    
 	    JsonObject tsJson = Json.createObjectBuilder()
-		    .add(JSON_DAY, ts.getDay())
-		    .add(JSON_TIME, ts.getTime())
-		    .add(JSON_NAME, ts.getName()).build();
+                .add(JSON_DAY, ts.getDay())
+                .add(JSON_TIME, ts.getTime())
+                .add(JSON_NAME, ts.getName()).build();
 	    timeSlotArrayBuilder.add(tsJson);
 	}
 	JsonArray timeSlotsArray = timeSlotArrayBuilder.build();
@@ -191,28 +187,80 @@ public class CSGFiles implements AppFileComponent {
 	JsonArrayBuilder recitationsArrayBuilder = Json.createArrayBuilder();
 	ObservableList<Recitation> recitations = dataManager.getRecitations();
 	for (Recitation recitation : recitations) {	    
-	    JsonObject taJson = Json.createObjectBuilder()
-		    .add(JSON_SECTION, recitation.getSection())
-                    .add(JSON_INSTRUCTOR, recitation.getInstructor())
-                    .add(JSON_DAY, recitation.getDay())
-                    .add(JSON_LOCATION, recitation.getLocation())
-                    .add(JSON_TA_ONE, recitation.getTAOne())
-                    .add(JSON_TA_TWO, recitation.getTATwo()).build();
-	    recitationsArrayBuilder.add(taJson);
+	    JsonObject recitationJson = Json.createObjectBuilder()
+                .add(JSON_SECTION, recitation.getSection())
+                .add(JSON_INSTRUCTOR, recitation.getInstructor())
+                .add(JSON_DAY, recitation.getDay())
+                .add(JSON_LOCATION, recitation.getLocation())
+                .add(JSON_TA_ONE, recitation.getTAOne())
+                .add(JSON_TA_TWO, recitation.getTATwo()).build();
+	    recitationsArrayBuilder.add(recitationJson);
 	}
 	JsonArray recitationsArray = recitationsArrayBuilder.build();
         
+        JsonArrayBuilder calendarArrayBuilder = Json.createArrayBuilder();
+        JsonObject calendarBoundariesJson = Json.createObjectBuilder()
+            .add(JSON_START_MONDAY, dataManager.getStartMonday())
+            .add(JSON_END_FRIDAY, dataManager.getEndFriday()).build();
+        calendarArrayBuilder.add(calendarBoundariesJson);
+        JsonArray calendarArray = calendarArrayBuilder.build();
+        
+        JsonArrayBuilder scheduleArrayBuilder = Json.createArrayBuilder();
+        JsonObject scheduleItemExtraJson = Json.createObjectBuilder()
+            .add(JSON_TIME, dataManager.getTime())
+            .add(JSON_LINK_SI, dataManager.getLink())
+            .add(JSON_CRITERIA, dataManager.getCriteria()).build();
+        scheduleArrayBuilder.add(scheduleItemExtraJson);
+        ObservableList<ScheduleItem> scheduleItems = dataManager.getScheduleItems();
+        for (ScheduleItem scheduleItem : scheduleItems) {	    
+	    JsonObject scheduleItemJson = Json.createObjectBuilder()
+                .add(JSON_TYPE, scheduleItem.getType())
+                .add(JSON_DATE, scheduleItem.getDate())
+                .add(JSON_TITLE, scheduleItem.getTitle())
+                .add(JSON_TOPIC, scheduleItem.getTopic()).build();
+	    scheduleArrayBuilder.add(scheduleItemJson);
+	}
+        JsonArray scheduleArray = scheduleArrayBuilder.build();
+        
+        JsonArrayBuilder teamsArrayBuilder = Json.createArrayBuilder();
+	ObservableList<Team> teams = dataManager.getTeams();
+	for (Team team : teams) {	    
+	    JsonObject teamJson = Json.createObjectBuilder()
+                .add(JSON_NAME_TEAM, team.getName())
+                .add(JSON_COLOR, team.getColor())
+                .add(JSON_TEXT_COLOR, team.getTextColor())
+                .add(JSON_LINK, team.getLink()).build();
+	    teamsArrayBuilder.add(teamJson);
+	}
+	JsonArray teamsArray = teamsArrayBuilder.build();
+        
+        JsonArrayBuilder studentsArrayBuilder = Json.createArrayBuilder();
+	ObservableList<Student> students = dataManager.getStudents();
+	for (Student student : students) {	    
+	    JsonObject teamJson = Json.createObjectBuilder()
+                .add(JSON_FIRST_NAME, student.getFirstName())
+                .add(JSON_LAST_NAME, student.getLastName())
+                .add(JSON_TEAM, student.getTeam())
+                .add(JSON_ROLE, student.getRole()).build();
+	    studentsArrayBuilder.add(teamJson);
+	}
+	JsonArray studentsArray = studentsArrayBuilder.build();
+        
 	// THEN PUT IT ALL TOGETHER IN A JsonObject
 	JsonObject dataManagerJSO = Json.createObjectBuilder()
-                .add(JSON_COURSE_INFO, courseInfoArray)
-                .add(JSON_SITE_TEMPLATE, siteTemplateArray)
-                .add(JSON_PAGE_STYLE, pageStyleArray)
-		.add(JSON_START_HOUR, "" + dataManager.getStartHour())
-		.add(JSON_END_HOUR, "" + dataManager.getEndHour())
-                .add(JSON_UNDERGRAD_TAS, undergradTAsArray)
-                .add(JSON_OFFICE_HOURS, timeSlotsArray)
-                .add(JSON_RECITATION, recitationsArray)
-		.build();
+            .add(JSON_COURSE_INFO, courseInfoArray)
+            .add(JSON_SITE_TEMPLATE, siteTemplateArray)
+            .add(JSON_PAGE_STYLE, pageStyleArray)
+            .add(JSON_START_HOUR, "" + dataManager.getStartHour())
+            .add(JSON_END_HOUR, "" + dataManager.getEndHour())
+            .add(JSON_UNDERGRAD_TAS, undergradTAsArray)
+            .add(JSON_OFFICE_HOURS, timeSlotsArray)
+            .add(JSON_RECITATION, recitationsArray)
+            .add(JSON_CALENDAR, calendarArray)
+            .add(JSON_SCHEDULE, scheduleArray)
+            .add(JSON_TEAMS, teamsArray)
+            .add(JSON_STUDENTS, studentsArray)
+            .build();
 	
 	// AND NOW OUTPUT IT TO A JSON FILE WITH PRETTY PRINTING
 	Map<String, Object> properties = new HashMap<>(1);
