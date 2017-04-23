@@ -74,7 +74,7 @@
 	<property name="LOAD_WORK_TITLE"		value="Select work file to load"></property>
         <property name="EXPORT_WORK_TITLE"              value="Export your work"></property>
 	<property name="WORK_FILE_EXT"			value=".json"></property>
-	<property name="WORK_FILE_EXT_DESC"		value="TA Office Hours"></property>
+	<property name="WORK_FILE_EXT_DESC"		value="Course Site"></property>
         
         <property name="DELETE_TIME_TITLE"              value="Continue to remove office hours?"></property>
         <property name="DELETE_TIME_MESSAGE"            value="Do you want to continue and remove Office Hours?"></property>
@@ -108,11 +108,8 @@
         <property name="FILENAME_COLUMN_TEXT"           value="File Name"></property>
         <property name="SCRIPT_COLUMN_TEXT"             value="Script"></property>
         <property name="BANNERSCHOOLIMG_LABEL_TEXT"    value="Banner School Image:"></property>
-        <property name="DEFAULT_BANNER_IMG_PATH"        value="SBUDarkRedShieldLogo.png"></property>
         <property name="LF_LABEL_TEXT"                 value="Left Footer Image:"></property>
-        <property name="DEFAULT_LEFT_IMG_PATH"        value="SBUWhiteShieldLogo.jpg"></property>
         <property name="RF_LABEL_TEXT"                 value="Right Footer Image:"></property>
-        <property name="DEFAULT_RIGHT_IMG_PATH"        value="CSLogo.png"></property>
         <property name="SS_LABEL_TEXT"                 value="Stylesheet:"></property>
         <property name="SS_NOTE_TEXT"                   value="NOTE: New stylesheets may be placed in work/css to be selectable"></property>
         <property name="SELECT_TEMPLATE_DIR_TEXT"       value="Select Template Directory"></property>
