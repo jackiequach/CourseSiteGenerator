@@ -117,6 +117,7 @@
         
         <property name="TAS_HEADER_TEXT"                value="Teaching Assistants"></property>
         <property name="DELETE_BUTTON_TEXT"             value="-"></property>
+        <property name="UNDERGRAD_COLUMN_TEXT"          value="Undergrad"></property>
         <property name="NAME_COLUMN_TEXT"               value="Name"></property>
         <property name="EMAIL_COLUMN_TEXT"              value="Email"></property>
         <property name="NAME_PROMPT_TEXT"               value="Name"></property>
