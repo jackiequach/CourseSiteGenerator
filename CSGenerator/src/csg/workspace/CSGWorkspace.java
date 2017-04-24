@@ -6,9 +6,6 @@
 package csg.workspace;
 
 import csg.CSGProperty;
-import static csg.CSGProperty.DEFAULT_BANNER_IMG_PATH;
-import static csg.CSGProperty.DEFAULT_LEFT_IMG_PATH;
-import static csg.CSGProperty.DEFAULT_RIGHT_IMG_PATH;
 import csg.CSGeneratorApp;
 import csg.data.CSGData;
 import csg.data.Recitation;
@@ -20,10 +17,9 @@ import csg.data.Team;
 import csg.style.CSGStyle;
 import djf.components.AppDataComponent;
 import djf.components.AppWorkspaceComponent;
-import static djf.settings.AppStartupConstants.FILE_PROTOCOL;
-import static djf.settings.AppStartupConstants.PATH_IMAGES;
 import java.util.ArrayList;
 import java.util.HashMap;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -37,10 +33,13 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -51,6 +50,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 import jtps.jTPS;
 import properties_manager.PropertiesManager;
 
@@ -141,7 +141,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     Label sitePagesHeaderLabel;
     
     TableView<SitePage> siteTable;
-    TableColumn<SitePage, String> useColumn;
+    TableColumn<SitePage, Boolean> useColumn;
     TableColumn<SitePage, String> navbarColumn;
     TableColumn<SitePage, String> fileColumn;
     TableColumn<SitePage, String> scriptColumn;
@@ -175,6 +175,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     Button deleteTAButton;
     
     TableView<TeachingAssistant> taTable;
+    TableColumn<TeachingAssistant, Boolean> undergradColumn;
     TableColumn<TeachingAssistant, String> nameColumn;
     TableColumn<TeachingAssistant, String> emailColumn;
     
@@ -472,7 +473,8 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         String sitePagesHeaderText = props.getProperty(CSGProperty.SITEPAGES_LABEL_TEXT.toString());
         sitePagesHeaderLabel = new Label(sitePagesHeaderText);
         
-        siteTable = new TableView();CSGData data = (CSGData) app.getDataComponent();
+        siteTable = new TableView();
+        CSGData data = (CSGData) app.getDataComponent();
         ObservableList<SitePage> siteData = data.getSitePages();
         siteTable.setItems(siteData);
         String useColumnText = props.getProperty(CSGProperty.USE_COLUMN_TEXT.toString());
@@ -483,6 +485,10 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         useColumn.setCellValueFactory(
                 new PropertyValueFactory<>("use")
         );
+        useColumn.setCellFactory(
+                new CheckBoxCellFactory()
+        );
+        useColumn.setEditable(true);
         siteTable.getColumns().add(useColumn);
         navbarColumn = new TableColumn(navbarColumnText);
         navbarColumn.setCellValueFactory(
@@ -499,6 +505,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
                 new PropertyValueFactory<>("script")
         );
         siteTable.getColumns().add(scriptColumn);
+        siteTable.setEditable(true);
         
         siteTemplateGridPane = new GridPane();
         siteTemplateGridPane.setVgap(5);
@@ -596,6 +603,16 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         taTable.setItems(tableData);
         String nameColumnText = props.getProperty(CSGProperty.NAME_COLUMN_TEXT.toString());
         String emailColumnText = props.getProperty(CSGProperty.EMAIL_COLUMN_TEXT.toString());
+        String undergradColumnText = props.getProperty(CSGProperty.UNDERGRAD_COLUMN_TEXT.toString());
+        undergradColumn = new TableColumn(undergradColumnText);
+        undergradColumn.setCellValueFactory(
+                new PropertyValueFactory<>("undergrad")
+        );
+        undergradColumn.setCellFactory(
+                new CheckBoxCellFactory()
+        );
+        undergradColumn.setEditable(true);
+        taTable.getColumns().add(undergradColumn);
         nameColumn = new TableColumn(nameColumnText);
         nameColumn.setCellValueFactory(
                 new PropertyValueFactory<>("name")
@@ -606,7 +623,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
                 new PropertyValueFactory<>("email")
         );
         taTable.getColumns().add(emailColumn);
-
+        taTable.setEditable(true);
         // ADD BOX FOR ADDING A TA
         String namePromptText = props.getProperty(CSGProperty.NAME_PROMPT_TEXT.toString());
         String addButtonText = props.getProperty(CSGProperty.ADD_BUTTON_TEXT.toString());
@@ -730,7 +747,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
 
         String deleteButtonText = props.getProperty(CSGProperty.DELETE_BUTTON_TEXT.toString());
         deleteRecitationButton = new Button(deleteButtonText);
-        deleteRecitationButton.prefHeightProperty().bind(recitationHeaderBox.heightProperty().multiply(1.5));
+        deleteRecitationButton.prefHeightProperty().bind(recitationHeaderLabel.heightProperty().multiply(1.5));
         recitationHeaderBox.getChildren().addAll(recitationHeaderLabel, deleteRecitationButton);
 
         recitationTable = new TableView();
@@ -1011,7 +1028,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         String teamsHeaderLabelText = props.getProperty(CSGProperty.TEAM_HEADER_TEXT.toString());
         teamsHeaderLabel = new Label(teamsHeaderLabelText);
         teamsDeleteButton = new Button(props.getProperty(CSGProperty.DELETE_BUTTON_TEXT.toString()));
-        teamsDeleteButton.prefHeightProperty().bind(teamsHeaderBox.heightProperty().multiply(1.5));
+        teamsDeleteButton.prefHeightProperty().bind(teamsHeaderLabel.heightProperty().multiply(1.5));
         teamsHeaderBox.getChildren().addAll(teamsHeaderLabel, teamsDeleteButton);
         
         teamTable = new TableView();
@@ -1070,7 +1087,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         String studentsHeaderLabelText = props.getProperty(CSGProperty.STUDENT_HEADER_TEXT.toString());
         studentsHeaderLabel = new Label(studentsHeaderLabelText);
         studentsDeleteButton = new Button(props.getProperty(CSGProperty.DELETE_BUTTON_TEXT.toString()));
-        studentsDeleteButton.prefHeightProperty().bind(studentsHeaderBox.heightProperty().multiply(1.5));
+        studentsDeleteButton.prefHeightProperty().bind(studentsHeaderLabel.heightProperty().multiply(1.5));
         studentsHeaderBox.getChildren().addAll(studentsHeaderLabel, studentsDeleteButton);
 
         studentTable = new TableView();
@@ -1910,5 +1927,13 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     
     public DatePicker getEndingFridayPicker() {
         return endingFridayDatePicker;
+    }
+    
+    public class CheckBoxCellFactory<T> implements Callback {
+        @Override
+        public TableCell call(Object param) {
+            CheckBoxTableCell<T,Boolean> checkBoxCell = new CheckBoxTableCell();
+            return checkBoxCell;
+        }
     }
 }
