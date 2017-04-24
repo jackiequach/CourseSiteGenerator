@@ -42,7 +42,7 @@ public class DeleteTrans implements jTPS_Transaction {
     public void undoTransaction() {
         CSGData data = (CSGData)app.getDataComponent();
         CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
-        data.addTA(ta.getName(),ta.getEmail());
+        data.addTA(ta.getUndergrad(),ta.getName(),ta.getEmail());
         workspace.reloadWorkspace(data);
         for (TimeSlot ts : officeHours) {
             data.addOfficeHoursReservation(ts.getDay(), ts.getTime(), ts.getName());

@@ -18,11 +18,13 @@ import csg.data.TeachingAssistant;
 public class AddTrans implements jTPS_Transaction{
 
     CSGeneratorApp app;
+    Boolean undergrad;
     String name;
     String email;
     
-    public AddTrans(CSGeneratorApp initApp, String name, String email) {
+    public AddTrans(CSGeneratorApp initApp, Boolean undergrad, String name, String email) {
         app = initApp;
+        this.undergrad = undergrad;
         this.name = name;
         this.email = email;
     }
@@ -30,13 +32,13 @@ public class AddTrans implements jTPS_Transaction{
     @Override
     public void doTransaction() {
         CSGData data = (CSGData)app.getDataComponent();
-        data.addTA(name, email);
+        data.addTA(undergrad, name, email);
     }
     
     @Override
     public void undoTransaction() {
         CSGData data = (CSGData)app.getDataComponent();
-        TeachingAssistant ta = new TeachingAssistant(name,email);
+        TeachingAssistant ta = new TeachingAssistant(undergrad,name,email);
         data.removeTA(ta);
     }
     
