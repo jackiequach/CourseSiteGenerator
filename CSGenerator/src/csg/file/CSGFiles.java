@@ -135,8 +135,8 @@ public class CSGFiles implements AppFileComponent {
 	for (SitePage sitePage : sitePages) {	    
 	    JsonObject siteJson = Json.createObjectBuilder()
                 .add(JSON_USE, sitePage.getUse())
-                .add(JSON_NAVBAR, sitePage.getTitle())
-                .add(JSON_FILE, sitePage.getFileName())
+                .add(JSON_NAVBAR, sitePage.getNavbar())
+                .add(JSON_FILE, sitePage.getFile())
                 .add(JSON_SCRIPT, sitePage.getScript()).build();
 	    sitePagesArrayBuilder.add(siteJson);
 	}

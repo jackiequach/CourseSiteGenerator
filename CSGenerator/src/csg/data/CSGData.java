@@ -401,7 +401,7 @@ public class CSGData implements AppDataComponent {
     
     public boolean containsSitePage(String testFile) {
         for(SitePage site : sitePages) {
-            if(site.getFileName().equals(testFile)) {
+            if(site.getFile().equals(testFile)) {
                 return true;
             }
         }

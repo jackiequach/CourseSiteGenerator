@@ -39,11 +39,11 @@ public class SitePage {
         this.use.set(use);
     }
     
-    public String getTitle() {
+    public String getNavbar() {
         return title.get();
     }
     
-    public String getFileName() {
+    public String getFile() {
         return fileName.get();
     }
     
