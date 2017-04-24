@@ -98,7 +98,7 @@ public class CSGController {
         // EVERYTHING IS FINE, ADD A NEW TA
         else {
             // ADD THE NEW TA TO THE DATA
-            AddTrans add = new AddTrans(app,name,email);
+            AddTrans add = new AddTrans(app,false,name,email);
             transactions.addTransaction(add);
             
             // CLEAR THE TEXT FIELDS
