@@ -13,7 +13,6 @@ import csg.data.SitePage;
 import csg.data.Student;
 import csg.data.TeachingAssistant;
 import csg.data.Team;
-import csg.workspace.CSGWorkspace;
 import djf.components.AppDataComponent;
 import djf.components.AppFileComponent;
 import java.io.FileInputStream;
@@ -23,14 +22,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javafx.collections.ObservableList;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
@@ -52,6 +47,7 @@ public class CSGFiles implements AppFileComponent {
     static final String JSON_OFFICE_HOURS = "officeHours";
     static final String JSON_DAY = "day";
     static final String JSON_TIME = "time";
+    static final String JSON_UNDERGRAD = "undergrad";
     static final String JSON_NAME = "name";
     static final String JSON_UNDERGRAD_TAS = "undergrad_tas";
     static final String JSON_EMAIL = "email";
@@ -65,8 +61,8 @@ public class CSGFiles implements AppFileComponent {
     static final String JSON_INSTRUCTOR_NAME = "instructorName";
     static final String JSON_INSTRUCTOR_HOME = "instructorHome";
     static final String JSON_EXPORT_DIR = "exportDir";
-    static final String JSON_SITE_TEMPLATE = "site_template";
     static final String JSON_TEMPLATE_DIR = "templateDir";
+    static final String JSON_SITE_PAGES = "site_pages";
     static final String JSON_USE = "use";
     static final String JSON_NAVBAR = "navbar";
     static final String JSON_FILE = "file";
@@ -77,7 +73,7 @@ public class CSGFiles implements AppFileComponent {
     static final String JSON_RIGHT_IMG = "rightImg";
     static final String JSON_STYLESHEET = "stylesheet";
     
-    static final String JSON_RECITATION = "recitations";
+    static final String JSON_RECITATIONS = "recitations";
     static final String JSON_SECTION = "section";
     static final String JSON_INSTRUCTOR = "instructor";
     static final String JSON_DAY_REC = "dayRec";
@@ -129,14 +125,10 @@ public class CSGFiles implements AppFileComponent {
             .add(JSON_TITLE_CI, dataManager.getTitle())
             .add(JSON_INSTRUCTOR_NAME, dataManager.getInstructorName())
             .add(JSON_INSTRUCTOR_HOME, dataManager.getInstructorHome())
-            .add(JSON_EXPORT_DIR, dataManager.getExportDirPath()).build();
+            .add(JSON_EXPORT_DIR, dataManager.getExportDirPath())
+            .add(JSON_TEMPLATE_DIR, dataManager.getTemplateDirPath()).build();
         courseInfoArrayBuilder.add(courseInfo);
         JsonArray courseInfoArray = courseInfoArrayBuilder.build();
-        
-        JsonArrayBuilder siteTemplateArrayBuilder = Json.createArrayBuilder();
-        JsonObject siteTemplate = Json.createObjectBuilder()
-            .add(JSON_TEMPLATE_DIR, dataManager.getTemplateDirPath()).build();
-        siteTemplateArrayBuilder.add(siteTemplate);
         
         JsonArrayBuilder sitePagesArrayBuilder = Json.createArrayBuilder();
         ObservableList<SitePage> sitePages = dataManager.getSitePages();
@@ -148,8 +140,7 @@ public class CSGFiles implements AppFileComponent {
                 .add(JSON_SCRIPT, sitePage.getScript()).build();
 	    sitePagesArrayBuilder.add(siteJson);
 	}
-        siteTemplateArrayBuilder.add(sitePagesArrayBuilder);
-        JsonArray siteTemplateArray = siteTemplateArrayBuilder.build();
+        JsonArray sitePagesArray = sitePagesArrayBuilder.build();
         
         JsonArrayBuilder pageStyleArrayBuilder = Json.createArrayBuilder();
         JsonObject pageStyle = Json.createObjectBuilder()
@@ -165,6 +156,7 @@ public class CSGFiles implements AppFileComponent {
 	ObservableList<TeachingAssistant> tas = dataManager.getTeachingAssistants();
 	for (TeachingAssistant ta : tas) {	    
 	    JsonObject taJson = Json.createObjectBuilder()
+                .add(JSON_UNDERGRAD, ta.isUndergrad())
                 .add(JSON_NAME, ta.getName())
                 .add(JSON_EMAIL, ta.getEmail()).build();
 	    taArrayBuilder.add(taJson);
@@ -205,17 +197,15 @@ public class CSGFiles implements AppFileComponent {
         JsonArray calendarArray = calendarArrayBuilder.build();
         
         JsonArrayBuilder scheduleArrayBuilder = Json.createArrayBuilder();
-        JsonObject scheduleItemExtraJson = Json.createObjectBuilder()
-            .add(JSON_TIME, dataManager.getTime())
-            .add(JSON_LINK_SI, dataManager.getLink())
-            .add(JSON_CRITERIA, dataManager.getCriteria()).build();
-        scheduleArrayBuilder.add(scheduleItemExtraJson);
         ObservableList<ScheduleItem> scheduleItems = dataManager.getScheduleItems();
         for (ScheduleItem scheduleItem : scheduleItems) {	    
 	    JsonObject scheduleItemJson = Json.createObjectBuilder()
                 .add(JSON_TYPE, scheduleItem.getType())
                 .add(JSON_DATE, scheduleItem.getDate())
+                .add(JSON_TIME, dataManager.getTime())
                 .add(JSON_TITLE, scheduleItem.getTitle())
+                .add(JSON_LINK_SI, dataManager.getLink())
+                .add(JSON_CRITERIA, dataManager.getCriteria())
                 .add(JSON_TOPIC, scheduleItem.getTopic()).build();
 	    scheduleArrayBuilder.add(scheduleItemJson);
 	}
@@ -248,13 +238,13 @@ public class CSGFiles implements AppFileComponent {
 	// THEN PUT IT ALL TOGETHER IN A JsonObject
 	JsonObject dataManagerJSO = Json.createObjectBuilder()
             .add(JSON_COURSE_INFO, courseInfoArray)
-            .add(JSON_SITE_TEMPLATE, siteTemplateArray)
+            .add(JSON_SITE_PAGES, sitePagesArray)
             .add(JSON_PAGE_STYLE, pageStyleArray)
             .add(JSON_START_HOUR, "" + dataManager.getStartHour())
             .add(JSON_END_HOUR, "" + dataManager.getEndHour())
             .add(JSON_UNDERGRAD_TAS, undergradTAsArray)
             .add(JSON_OFFICE_HOURS, timeSlotsArray)
-            .add(JSON_RECITATION, recitationsArray)
+            .add(JSON_RECITATIONS, recitationsArray)
             .add(JSON_CALENDAR, calendarArray)
             .add(JSON_SCHEDULE, scheduleArray)
             .add(JSON_TEAMS, teamsArray)
@@ -286,7 +276,53 @@ public class CSGFiles implements AppFileComponent {
 
 	// LOAD THE JSON FILE WITH ALL THE DATA
 	JsonObject json = loadJSONFile(filePath);
-
+        
+        JsonArray jsonCourseInfoArray = json.getJsonArray(JSON_COURSE_INFO);
+        for(int i = 0; i < jsonCourseInfoArray.size(); i++) {
+            JsonObject jsonCourseInfo = jsonCourseInfoArray.getJsonObject(i);
+            String subject = jsonCourseInfo.getString(JSON_SUBJECT);
+            dataManager.setSubject(subject);
+            String number = jsonCourseInfo.getString(JSON_NUMBER);
+            dataManager.setNumber(number);
+            String semester = jsonCourseInfo.getString(JSON_SEMESTER);
+            dataManager.setSemester(semester);
+            String year = jsonCourseInfo.getString(JSON_YEAR);
+            dataManager.setYear(year);
+            String title = jsonCourseInfo.getString(JSON_TITLE_CI);
+            dataManager.setTitle(title);
+            String instructorName = jsonCourseInfo.getString(JSON_INSTRUCTOR_NAME);
+            dataManager.setInstructorName(instructorName);
+            String instructorHome = jsonCourseInfo.getString(JSON_INSTRUCTOR_HOME);
+            dataManager.setInstructorHome(instructorHome);
+            String exportDirPath = jsonCourseInfo.getString(JSON_EXPORT_DIR);
+            dataManager.setExportDirPath(exportDirPath);
+            String templateDirPath = jsonCourseInfo.getString(JSON_TEMPLATE_DIR);
+            dataManager.setTemplateDirPath(templateDirPath);
+        }
+        
+        JsonArray jsonSitePagesArray = json.getJsonArray(JSON_SITE_PAGES);
+        for (int i = 0; i < jsonSitePagesArray.size(); i++) {
+            JsonObject jsonSitePage = jsonSitePagesArray.getJsonObject(i);
+            Boolean use = jsonSitePage.getBoolean(JSON_USE);
+            String navbarTitle = jsonSitePage.getString(JSON_NAVBAR);
+            String fileName = jsonSitePage.getString(JSON_FILE);
+            String script = jsonSitePage.getString(JSON_SCRIPT);
+            dataManager.addSitePage(use, navbarTitle, fileName, script);
+        }
+        
+        JsonArray jsonPageStyleArray = json.getJsonArray(JSON_PAGE_STYLE);
+        for(int i = 0; i < jsonPageStyleArray.size(); i++) {
+            JsonObject jsonPageStyle = jsonPageStyleArray.getJsonObject(i);
+            String bannerImgPath = jsonPageStyle.getString(JSON_BANNER_IMG);
+            dataManager.setBannerImgPath(bannerImgPath);
+            String leftFooterImgPath = jsonPageStyle.getString(JSON_LEFT_IMG);
+            dataManager.setLeftFooterImgPath(leftFooterImgPath);
+            String rightFooterImgPath = jsonPageStyle.getString(JSON_RIGHT_IMG);
+            dataManager.setRightFooterImgPath(rightFooterImgPath);
+            String stylesheet = jsonPageStyle.getString(JSON_STYLESHEET);
+            dataManager.setStylesheet(stylesheet);
+        }
+        
 	// LOAD THE START AND END HOURS
 	String startHour = json.getString(JSON_START_HOUR);
         String endHour = json.getString(JSON_END_HOUR);
@@ -299,9 +335,10 @@ public class CSGFiles implements AppFileComponent {
         JsonArray jsonTAArray = json.getJsonArray(JSON_UNDERGRAD_TAS);
         for (int i = 0; i < jsonTAArray.size(); i++) {
             JsonObject jsonTA = jsonTAArray.getJsonObject(i);
+            Boolean undergrad = jsonTA.getBoolean(JSON_UNDERGRAD);
             String name = jsonTA.getString(JSON_NAME);
             String email = jsonTA.getString(JSON_EMAIL);
-            dataManager.addTA(name, email);
+            dataManager.addTA(undergrad, name, email);
         }
 
         // AND THEN ALL THE OFFICE HOURS
@@ -312,6 +349,63 @@ public class CSGFiles implements AppFileComponent {
             String time = jsonOfficeHours.getString(JSON_TIME);
             String name = jsonOfficeHours.getString(JSON_NAME);
             dataManager.addOfficeHoursReservation(day, time, name);
+        }
+        
+        JsonArray jsonRecitationArray = json.getJsonArray(JSON_RECITATIONS);
+        for (int i = 0; i < jsonRecitationArray.size(); i++) {
+            JsonObject jsonRecitation = jsonRecitationArray.getJsonObject(i);
+            String section = jsonRecitation.getString(JSON_SECTION);
+            String instructor = jsonRecitation.getString(JSON_INSTRUCTOR);
+            String day = jsonRecitation.getString(JSON_DAY);
+            String location = jsonRecitation.getString(JSON_LOCATION);
+            String taOne = jsonRecitation.getString(JSON_TA_ONE);
+            String taTwo = jsonRecitation.getString(JSON_TA_TWO);
+            dataManager.addRecitation(section, instructor, day, location, taOne, taTwo);
+        }
+        
+        JsonArray jsonCalendarArray = json.getJsonArray(JSON_CALENDAR);
+        for (int i = 0; i < jsonCalendarArray.size(); i++) {
+            JsonObject jsonCalendar = jsonCalendarArray.getJsonObject(i);
+            String startMonday = jsonCalendar.getString(JSON_START_MONDAY);
+            String endFriday = jsonCalendar.getString(JSON_END_FRIDAY);
+            dataManager.setStartMonday(startMonday);
+            dataManager.setEndFriday(endFriday);
+        }
+        
+        JsonArray jsonScheduleItemArray = json.getJsonArray(JSON_SCHEDULE);
+        for (int i = 0; i < jsonScheduleItemArray.size(); i++) {
+            JsonObject jsonScheduleItem = jsonScheduleItemArray.getJsonObject(i);
+            String type = jsonScheduleItem.getString(JSON_TYPE);
+            String date = jsonScheduleItem.getString(JSON_DATE);
+            String time = jsonScheduleItem.getString(JSON_TIME_SI);
+            dataManager.setTime(time);
+            String title = jsonScheduleItem.getString(JSON_TITLE);
+            String topic = jsonScheduleItem.getString(JSON_TOPIC);
+            String link = jsonScheduleItem.getString(JSON_LINK_SI);
+            dataManager.setLink(link);
+            String criteria = jsonScheduleItem.getString(JSON_CRITERIA);
+            dataManager.setCriteria(criteria);
+            dataManager.addScheduleItem(type, date, title, topic);
+        }
+        
+        JsonArray jsonTeamsArray = json.getJsonArray(JSON_TEAMS);
+        for (int i = 0; i < jsonTeamsArray.size(); i++) {
+            JsonObject jsonTeam = jsonTeamsArray.getJsonObject(i);
+            String name = jsonTeam.getString(JSON_NAME_TEAM);
+            String color = jsonTeam.getString(JSON_COLOR);
+            String textColor = jsonTeam.getString(JSON_TEXT_COLOR);
+            String link = jsonTeam.getString(JSON_LINK);
+            dataManager.addTeam(name, color, textColor, link);
+        }
+        
+        JsonArray jsonStudentsArray = json.getJsonArray(JSON_STUDENTS);
+        for (int i = 0; i < jsonStudentsArray.size(); i++) {
+            JsonObject jsonStudent = jsonStudentsArray.getJsonObject(i);
+            String firstName = jsonStudent.getString(JSON_FIRST_NAME);
+            String lastName = jsonStudent.getString(JSON_LAST_NAME);
+            String team = jsonStudent.getString(JSON_TEAM);
+            String role = jsonStudent.getString(JSON_ROLE);
+            dataManager.addStudent(firstName, lastName, team, role);
         }
     }
 
