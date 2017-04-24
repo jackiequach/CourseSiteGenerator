@@ -479,9 +479,9 @@ public class CSGData implements AppDataComponent {
         }
     }
 
-    public void addTA(String initName, String initEmail) {
+    public void addTA(Boolean initUndergrad, String initName, String initEmail) {
         // MAKE THE TA
-        TeachingAssistant ta = new TeachingAssistant(initName, initEmail);
+        TeachingAssistant ta = new TeachingAssistant(initUndergrad, initName, initEmail);
 
         // ADD THE TA
         if (!containsTA(initName)) {
