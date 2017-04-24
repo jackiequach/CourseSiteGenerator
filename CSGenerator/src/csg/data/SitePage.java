@@ -5,6 +5,8 @@
  */
 package csg.data;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -13,20 +15,28 @@ import javafx.beans.property.StringProperty;
  * @author Jackie
  */
 public class SitePage {
-    private final Boolean use;
+    private final BooleanProperty use;
     private final StringProperty title;
     private final StringProperty fileName;
     private final StringProperty script;
     
     public SitePage(Boolean initUse, String initTitle, String initFile, String initScript) {
-        use = initUse;
+        use = new SimpleBooleanProperty(initUse);
         title = new SimpleStringProperty(initTitle);
         fileName = new SimpleStringProperty(initFile);
         script = new SimpleStringProperty(initScript);
     }
     
-    public Boolean getUse() {
+    public BooleanProperty useProperty() {
         return use;
+    }
+    
+    public Boolean getUse() {
+        return this.use.get();
+    }
+    
+    public void setUse(Boolean use) {
+        this.use.set(use);
     }
     
     public String getTitle() {
