@@ -772,7 +772,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         recitationTable.getColumns().add(instructorColumn);
         dayColumn = new TableColumn(dayColumnText);
         dayColumn.setCellValueFactory(
-                new PropertyValueFactory<>("dayRec")
+                new PropertyValueFactory<>("day")
         );
         recitationTable.getColumns().add(dayColumn);
         locationColumn = new TableColumn(locationColumnText);
@@ -1042,7 +1042,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         String linkColumnText = props.getProperty(CSGProperty.LINK_COLUMN_TEXT.toString());
         nameTeamColumn = new TableColumn(nameColumnText);
         nameTeamColumn.setCellValueFactory(
-                new PropertyValueFactory<>("nameTeam")
+                new PropertyValueFactory<>("name")
         );
         teamTable.getColumns().add(nameTeamColumn);
         colorColumn = new TableColumn(colorColumnText);
