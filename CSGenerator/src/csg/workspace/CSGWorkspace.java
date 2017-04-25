@@ -17,6 +17,8 @@ import csg.data.Team;
 import csg.style.CSGStyle;
 import djf.components.AppDataComponent;
 import djf.components.AppWorkspaceComponent;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.beans.value.ObservableValue;
@@ -402,43 +404,52 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         subjectLabel = new Label(subjectLabelText);
         subjectComboBox = new ComboBox();
         subjectComboBox.setItems(data.getSubjects());
+        subjectComboBox.setValue(data.getSubject());
         
         String numberLabelText = props.getProperty(CSGProperty.NUMBER_LABEL_TEXT.toString());
         numberLabel = new Label(numberLabelText);
         numberComboBox = new ComboBox();
         numberComboBox.setItems(data.getNumbers());
+        numberComboBox.setValue(data.getNumber());
         
         String semesterLabelText = props.getProperty(CSGProperty.SEMESTER_LABEL_TEXT.toString());
         semesterLabel = new Label(semesterLabelText);
         semesterComboBox = new ComboBox();
         semesterComboBox.setItems(data.getSemesters());
+        semesterComboBox.setValue(data.getSemester());
         
         String yearLabelText = props.getProperty(CSGProperty.YEAR_LABEL_TEXT.toString());
         yearLabel = new Label(yearLabelText);
         yearComboBox = new ComboBox();
         yearComboBox.setItems(data.getYears());
+        yearComboBox.setValue(data.getYear());
         
         String titleLabelText = props.getProperty(CSGProperty.TITLE_LABEL_TEXT.toString());
         titleLabel = new Label(titleLabelText);
         titleTextField = new TextField();
         String titlePromptText = props.getProperty(CSGProperty.TITLE_PROMPT_TEXT.toString());
         titleTextField.setPromptText(titlePromptText);
+        titleTextField.setText(data.getTitle());
         
         String instructorNameLabelText = props.getProperty(CSGProperty.INSTRUCTORNAME_LABEL_TEXT.toString());
         instructorNameLabel = new Label(instructorNameLabelText);
         instructorNameTextField = new TextField();
         String instructorNamePromptText = props.getProperty(CSGProperty.INSTRUCTORNAME_PROMPT_TEXT.toString());
         instructorNameTextField.setPromptText(instructorNamePromptText);
+        instructorNameTextField.setText(data.getInstructorName());
+        
         
         String instructorHomeLabelText = props.getProperty(CSGProperty.INSTRUCTORHOME_LABEL_TEXT.toString());
         instructorHomeLabel = new Label(instructorHomeLabelText);
         instructorHomeTextField = new TextField();
         String instructorHomePromptText = props.getProperty(CSGProperty.INSTRUCTORHOME_PROMPT_TEXT.toString());
         instructorHomeTextField.setPromptText(instructorHomePromptText);
+        instructorHomeTextField.setText(data.getInstructorHome());
         
         String exportLabelText = props.getProperty(CSGProperty.EXPORTDIR_LABEL_TEXT.toString());
         exportDirLabel = new Label(exportLabelText);
         exportDirPathLabel = new Label();
+        exportDirPathLabel.setText(data.getExportDirPath());
         changeExportDirButton = new Button(props.getProperty(CSGProperty.CHANGE_BUTTON_TEXT.toString()));
         
         courseInfoGridPane = new GridPane();
@@ -467,6 +478,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         siteTemplateHeaderBox = new HBox();
         String siteTemplateHeaderText = props.getProperty(CSGProperty.SITETEMPLATE_HEADER_TEXT.toString());
         siteTemplateHeaderLabel = new Label(siteTemplateHeaderText);
+        siteTemplateHeaderLabel.setText(data.getTemplateDirPath());
         siteTemplateHeaderBox.getChildren().add(siteTemplateHeaderLabel);
         
         String siteTemplateInfoText = props.getProperty(CSGProperty.SITETEMPLATE_LABEL_TEXT.toString());
@@ -872,6 +884,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     
     private Pane generateScheduleDataTab() {
         PropertiesManager props = PropertiesManager.getPropertiesManager();
+        CSGData data = (CSGData) app.getDataComponent();
         scheduleHeaderBox = new HBox();
         String scheduleHeaderLabelText = props.getProperty(CSGProperty.SCHEDULE_HEADER_TEXT.toString());
         scheduleHeaderLabel = new Label(scheduleHeaderLabelText);
@@ -897,7 +910,6 @@ public class CSGWorkspace extends AppWorkspaceComponent {
 
         scheduleItemTable = new TableView();
         scheduleItemTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        CSGData data = (CSGData) app.getDataComponent();
         ObservableList<ScheduleItem> tableData = data.getScheduleItems();
         scheduleItemTable.setItems(tableData);
         String typeColumnText = props.getProperty(CSGProperty.TYPE_COLUMN_TEXT.toString());
