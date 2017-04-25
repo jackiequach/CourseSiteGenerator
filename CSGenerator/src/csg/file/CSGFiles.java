@@ -13,8 +13,10 @@ import csg.data.SitePage;
 import csg.data.Student;
 import csg.data.TeachingAssistant;
 import csg.data.Team;
+import csg.workspace.CSGWorkspace;
 import djf.components.AppDataComponent;
 import djf.components.AppFileComponent;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -28,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Label;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
@@ -36,6 +39,7 @@ import javax.json.JsonReader;
 import javax.json.JsonWriter;
 import javax.json.JsonWriterFactory;
 import javax.json.stream.JsonGenerator;
+import org.apache.commons.io.FileUtils;
 
 /**
  *
@@ -540,8 +544,17 @@ public class CSGFiles implements AppFileComponent {
     }
 
     @Override
-    public void exportData(AppDataComponent data, String filePath) throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void exportData(AppDataComponent data) throws IOException {
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        Label exportDirPathLabel = workspace.getExportDirPathLabel();
+        String exportDirPath = exportDirPathLabel.getText();
+        Label templateDirPathLabel = workspace.getSelectTemplateDirPathLabel();
+        String templateDirPath = templateDirPathLabel.getText();
+        File srcDir = new File(templateDirPath);
+        File destDir = new File(exportDirPath);
+        FileUtils.copyDirectory(srcDir,destDir);
+        
+        saveData(data,destDir+"\\js\\overall.json");
     }
 
     @Override
