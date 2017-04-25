@@ -35,4 +35,9 @@ public class CSGeneratorApp extends AppTemplate {
         styleComponent = new CSGStyle(this);
     }
     
+    public void buildAppComponentsHookTest() {
+        dataComponent = new CSGData(this);
+        fileComponent = new CSGFiles(this);
+    }
+    
 }
