@@ -22,6 +22,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -202,11 +204,11 @@ public class CSGFiles implements AppFileComponent {
 	    JsonObject scheduleItemJson = Json.createObjectBuilder()
                 .add(JSON_TYPE, scheduleItem.getType())
                 .add(JSON_DATE, scheduleItem.getDate())
-                .add(JSON_TIME, dataManager.getTime())
+                .add(JSON_TIME, scheduleItem.getTime())
                 .add(JSON_TITLE, scheduleItem.getTitle())
-                .add(JSON_LINK_SI, dataManager.getLink())
-                .add(JSON_CRITERIA, dataManager.getCriteria())
-                .add(JSON_TOPIC, scheduleItem.getTopic()).build();
+                .add(JSON_TOPIC, scheduleItem.getTopic())
+                .add(JSON_LINK_SI, scheduleItem.getLink())
+                .add(JSON_CRITERIA, scheduleItem.getCriteria()).build();
 	    scheduleArrayBuilder.add(scheduleItemJson);
 	}
         JsonArray scheduleArray = scheduleArrayBuilder.build();
@@ -368,8 +370,8 @@ public class CSGFiles implements AppFileComponent {
             JsonObject jsonCalendar = jsonCalendarArray.getJsonObject(i);
             String startMonday = jsonCalendar.getString(JSON_START_MONDAY);
             String endFriday = jsonCalendar.getString(JSON_END_FRIDAY);
-            dataManager.setStartMonday(startMonday);
-            dataManager.setEndFriday(endFriday);
+            dataManager.setStartMonday(LocalDate.parse(startMonday));
+            dataManager.setEndFriday(LocalDate.parse(endFriday));
         }
         
         JsonArray jsonScheduleItemArray = json.getJsonArray(JSON_SCHEDULE);
@@ -378,14 +380,142 @@ public class CSGFiles implements AppFileComponent {
             String type = jsonScheduleItem.getString(JSON_TYPE);
             String date = jsonScheduleItem.getString(JSON_DATE);
             String time = jsonScheduleItem.getString(JSON_TIME_SI);
-            dataManager.setTime(time);
             String title = jsonScheduleItem.getString(JSON_TITLE);
             String topic = jsonScheduleItem.getString(JSON_TOPIC);
             String link = jsonScheduleItem.getString(JSON_LINK_SI);
-            dataManager.setLink(link);
             String criteria = jsonScheduleItem.getString(JSON_CRITERIA);
-            dataManager.setCriteria(criteria);
-            dataManager.addScheduleItem(type, date, title, topic);
+            dataManager.addScheduleItem(type, date, time, title, topic, link, criteria);
+        }
+        
+        JsonArray jsonTeamsArray = json.getJsonArray(JSON_TEAMS);
+        for (int i = 0; i < jsonTeamsArray.size(); i++) {
+            JsonObject jsonTeam = jsonTeamsArray.getJsonObject(i);
+            String name = jsonTeam.getString(JSON_NAME_TEAM);
+            String color = jsonTeam.getString(JSON_COLOR);
+            String textColor = jsonTeam.getString(JSON_TEXT_COLOR);
+            String link = jsonTeam.getString(JSON_LINK);
+            dataManager.addTeam(name, color, textColor, link);
+        }
+        
+        JsonArray jsonStudentsArray = json.getJsonArray(JSON_STUDENTS);
+        for (int i = 0; i < jsonStudentsArray.size(); i++) {
+            JsonObject jsonStudent = jsonStudentsArray.getJsonObject(i);
+            String firstName = jsonStudent.getString(JSON_FIRST_NAME);
+            String lastName = jsonStudent.getString(JSON_LAST_NAME);
+            String team = jsonStudent.getString(JSON_TEAM);
+            String role = jsonStudent.getString(JSON_ROLE);
+            dataManager.addStudent(firstName, lastName, team, role);
+        }
+    }
+    
+    public void testLoadData(AppDataComponent data, String filePath) throws IOException {
+        CSGData dataManager = (CSGData)data;
+
+	// LOAD THE JSON FILE WITH ALL THE DATA
+	JsonObject json = loadJSONFile(filePath);
+        
+        JsonArray jsonCourseInfoArray = json.getJsonArray(JSON_COURSE_INFO);
+        for(int i = 0; i < jsonCourseInfoArray.size(); i++) {
+            JsonObject jsonCourseInfo = jsonCourseInfoArray.getJsonObject(i);
+            String subject = jsonCourseInfo.getString(JSON_SUBJECT);
+            dataManager.setSubject(subject);
+            String number = jsonCourseInfo.getString(JSON_NUMBER);
+            dataManager.setNumber(number);
+            String semester = jsonCourseInfo.getString(JSON_SEMESTER);
+            dataManager.setSemester(semester);
+            String year = jsonCourseInfo.getString(JSON_YEAR);
+            dataManager.setYear(year);
+            String title = jsonCourseInfo.getString(JSON_TITLE_CI);
+            dataManager.setTitle(title);
+            String instructorName = jsonCourseInfo.getString(JSON_INSTRUCTOR_NAME);
+            dataManager.setInstructorName(instructorName);
+            String instructorHome = jsonCourseInfo.getString(JSON_INSTRUCTOR_HOME);
+            dataManager.setInstructorHome(instructorHome);
+            String exportDirPath = jsonCourseInfo.getString(JSON_EXPORT_DIR);
+            dataManager.setExportDirPath(exportDirPath);
+            String templateDirPath = jsonCourseInfo.getString(JSON_TEMPLATE_DIR);
+            dataManager.setTemplateDirPath(templateDirPath);
+        }
+        
+        JsonArray jsonSitePagesArray = json.getJsonArray(JSON_SITE_PAGES);
+        for (int i = 0; i < jsonSitePagesArray.size(); i++) {
+            JsonObject jsonSitePage = jsonSitePagesArray.getJsonObject(i);
+            Boolean use = jsonSitePage.getBoolean(JSON_USE);
+            String navbarTitle = jsonSitePage.getString(JSON_NAVBAR);
+            String fileName = jsonSitePage.getString(JSON_FILE);
+            String script = jsonSitePage.getString(JSON_SCRIPT);
+            dataManager.addSitePage(use, navbarTitle, fileName, script);
+        }
+        
+        JsonArray jsonPageStyleArray = json.getJsonArray(JSON_PAGE_STYLE);
+        for(int i = 0; i < jsonPageStyleArray.size(); i++) {
+            JsonObject jsonPageStyle = jsonPageStyleArray.getJsonObject(i);
+            String bannerImgPath = jsonPageStyle.getString(JSON_BANNER_IMG);
+            dataManager.setBannerImgPath(bannerImgPath);
+            String leftFooterImgPath = jsonPageStyle.getString(JSON_LEFT_IMG);
+            dataManager.setLeftFooterImgPath(leftFooterImgPath);
+            String rightFooterImgPath = jsonPageStyle.getString(JSON_RIGHT_IMG);
+            dataManager.setRightFooterImgPath(rightFooterImgPath);
+            String stylesheet = jsonPageStyle.getString(JSON_STYLESHEET);
+            dataManager.setStylesheet(stylesheet);
+        }
+        
+	// LOAD THE START AND END HOURS
+	String startHour = json.getString(JSON_START_HOUR);
+        String endHour = json.getString(JSON_END_HOUR);
+
+        // NOW LOAD ALL THE UNDERGRAD TAs
+        JsonArray jsonTAArray = json.getJsonArray(JSON_UNDERGRAD_TAS);
+        for (int i = 0; i < jsonTAArray.size(); i++) {
+            JsonObject jsonTA = jsonTAArray.getJsonObject(i);
+            Boolean undergrad = jsonTA.getBoolean(JSON_UNDERGRAD);
+            String name = jsonTA.getString(JSON_NAME);
+            String email = jsonTA.getString(JSON_EMAIL);
+            dataManager.addTA(undergrad, name, email);
+        }
+
+        // AND THEN ALL THE OFFICE HOURS
+        JsonArray jsonOfficeHoursArray = json.getJsonArray(JSON_OFFICE_HOURS);
+        for (int i = 0; i < jsonOfficeHoursArray.size(); i++) {
+            JsonObject jsonOfficeHours = jsonOfficeHoursArray.getJsonObject(i);
+            String day = jsonOfficeHours.getString(JSON_DAY);
+            String time = jsonOfficeHours.getString(JSON_TIME);
+            String name = jsonOfficeHours.getString(JSON_NAME);
+            dataManager.addOfficeHoursReservation(day, time, name);
+        }
+        
+        JsonArray jsonRecitationArray = json.getJsonArray(JSON_RECITATIONS);
+        for (int i = 0; i < jsonRecitationArray.size(); i++) {
+            JsonObject jsonRecitation = jsonRecitationArray.getJsonObject(i);
+            String section = jsonRecitation.getString(JSON_SECTION);
+            String instructor = jsonRecitation.getString(JSON_INSTRUCTOR);
+            String day = jsonRecitation.getString(JSON_DAY);
+            String location = jsonRecitation.getString(JSON_LOCATION);
+            String taOne = jsonRecitation.getString(JSON_TA_ONE);
+            String taTwo = jsonRecitation.getString(JSON_TA_TWO);
+            dataManager.addRecitation(section, instructor, day, location, taOne, taTwo);
+        }
+        
+        JsonArray jsonCalendarArray = json.getJsonArray(JSON_CALENDAR);
+        for (int i = 0; i < jsonCalendarArray.size(); i++) {
+            JsonObject jsonCalendar = jsonCalendarArray.getJsonObject(i);
+            String startMonday = jsonCalendar.getString(JSON_START_MONDAY);
+            String endFriday = jsonCalendar.getString(JSON_END_FRIDAY);
+            dataManager.setStartMonday(LocalDate.parse(startMonday));
+            dataManager.setEndFriday(LocalDate.parse(endFriday));
+        }
+        
+        JsonArray jsonScheduleItemArray = json.getJsonArray(JSON_SCHEDULE);
+        for (int i = 0; i < jsonScheduleItemArray.size(); i++) {
+            JsonObject jsonScheduleItem = jsonScheduleItemArray.getJsonObject(i);
+            String type = jsonScheduleItem.getString(JSON_TYPE);
+            String date = jsonScheduleItem.getString(JSON_DATE);
+            String time = jsonScheduleItem.getString(JSON_TIME_SI);
+            String title = jsonScheduleItem.getString(JSON_TITLE);
+            String topic = jsonScheduleItem.getString(JSON_TOPIC);
+            String link = jsonScheduleItem.getString(JSON_LINK_SI);
+            String criteria = jsonScheduleItem.getString(JSON_CRITERIA);
+            dataManager.addScheduleItem(type, date, time, title, topic, link, criteria);
         }
         
         JsonArray jsonTeamsArray = json.getJsonArray(JSON_TEAMS);
