@@ -49,7 +49,7 @@ public class TestSave extends Application{
             data.setInstructorName("Richard Mckenna");
             data.setInstructorHome("http://http://www3.cs.stonybrook.edu/~richard/");
             data.setExportDirPath("..\\Courses\\CSE219\\Fall2017\\public");
-            data.setTemplateDirPath(".\\templates\\CSE219");
+            data.setTemplateDirPath(".\\templates\\base");
             data.setStylesheet("sea_wolf.css");
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/d/yyyy");
             data.setStartMonday(LocalDate.parse("04/22/2012", formatter));
