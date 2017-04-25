@@ -218,13 +218,7 @@ public class AppFileController {
     public void handleExportRequest() {
         PropertiesManager props = PropertiesManager.getPropertiesManager();
         try {
-            DirectoryChooser dc = new DirectoryChooser();
-            dc.setInitialDirectory(new File(PATH_TEST));
-            dc.setTitle(props.getProperty(EXPORT_WORK_TITLE));
-            File directory = dc.showDialog(app.getGUI().getWindow());
-            if(directory != null) {
-                exportWork(directory);
-            }
+              exportWork();
         } catch (IOException ioe) {
             AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
 	    dialog.show(props.getProperty(EXPORT_ERROR_TITLE), props.getProperty(EXPORT_ERROR_MESSAGE));
@@ -250,9 +244,9 @@ public class AppFileController {
 	app.getGUI().updateToolbarControls(saved);	
     }
     
-    private void exportWork(File directory) throws IOException {
+    private void exportWork() throws IOException {
         // EXPORT IT TO A FOLDER
-	app.getFileComponent().exportData(app.getDataComponent(), directory.getPath());
+	app.getFileComponent().exportData(app.getDataComponent());
         
         AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
 	PropertiesManager props = PropertiesManager.getPropertiesManager();
