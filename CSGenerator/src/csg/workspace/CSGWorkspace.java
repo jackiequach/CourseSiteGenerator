@@ -150,17 +150,17 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     Label pageStyleHeaderLabel;
     
     Label bannerSchoolImgLabel;
-    String bannerImgPath;
+    Label bannerImgPath;
     Image bannerSchoolImg;
     Button changeBannerButton;
     
     Label leftFooterImgLabel;
-    String leftFooterImgPath;
+    Label leftFooterImgPath;
     Image leftFooterImg;
     Button changeLeftFooterButton;
     
     Label rightFooterImgLabel;
-    String rightFooterImgPath;
+    Label rightFooterImgPath;
     Image rightFooterImg;
     Button changeRightFooterButton;
     
@@ -392,6 +392,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     
     private Pane generateCourseDetailsTab() {
         PropertiesManager props = PropertiesManager.getPropertiesManager();
+        CSGData data = (CSGData) app.getDataComponent();
         courseInfoHeaderBox = new HBox();
         String courseInfoHeaderText = props.getProperty(CSGProperty.COURSEINFO_HEADER_TEXT.toString());
         ciHeaderLabel = new Label(courseInfoHeaderText);
@@ -400,18 +401,22 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         String subjectLabelText = props.getProperty(CSGProperty.SUBJECT_LABEL_TEXT.toString());
         subjectLabel = new Label(subjectLabelText);
         subjectComboBox = new ComboBox();
+        subjectComboBox.setItems(data.getSubjects());
         
         String numberLabelText = props.getProperty(CSGProperty.NUMBER_LABEL_TEXT.toString());
         numberLabel = new Label(numberLabelText);
         numberComboBox = new ComboBox();
+        numberComboBox.setItems(data.getNumbers());
         
         String semesterLabelText = props.getProperty(CSGProperty.SEMESTER_LABEL_TEXT.toString());
         semesterLabel = new Label(semesterLabelText);
         semesterComboBox = new ComboBox();
+        semesterComboBox.setItems(data.getSemesters());
         
         String yearLabelText = props.getProperty(CSGProperty.YEAR_LABEL_TEXT.toString());
         yearLabel = new Label(yearLabelText);
         yearComboBox = new ComboBox();
+        yearComboBox.setItems(data.getYears());
         
         String titleLabelText = props.getProperty(CSGProperty.TITLE_LABEL_TEXT.toString());
         titleLabel = new Label(titleLabelText);
@@ -474,7 +479,6 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         sitePagesHeaderLabel = new Label(sitePagesHeaderText);
         
         siteTable = new TableView();
-        CSGData data = (CSGData) app.getDataComponent();
         ObservableList<SitePage> siteData = data.getSitePages();
         siteTable.setItems(siteData);
         String useColumnText = props.getProperty(CSGProperty.USE_COLUMN_TEXT.toString());
@@ -525,20 +529,20 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         
         String bannerSchoolImgText = props.getProperty(CSGProperty.BANNERSCHOOLIMG_LABEL_TEXT.toString());
         bannerSchoolImgLabel = new Label(bannerSchoolImgText);
-        bannerImgPath = data.getBannerImgPath();
-        bannerSchoolImg = new Image(bannerImgPath);
+        bannerImgPath = new Label(data.getBannerImgPath());
+        bannerSchoolImg = new Image(bannerImgPath.getText());
         changeBannerButton = new Button(props.getProperty(CSGProperty.CHANGE_BUTTON_TEXT.toString()));
         
         String leftFooterImgText = props.getProperty(CSGProperty.LF_LABEL_TEXT.toString());
         leftFooterImgLabel = new Label(leftFooterImgText);
-        leftFooterImgPath = data.getLeftFooterImgPath();
-        leftFooterImg = new Image(leftFooterImgPath);
+        leftFooterImgPath = new Label(data.getLeftFooterImgPath());
+        leftFooterImg = new Image(leftFooterImgPath.getText());
         changeLeftFooterButton = new Button(props.getProperty(CSGProperty.CHANGE_BUTTON_TEXT.toString()));
 
         String rightFooterImgText = props.getProperty(CSGProperty.RF_LABEL_TEXT.toString());
         rightFooterImgLabel = new Label(rightFooterImgText);
-        rightFooterImgPath = data.getRightFooterImgPath();
-        rightFooterImg = new Image(rightFooterImgPath);
+        rightFooterImgPath = new Label(data.getRightFooterImgPath());
+        rightFooterImg = new Image(rightFooterImgPath.getText());
         changeRightFooterButton = new Button(props.getProperty(CSGProperty.CHANGE_BUTTON_TEXT.toString()));
 
         String stylesheetText = props.getProperty(CSGProperty.SS_LABEL_TEXT.toString()); 
@@ -782,12 +786,12 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         recitationTable.getColumns().add(locationColumn);
         supervisingTAColumnOne = new TableColumn(taColumnText);
         supervisingTAColumnOne.setCellValueFactory(
-                new PropertyValueFactory<>("taOne")
+                new PropertyValueFactory<>("TAOne")
         );
         recitationTable.getColumns().add(supervisingTAColumnOne);
         supervisingTAColumnTwo = new TableColumn(taColumnText);
         supervisingTAColumnTwo.setCellValueFactory(
-                new PropertyValueFactory<>("taTwo")
+                new PropertyValueFactory<>("TATwo")
         );
         recitationTable.getColumns().add(supervisingTAColumnTwo);
 
@@ -816,7 +820,9 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         supervisingLabelOne = new Label(supervisingLabelText);
         supervisingLabelTwo = new Label(supervisingLabelText);
         supervisingTAComboBoxOne = new ComboBox();
+        supervisingTAComboBoxOne.setItems(data.getTeachingAssistants());
         supervisingTAComboBoxTwo = new ComboBox();
+        supervisingTAComboBoxTwo.setItems(data.getTeachingAssistants());
         
         addRecitationButton = new Button(props.getProperty(CSGProperty.ADD_BUTTON_TEXT.toString()));
         clearRecitationButton = new Button(props.getProperty(CSGProperty.CLEAR_BUTTON_TEXT.toString()));
@@ -1133,7 +1139,8 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         String teamLabelText = props.getProperty(CSGProperty.TEAM_LABEL_TEXT.toString());
         teamLabel = new Label(teamLabelText);
         teamComboBox = new ComboBox();
-
+        teamComboBox.setItems(data.getTeams());
+                
         String roleLabelText = props.getProperty(CSGProperty.ROLE_LABEL_TEXT.toString());
         roleLabel = new Label(roleLabelText);
         roleTextField = new TextField();
@@ -1909,15 +1916,15 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         return stylesheetComboBox;
     }
     
-    public String getBannerImgPath() {
+    public Label getBannerImgPath() {
         return bannerImgPath;
     }
     
-    public String getLeftFooterImgPath() {
+    public Label getLeftFooterImgPath() {
         return leftFooterImgPath;
     }
     
-    public String getRightFooterImgPath() {
+    public Label getRightFooterImgPath() {
         return rightFooterImgPath;
     }
     
