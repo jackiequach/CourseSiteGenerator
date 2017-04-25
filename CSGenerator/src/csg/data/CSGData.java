@@ -33,6 +33,10 @@ import properties_manager.PropertiesManager;
 import csg.file.TimeSlot;
 import static djf.settings.AppStartupConstants.FILE_PROTOCOL;
 import static djf.settings.AppStartupConstants.PATH_IMAGES;
+import java.time.LocalDate;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 
 /**
  *
@@ -45,9 +49,13 @@ public class CSGData implements AppDataComponent {
     
     ObservableList<SitePage> sitePages;
     String subject;
+    ObservableList<String> subjects;
     String number;
+    ObservableList<String> numbers;
     String semester;
+    ObservableList<String> semesters;
     String year;
+    ObservableList<String> years;
     String title;
     String instructorName;
     String instructorHome;
@@ -65,8 +73,8 @@ public class CSGData implements AppDataComponent {
     ObservableList<Recitation> recitations;
     
     ObservableList<ScheduleItem> scheduleItems;
-    String startMonday;
-    String endFriday;
+    LocalDate startMonday;
+    LocalDate endFriday;
     String time;
     String link;
     String criteria;
@@ -90,6 +98,14 @@ public class CSGData implements AppDataComponent {
         
         teachingAssistants = FXCollections.observableArrayList();
         sitePages = FXCollections.observableArrayList();
+        subjects = FXCollections.observableArrayList();
+        subjects.addAll("CSE","AMS","MEC","BME");
+        numbers = FXCollections.observableArrayList();
+        numbers.addAll("219","114","101");
+        semesters = FXCollections.observableArrayList();
+        semesters.addAll("Spring","Summer","Fall","Winter");
+        years = FXCollections.observableArrayList();
+        years.addAll("2017","2018","2019");
         recitations = FXCollections.observableArrayList();
         scheduleItems = FXCollections.observableArrayList();
         teams = FXCollections.observableArrayList();
@@ -121,11 +137,30 @@ public class CSGData implements AppDataComponent {
     }
     
     // ACCESSOR METHODS
+    public ObservableList<String> getSubjects() {
+        return subjects;
+    }
+    
+    public ObservableList<String> getNumbers() {
+        return numbers;
+    }
+    
+    public ObservableList<String> getSemesters() {
+        return semesters;
+    }
+    
+    public ObservableList<String> getYears() {
+        return years;
+    }
+    
     public String getSubject() {
         return subject;
     }
     
     public void setSubject(String initSubject) {
+        CSGWorkspace workspace = (CSGWorkspace) app.getWorkspaceComponent();
+        ComboBox subjectComboBox = workspace.getSubjectComboBox();
+        subjectComboBox.setValue(initSubject);
         subject = initSubject;
     }
     
@@ -134,6 +169,9 @@ public class CSGData implements AppDataComponent {
     }
     
     public void setNumber(String initNumber) {
+        CSGWorkspace workspace = (CSGWorkspace) app.getWorkspaceComponent();
+        ComboBox numberComboBox = workspace.getNumberComboBox();
+        numberComboBox.setValue(initNumber);
         number = initNumber;
     }
     
@@ -142,6 +180,9 @@ public class CSGData implements AppDataComponent {
     }
     
     public void setSemester(String initSemester) {
+        CSGWorkspace workspace = (CSGWorkspace) app.getWorkspaceComponent();
+        ComboBox semesterComboBox = workspace.getSemesterComboBox();
+        semesterComboBox.setValue(initSemester);
         semester = initSemester;
     }
     
@@ -150,6 +191,9 @@ public class CSGData implements AppDataComponent {
     }
     
     public void setYear(String initYear) {
+        CSGWorkspace workspace = (CSGWorkspace) app.getWorkspaceComponent();
+        ComboBox yearComboBox = workspace.getYearComboBox();
+        yearComboBox.setValue(initYear);
         year = initYear;
     }
     
@@ -158,6 +202,9 @@ public class CSGData implements AppDataComponent {
     }
     
     public void setTitle(String initTitle) {
+        CSGWorkspace workspace = (CSGWorkspace) app.getWorkspaceComponent();
+        TextField titleTextField = workspace.getTitleTextField();
+        titleTextField.setText(initTitle);
         title = initTitle;
     }
     
@@ -166,6 +213,9 @@ public class CSGData implements AppDataComponent {
     }
     
     public void setInstructorName(String initInstructorName) {
+        CSGWorkspace workspace = (CSGWorkspace) app.getWorkspaceComponent();
+        TextField instructorNameTextField = workspace.getInstructorNameTextField();
+        instructorNameTextField.setText(initInstructorName);
         instructorName = initInstructorName;
     }
     
@@ -174,6 +224,9 @@ public class CSGData implements AppDataComponent {
     }
     
     public void setInstructorHome(String initInstructorHome) {
+        CSGWorkspace workspace = (CSGWorkspace) app.getWorkspaceComponent();
+        TextField instructorHomeTextField = workspace.getInstructorHomeTextField();
+        instructorHomeTextField.setText(initInstructorHome);
         instructorHome = initInstructorHome;
     }
     
@@ -182,6 +235,9 @@ public class CSGData implements AppDataComponent {
     }
     
     public void setExportDirPath(String initExportDirPath) {
+        CSGWorkspace workspace = (CSGWorkspace) app.getWorkspaceComponent();
+        Label exportDirPathLabel = workspace.getExportDirPathLabel();
+        exportDirPathLabel.setText(initExportDirPath);
         exportDirPath = initExportDirPath;
     }
     
@@ -190,6 +246,9 @@ public class CSGData implements AppDataComponent {
     }
     
     public void setTemplateDirPath(String initTemplateDirPath) {
+        CSGWorkspace workspace = (CSGWorkspace) app.getWorkspaceComponent();
+        Label templateDirPathLabel = workspace.getSelectTemplateDirPathLabel();
+        templateDirPathLabel.setText(initTemplateDirPath);
         templateDirPath = initTemplateDirPath;
     }
     
@@ -198,6 +257,9 @@ public class CSGData implements AppDataComponent {
     }
     
     public void setBannerImgPath(String initBannerImgPath) {
+        CSGWorkspace workspace = (CSGWorkspace) app.getWorkspaceComponent();
+        Label bannerImgPathLabel = workspace.getBannerImgPath();
+        bannerImgPathLabel.setText(initBannerImgPath);
         bannerImgPath = initBannerImgPath;
     }
     
@@ -206,6 +268,9 @@ public class CSGData implements AppDataComponent {
     }
     
     public void setLeftFooterImgPath(String initLeftFooterImgPath) {
+        CSGWorkspace workspace = (CSGWorkspace) app.getWorkspaceComponent();
+        Label leftImgPathLabel = workspace.getLeftFooterImgPath();
+        leftImgPathLabel.setText(initLeftFooterImgPath);
         leftFooterImgPath = initLeftFooterImgPath;
     }
     
@@ -214,6 +279,9 @@ public class CSGData implements AppDataComponent {
     }
     
     public void setRightFooterImgPath(String initRightFooterImgPath) {
+        CSGWorkspace workspace = (CSGWorkspace) app.getWorkspaceComponent();
+        Label rightImgPathLabel = workspace.getRightFooterImgPath();
+        rightImgPathLabel.setText(initRightFooterImgPath);
         rightFooterImgPath = initRightFooterImgPath;
     }
     
@@ -222,47 +290,32 @@ public class CSGData implements AppDataComponent {
     }
     
     public void setStylesheet(String initStylesheet) {
+        CSGWorkspace workspace = (CSGWorkspace) app.getWorkspaceComponent();
+        ComboBox stylesheetComboBox = workspace.getStylesheetComboBox();
+        stylesheetComboBox.setValue(initStylesheet);
         stylesheet = initStylesheet;
     }
     
     public String getStartMonday() {
-        return startMonday;
+        return startMonday.toString();
     }
     
-    public void setStartMonday(String initStartMonday) {
+    public void setStartMonday(LocalDate initStartMonday) {
+        CSGWorkspace workspace = (CSGWorkspace) app.getWorkspaceComponent();
+        DatePicker startingMonday = workspace.getStartingMondayPicker();
+        startingMonday.setValue(initStartMonday);
         startMonday = initStartMonday;
     }
     
     public String getEndFriday() {
-        return endFriday;
+        return endFriday.toString();
     }
     
-    public void setEndFriday(String initEndFriday) {
+    public void setEndFriday(LocalDate initEndFriday) {
+        CSGWorkspace workspace = (CSGWorkspace) app.getWorkspaceComponent();
+        DatePicker endingFriday = workspace.getEndingFridayPicker();
+        endingFriday.setValue(initEndFriday);
         endFriday = initEndFriday;
-    }
-    
-    public String getTime() {
-        return time;
-    }
-    
-    public void setTime(String initTime) {
-        time = initTime;
-    }
-    
-    public String getLink() {
-        return link;
-    }
-    
-    public void setLink(String initLink) {
-        link = initLink;
-    }
-    
-    public String getCriteria() {
-        return criteria;
-    }
-    
-    public void setCriteria(String initCriteria) {
-        criteria = initCriteria;
     }
     
     public int getStartHour() {
@@ -458,8 +511,8 @@ public class CSGData implements AppDataComponent {
         }
     }
     
-    public void addScheduleItem(String initType, String initDate, String initTitle, String initTopic) {
-        ScheduleItem scheduleItem = new ScheduleItem(initType, initDate, initTitle, initTopic);
+    public void addScheduleItem(String initType, String initDate, String initTime, String initTitle, String initTopic, String initLink, String initCriteria) {
+        ScheduleItem scheduleItem = new ScheduleItem(initType, initDate, initTime, initTitle, initTopic, initLink, initCriteria);
         if(!containsScheduleItem(initType, initDate)) {
             scheduleItems.add(scheduleItem);
         }
