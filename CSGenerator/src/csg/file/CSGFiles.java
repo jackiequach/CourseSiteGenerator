@@ -13,6 +13,7 @@ import csg.data.SitePage;
 import csg.data.Student;
 import csg.data.TeachingAssistant;
 import csg.data.Team;
+import csg.workspace.CSGController;
 import csg.workspace.CSGWorkspace;
 import djf.components.AppDataComponent;
 import djf.components.AppFileComponent;
@@ -39,6 +40,7 @@ import javax.json.JsonReader;
 import javax.json.JsonWriter;
 import javax.json.JsonWriterFactory;
 import javax.json.stream.JsonGenerator;
+import jtps.jTPS;
 import org.apache.commons.io.FileUtils;
 
 /**
@@ -335,7 +337,7 @@ public class CSGFiles implements AppFileComponent {
         dataManager.initHours(startHour, endHour);
 
         // NOW RELOAD THE WORKSPACE WITH THE LOADED DATA
-        app.getWorkspaceComponent().reloadWorkspace(app.getDataComponent());
+        app.getWorkspaceComponent().reloadWorkspace(dataManager);
 
         // NOW LOAD ALL THE UNDERGRAD TAs
         JsonArray jsonTAArray = json.getJsonArray(JSON_UNDERGRAD_TAS);
@@ -545,16 +547,30 @@ public class CSGFiles implements AppFileComponent {
 
     @Override
     public void exportData(AppDataComponent data) throws IOException {
-        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
-        Label exportDirPathLabel = workspace.getExportDirPathLabel();
-        String exportDirPath = exportDirPathLabel.getText();
-        Label templateDirPathLabel = workspace.getSelectTemplateDirPathLabel();
-        String templateDirPath = templateDirPathLabel.getText();
+        CSGData dataC = (CSGData) data;
+        String exportDirPath = dataC.getExportDirPath();
+        String templateDirPath = dataC.getTemplateDirPath();
         File srcDir = new File(templateDirPath);
         File destDir = new File(exportDirPath);
         FileUtils.copyDirectory(srcDir,destDir);
         
         saveData(data,destDir+"\\js\\overall.json");
+    }
+    
+    @Override
+    public void undoTrans(AppDataComponent data) {
+        CSGController controller = new CSGController(app);
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        jTPS transactions = workspace.getjTPS();
+        controller.handleUndo(transactions);
+    }
+    
+    @Override
+    public void redoTrans(AppDataComponent data) {
+        CSGController controller = new CSGController(app);
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        jTPS transactions = workspace.getjTPS();
+        controller.handleRedo(transactions);
     }
 
     @Override

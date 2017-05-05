@@ -51,6 +51,7 @@ public class AppFileController {
     
     // WE WANT TO KEEP TRACK OF WHEN SOMETHING HAS NOT BEEN SAVED
     boolean saved;
+    boolean undid;
     
     // THIS IS THE FILE FOR THE WORK CURRENTLY BEING WORKED ON
     File currentWorkFile;
@@ -80,6 +81,26 @@ public class AppFileController {
         
         // LET THE UI KNOW
         gui.updateToolbarControls(saved);
+    }
+    
+    public void markAsUndid(AppGUI gui) {
+        undid = true;
+        gui.updateRedoControls(undid);
+    }
+    
+    public void markAsFullyUndid(AppGUI gui) {
+        undid = true;
+        gui.updateUndoControls(undid);
+    }
+    
+    public void markAsDone(AppGUI gui) {
+        undid = false;
+        gui.updateUndoControls(undid);
+    }
+    
+    public void markAsFullyDone(AppGUI gui) {
+        undid = false;
+        gui.updateRedoControls(undid);
     }
     
     public void markAsNotEdited(AppGUI gui) {
@@ -282,11 +303,12 @@ public class AppFileController {
     }
     
     public void handleUndoRequest() {
+        app.getFileComponent().undoTrans(app.getDataComponent());
         
     }
     
     public void handleRedoRequest() {
-        
+        app.getFileComponent().redoTrans(app.getDataComponent());
     }
     
     public void handleAboutRequest() {

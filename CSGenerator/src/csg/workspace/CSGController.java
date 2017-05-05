@@ -108,6 +108,7 @@ public class CSGController {
             // AND SEND THE CARET BACK TO THE NAME TEXT FIELD FOR EASY DATA ENTRY
             nameTextField.requestFocus();
             
+            app.getGUI().getAppFileController().markAsDone(app.getGUI());
             app.getGUI().getAppFileController().markAsEdited(app.getGUI());
         }
     }
@@ -139,10 +140,11 @@ public class CSGController {
         
         // AND TOGGLE THE OFFICE HOURS IN THE CLICKED CELL
         transactions.addTransaction(toggle);
+        app.getGUI().getAppFileController().markAsDone(app.getGUI());
         app.getGUI().getAppFileController().markAsEdited(app.getGUI());
     }
     
-    public void handleDelete(KeyCode key)
+    public void handleDeleteTA(KeyCode key)
     {
         // GET THE TABLE
         CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
@@ -167,6 +169,7 @@ public class CSGController {
                 handleAddTA();
             });
         }
+        app.getGUI().getAppFileController().markAsDone(app.getGUI());
         app.getGUI().getAppFileController().markAsEdited(app.getGUI());
     }
     
@@ -315,14 +318,60 @@ public class CSGController {
         CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
         jTPS transactions = workspace.getjTPS();
         if(key.getCode() == KeyCode.Z && key.isControlDown()) {
-             transactions.undoTransaction();
-            if(transactions.getMostRecentTransaction() < 0)
-                app.getGUI().getAppFileController().markAsNotEdited(app.getGUI());
+            handleUndo(transactions);
         }
-         if(key.getCode() == KeyCode.Y && key.isControlDown()) {
-             transactions.doTransaction();
-             app.getGUI().getAppFileController().markAsEdited(app.getGUI());
-         }
+        if(key.getCode() == KeyCode.Y && key.isControlDown()) {
+            handleRedo(transactions);
+        }
+    }
+    
+    public void handleUndo(jTPS transactions) {
+        transactions.undoTransaction();
+        if(transactions.getMostRecentTransaction() < 0) {
+            app.getGUI().getAppFileController().markAsNotEdited(app.getGUI());
+            app.getGUI().getAppFileController().markAsFullyUndid(app.getGUI());
+        }
+        else
+            app.getGUI().getAppFileController().markAsUndid(app.getGUI());
+    }
+    
+    public void handleRedo(jTPS transactions) {
+        transactions.doTransaction();
+        app.getGUI().getAppFileController().markAsEdited(app.getGUI());
+        if(transactions.transSize()-1 > transactions.getMostRecentTransaction())
+            app.getGUI().getAppFileController().markAsDone(app.getGUI());
+        else {
+            app.getGUI().getAppFileController().markAsFullyDone(app.getGUI());
+        }
+    }
+    
+    public void handleCourseInfo() {
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        ComboBox subjectComboBox = workspace.getSubjectComboBox();
+        ComboBox numberComboBox = workspace.getNumberComboBox();
+        ComboBox semesterComboBox = workspace.getSemesterComboBox();
+        ComboBox yearComboBox = workspace.getYearComboBox();
+        TextField titleTextField = workspace.getTitleTextField();
+        TextField instructorNameTextField = workspace.getInstructorNameTextField();
+        TextField instructorHomeTextField = workspace.getInstructorHomeTextField();
+        
+        CSGData data = (CSGData)app.getDataComponent();
+        
+        data.setSubject((String)subjectComboBox.getValue());
+        data.setNumber((String)numberComboBox.getValue());
+        data.setSemester((String)semesterComboBox.getValue());
+        data.setYear((String)yearComboBox.getValue());
+        data.setTitle(titleTextField.getText());
+        data.setInstructorName(instructorNameTextField.getText());
+        data.setInstructorHome(instructorHomeTextField.getText());
+    }
+    
+    public void handleChangeExportDir() {
+        
+    }
+    
+    public void handleSelectTemplate() {
+        
     }
     
     public class EmailValidator {

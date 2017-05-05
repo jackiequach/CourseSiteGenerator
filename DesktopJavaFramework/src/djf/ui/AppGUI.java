@@ -138,11 +138,23 @@ public class AppGUI {
 	exitButton.setDisable(false);
         saveAsButton.setDisable(false);
         exportButton.setDisable(false);
-        undoButton.setDisable(true);
-        redoButton.setDisable(true);
 
         // NOTE THAT THE NEW, LOAD, AND EXIT BUTTONS
         // ARE NEVER DISABLED SO WE NEVER HAVE TO TOUCH THEM
+    }
+    
+    public void updateRedoControls(boolean undid) {
+        if(undid)
+            redoButton.setDisable(false);
+        if(!undid)
+            redoButton.setDisable(true);
+    }
+    
+    public void updateUndoControls(boolean undid) {
+        if(!undid)
+            undoButton.setDisable(false);
+        else
+            undoButton.setDisable(true);
     }
 
     /****************************************************************************/
