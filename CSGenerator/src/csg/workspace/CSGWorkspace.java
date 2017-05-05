@@ -17,11 +17,8 @@ import csg.data.Team;
 import csg.style.CSGStyle;
 import djf.components.AppDataComponent;
 import djf.components.AppWorkspaceComponent;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -37,7 +34,6 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -1383,8 +1379,8 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     
     @Override
     public void reloadWorkspace(AppDataComponent dataComponent) {
-        CSGData taData = (CSGData)dataComponent;
-        reloadOfficeHoursGrid(taData);
+        CSGData data = (CSGData)dataComponent;
+        reloadOfficeHoursGrid(data);
     }
 
     public void reloadOfficeHoursGrid(CSGData dataComponent) {        
