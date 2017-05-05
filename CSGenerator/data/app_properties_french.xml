@@ -65,6 +65,8 @@
         <property name="EXPORT_COMPLETED_MESSAGE"       value="Exportation de fichier terminé"></property>
         <property name="SAVE_UNSAVED_WORK_MESSAGE"	value="Voulez-vous enregistrer votre travail non enregistré d'abord?"></property>
         <property name="SAVE_UNSAVED_WORK_TITLE"	value="Enregistrer les travaux non enregistrés?"></property>
+        <property name="ABOUT_TITLE"                    value="À propos de l'application"></property>
+        <property name="ABOUT_MESSAGE"                  value="Cette application permet aux instructeurs de créer et de mettre à jour facilement les sites Web du cours."></property>
 	
         <property name="NEW_CREATED_MESSAGE"		value="Nouveau travail créé mais pas encore enregistré"></property>
         <property name="WORK_LOADED_MESSAGE"		value="Le travail a été chargé"></property>

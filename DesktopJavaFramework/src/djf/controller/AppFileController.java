@@ -10,6 +10,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import properties_manager.PropertiesManager;
 import djf.AppTemplate;
+import static djf.settings.AppPropertyType.ABOUT_MESSAGE;
+import static djf.settings.AppPropertyType.ABOUT_TITLE;
 import static djf.settings.AppPropertyType.EXPORT_COMPLETED_MESSAGE;
 import static djf.settings.AppPropertyType.EXPORT_COMPLETED_TITLE;
 import static djf.settings.AppPropertyType.EXPORT_ERROR_MESSAGE;
@@ -288,7 +290,9 @@ public class AppFileController {
     }
     
     public void handleAboutRequest() {
-        
+        AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+	PropertiesManager props = PropertiesManager.getPropertiesManager();
+        dialog.show(props.getProperty(ABOUT_TITLE),props.getProperty(ABOUT_MESSAGE));
     }
 
     /**
