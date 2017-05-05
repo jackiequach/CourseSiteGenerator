@@ -385,6 +385,9 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         tabs.getTabs().addAll(courseDetailsTab, taDataTab, recitationDataTab, scheduleDataTab, projectDataTab);
         
         workspace = new BorderPane();
+        workspace.setOnKeyPressed(e -> {
+            controller.handleKeyPress(e);
+        });
         ((BorderPane) workspace).setCenter(tabs);
     }
     
