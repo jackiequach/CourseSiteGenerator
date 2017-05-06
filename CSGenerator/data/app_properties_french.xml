@@ -189,6 +189,17 @@
         <property name="TA_NAME_AND_EMAIL_NOT_UNIQUE_TITLE"     value="Nom et adresse électronique non unique"></property>
         <property name="TA_NAME_AND_EMAIL_NOT_UNIQUE_MESSAGE"   value="Vous devez fournir un nom et un email de l'AT unique"></property>
         
+        <property name="MISSING_RECITATION_SECTION_TITLE"           value="Section de récitation manquante"></property>
+        <property name="MISSING_RECITATION_SECTION_MESSAGE"         value="Vous devez fournir une section de récitation"></property>
+        <property name="MISSING_RECITATION_INSTRUCTOR_TITLE"        value="Instructeur de récitation manquant"></property>
+        <property name="MISSING_RECITATION_INSTRUCTOR_MESSAGE"      value="Vous devez fournir un instructeur de récitation"></property>
+        <property name="MISSING_RECITATION_DAY_TITLE"               value="Manque de récitation Jour / Heure"></property>
+        <property name="MISSING_RECITATION_DAY_MESSAGE"             value="Vous devez fournir un jour / heure de récitation"></property>
+        <property name="MISSING_RECITATION_LOCATION_TITLE"          value="Lieu de récitation manquant"></property>
+        <property name="MISSING_RECITATION_LOCATION_MESSAGE"        value="Vous devez fournir un lieu de récitation"></property>
+        <property name="RECITATION_SECTION_NOT_UNIQUE_TITLE"        value="Section récitation non unique"></property>
+        <property name="RECITATION_SECTION_NOT_UNIQUE_MESSAGE"      value="Vous devez fournir une section unique de récitation"></property>
+        
     </property_list>
     <property_options_list>
         <property_options name="OFFICE_HOURS_TABLE_HEADERS">

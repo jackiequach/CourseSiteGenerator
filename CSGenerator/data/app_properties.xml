@@ -189,6 +189,17 @@
         <property name="TA_NAME_AND_EMAIL_NOT_UNIQUE_TITLE"     value="TA Name and Email Not Unique"></property>
         <property name="TA_NAME_AND_EMAIL_NOT_UNIQUE_MESSAGE"   value="You must provide a unique TA Name and Email"></property>
         
+        <property name="MISSING_RECITATION_SECTION_TITLE"           value="Missing Recitation Section"></property>
+        <property name="MISSING_RECITATION_SECTION_MESSAGE"         value="You must provide a Recitation Section"></property>
+        <property name="MISSING_RECITATION_INSTRUCTOR_TITLE"        value="Missing Recitation Instructor"></property>
+        <property name="MISSING_RECITATION_INSTRUCTOR_MESSAGE"      value="You must provide a Recitation Instructor"></property>
+        <property name="MISSING_RECITATION_DAY_TITLE"               value="Missing Recitation Day/Time"></property>
+        <property name="MISSING_RECITATION_DAY_MESSAGE"             value="You must provide a Recitation Day/Time"></property>
+        <property name="MISSING_RECITATION_LOCATION_TITLE"          value="Missing Recitation Location"></property>
+        <property name="MISSING_RECITATION_LOCATION_MESSAGE"        value="You must provide a Recitation Location"></property>
+        <property name="RECITATION_SECTION_NOT_UNIQUE_TITLE"        value="Recitation Section Not Unique"></property>
+        <property name="RECITATION_SECTION_NOT_UNIQUE_MESSAGE"      value="You must provide a unique Recitation Section"></property>
+        
     </property_list>
     <property_options_list>
         <property_options name="OFFICE_HOURS_TABLE_HEADERS">
