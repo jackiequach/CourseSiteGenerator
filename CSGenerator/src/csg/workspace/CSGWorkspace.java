@@ -674,22 +674,22 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         taTable.setEditable(true);
         // ADD BOX FOR ADDING A TA
         String namePromptText = props.getProperty(CSGProperty.NAME_PROMPT_TEXT.toString());
-        String addButtonText = props.getProperty(CSGProperty.ADD_BUTTON_TEXT.toString());
+        String addButtonText = props.getProperty(CSGProperty.ADD_SCHEDULE_BUTTON_TEXT.toString());
         String emailPromptText = props.getProperty(CSGProperty.EMAIL_PROMPT_TEXT.toString());
         nameTextField = new TextField();
         nameTextField.setPromptText(namePromptText);
-        addButton = new Button(addButtonText);
+        addScheduleItemButton = new Button(addButtonText);
         emailTextField = new TextField();
         emailTextField.setPromptText(emailPromptText);
         clearButton = new Button(props.getProperty(CSGProperty.CLEAR_BUTTON_TEXT.toString()));
         addBox = new HBox();
         nameTextField.prefWidthProperty().bind(addBox.widthProperty().multiply(.3));
         emailTextField.prefWidthProperty().bind(addBox.widthProperty().multiply(.35));
-        addButton.prefWidthProperty().bind(addBox.widthProperty().multiply(.2));
+        addScheduleItemButton.prefWidthProperty().bind(addBox.widthProperty().multiply(.2));
         clearButton.prefWidthProperty().bind(addBox.widthProperty().multiply(.15));
         addBox.getChildren().add(nameTextField);
         addBox.getChildren().add(emailTextField);
-        addBox.getChildren().add(addButton);
+        addBox.getChildren().add(addScheduleItemButton);
         addBox.getChildren().add(clearButton);
 
         startTime = new ComboBox();
@@ -1160,7 +1160,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         linkTeamLabel = new Label(linkTeamLabelText);
         linkTeamTextField = new TextField();
 
-        addTeamButton = new Button(props.getProperty(CSGProperty.ADD_BUTTON_TEXT.toString()));
+        addTeamButton = new Button(props.getProperty(CSGProperty.ADD_TEAM_BUTTON_TEXT.toString()));
         clearTeamButton = new Button(props.getProperty(CSGProperty.CLEAR_BUTTON_TEXT.toString()));
 
         studentsHeaderBox = new HBox();
@@ -1219,7 +1219,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         roleLabel = new Label(roleLabelText);
         roleTextField = new TextField();
         
-        addStudentButton = new Button(props.getProperty(CSGProperty.ADD_BUTTON_TEXT.toString()));
+        addStudentButton = new Button(props.getProperty(CSGProperty.ADD_STUDENT_BUTTON_TEXT.toString()));
         clearStudentButton = new Button(props.getProperty(CSGProperty.CLEAR_BUTTON_TEXT.toString()));
         
         projectsGridPane = new GridPane();
