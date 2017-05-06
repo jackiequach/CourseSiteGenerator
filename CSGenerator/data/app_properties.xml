@@ -139,6 +139,8 @@
         <property name="LOCATION_COLUMN_TEXT"           value="Location"></property>
         <property name="TA_COLUMN_TEXT"                 value="TA"></property>
         <property name="ADDEDIT_LABEL_TEXT"             value="Add/Edit"></property>
+        <property name="ADD_RECITATION_BUTTON_TEXT"     value="Add Recitation"></property>
+        <property name="UPDATE_RECITATION_BUTTON_TEXT"  value="Update Recitation"></property>
         <property name="SECTION_LABEL_TEXT"             value="Section:"></property>
         <property name="INSTRUC_LABEL_TEXT"             value="Instructor:"></property>
         <property name="DAY_LABEL_TEXT"                 value="Day/Time:"></property>
@@ -160,6 +162,8 @@
         <property name="TOPIC_LABEL_TEXT"               value="Topic:"></property>
         <property name="LINK_LABEL_TEXT"                value="Link:"></property>
         <property name="CRIT_LABEL_TEXT"                value="Criteria:"></property>
+        <property name="ADD_SCHEDULE_BUTTON_TEXT"       value="Add Schedule Item"></property>
+        <property name="UPDATE_SCHEDULE_BUTTON_TEXT"    value="Update Schedule Item"></property>
         
         <property name="PROJECT_HEADER_TEXT"           value="Projects"></property>
         <property name="TEAM_HEADER_TEXT"              value="Teams"></property>
@@ -178,6 +182,10 @@
         <property name="LASTN_LABEL_TEXT"              value="Last Name:"></property>
         <property name="TEAM_LABEL_TEXT"               value="Team:"></property>
         <property name="ROLE_LABEL_TEXT"               value="Role:"></property>
+        <property name="ADD_TEAM_BUTTON_TEXT"          value="Add Team"></property>
+        <property name="UPDATE_TEAM_BUTTON_TEXT"       value="Update Team"></property>
+        <property name="ADD_STUDENT_BUTTON_TEXT"          value="Add Student"></property>
+        <property name="UPDATE_STUDENT_BUTTON_TEXT"       value="Update Student"></property>
         
         <!-- WORKSPACE ERROR MESSAGES -->
         <property name="MISSING_TA_NAME_TITLE"          value="Missing TA Name"></property>

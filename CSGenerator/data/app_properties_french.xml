@@ -139,6 +139,8 @@
         <property name="LOCATION_COLUMN_TEXT"           value="Emplacement"></property>
         <property name="TA_COLUMN_TEXT"                 value="TA"></property>
         <property name="ADDEDIT_LABEL_TEXT"             value="Ajouter/Modifier"></property>
+        <property name="ADD_RECITATION_BUTTON_TEXT"     value="Ajouter récitation"></property>
+        <property name="UPDATE_RECITATION_BUTTON_TEXT"  value="Mise à jour récitation"></property>
         <property name="SECTION_LABEL_TEXT"             value="Section:"></property>
         <property name="INSTRUC_LABEL_TEXT"             value="Instructeu:r"></property>
         <property name="DAY_LABEL_TEXT"                 value="Jour/Temps:"></property>
@@ -160,6 +162,8 @@
         <property name="TOPIC_LABEL_TEXT"               value="Topique:"></property>
         <property name="LINK_LABEL_TEXT"                value="Lien:"></property>
         <property name="CRIT_LABEL_TEXT"                value="Critères:"></property>
+        <property name="ADD_SCHEDULE_BUTTON_TEXT"       value="Ajouter un élément de planification"></property>
+        <property name="UPDATE_SCHEDULE_BUTTON_TEXT"    value="Programme d'actualisation"></property>
         
         <property name="PROJECT_HEADER_TEXT"           value="Projets"></property>
         <property name="TEAM_HEADER_TEXT"              value="Équipes"></property>
@@ -178,6 +182,10 @@
         <property name="LASTN_LABEL_TEXT"              value="Nom de famille:"></property>
         <property name="TEAM_LABEL_TEXT"               value="Équipes:"></property>
         <property name="ROLE_LABEL_TEXT"               value="Rôle:"></property>
+        <property name="ADD_TEAM_BUTTON_TEXT"          value="Ajouter une équipe"></property>
+        <property name="UPDATE_TEAM_BUTTON_TEXT"       value="Équipe de mise à jour"></property>
+        <property name="ADD_STUDENT_BUTTON_TEXT"          value="Ajouter un étudiant"></property>
+        <property name="UPDATE_STUDENT_BUTTON_TEXT"       value="Mise à jour de l'élève"></property>
         
         <!-- WORKSPACE ERROR MESSAGES -->
         <property name="MISSING_TA_NAME_TITLE"          value="Nom de l'utilisateur manquant"></property>
