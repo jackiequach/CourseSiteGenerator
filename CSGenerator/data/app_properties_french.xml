@@ -234,6 +234,17 @@
         <property name="MISSING_SCHEDULE_CRITERIA_TITLE"    value="Critères de l'élément de l'horaire manquant"></property>
         <property name="MISSING_SCHEDULE_CRITERIA_MESSAGE"  value="Vous devez fournir un critère de l'élément de l'horaire"></property>
         
+        <property name="MISSING_TEAM_NAME_TITLE"            value="Nom de l'équipe manquant"></property>
+        <property name="MISSING_TEAM_NAME_MESSAGE"          value="Vous devez fournir un nom d'équipe"></property>
+        <property name="MISSING_TEAM_COLOR_TITLE"           value="Couleur de l'équipe manquante"></property>
+        <property name="MISSING_TEAM_COLOR_MESSAGE"         value="Vous devez fournir une couleur d'équipe"></property>
+        <property name="MISSING_TEAM_TEXT_COLOR_TITLE"      value="Couleur du texte de l'équipe manquante"></property>
+        <property name="MISSING_TEAM_TEXT_COLOR_MESSAGE"    value="Vous devez fournir une couleur de texte d'équipe"></property>
+        <property name="MISSING_TEAM_LINK_TITLE"            value="Lien de l'équipe manquant"></property>
+        <property name="MISSING_TEAM_LINK_MESSAGE"          value="Vous devez fournir un lien d'équipe"></property>
+        <property name="TEAM_NAME_AND_COLOR_NOT_UNIQUE_TITLE"            value="Nom de l'équipe et couleur non unique"></property>
+        <property name="TEAM_NAME_AND_COLOR_NOT_UNIQUE_MESSAGE"          value="Vous devez fournir un nom d'équipe unique et une couleur"></property>
+        
     </property_list>
     <property_options_list>
         <property_options name="OFFICE_HOURS_TABLE_HEADERS">
