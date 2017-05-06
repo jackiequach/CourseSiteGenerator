@@ -7,11 +7,13 @@ package csg.data;
 
 import csg.CSGProperty;
 import static csg.CSGProperty.ADD_BUTTON_TEXT;
+import static csg.CSGProperty.ADD_RECITATION_BUTTON_TEXT;
 import static csg.CSGProperty.INVALID_TA_EMAIL_MESSAGE;
 import static csg.CSGProperty.INVALID_TA_EMAIL_TITLE;
 import static csg.CSGProperty.TA_NAME_AND_EMAIL_NOT_UNIQUE_MESSAGE;
 import static csg.CSGProperty.TA_NAME_AND_EMAIL_NOT_UNIQUE_TITLE;
 import static csg.CSGProperty.UPDATE_BUTTON_TEXT;
+import static csg.CSGProperty.UPDATE_RECITATION_BUTTON_TEXT;
 import csg.CSGeneratorApp;
 import csg.workspace.CSGController;
 import csg.workspace.CSGWorkspace;
@@ -448,9 +450,9 @@ public class CSGData implements AppDataComponent {
         return false;
     }
     
-    public boolean containsRecitation(String testSection, String testInstructor) {
+    public boolean containsRecitation(String testSection) {
         for(Recitation recitation : recitations) {
-            if(recitation.getSection().equals(testSection) && recitation.getInstructor().equals(testInstructor)) {
+            if(recitation.getSection().equals(testSection)) {
                 return true;
             }
         }
@@ -494,8 +496,117 @@ public class CSGData implements AppDataComponent {
     
     public void addRecitation(String initSection, String initInstructor, String initDay, String initLocation, String initTAOne, String initTATwo) {
         Recitation recitation = new Recitation(initSection, initInstructor, initDay, initLocation, initTAOne, initTATwo);
-        if(!containsRecitation(initSection, initInstructor)) {
+        if(!containsRecitation(initSection)) {
             recitations.add(recitation);
+        }
+        Collections.sort(recitations);
+    }
+    
+    public void removeRecitation(Recitation recitation) {
+        for (Iterator<Recitation> it = recitations.iterator(); it.hasNext();) {
+            Recitation t = it.next();
+            if(t.compareTo(recitation) == 0)
+                it.remove();
+        }
+    }
+    
+    public void updateRecitation(String recSection) {
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        CSGController controller = new CSGController(app);
+        Button addButton = workspace.getAddRecitationButton();
+        TextField sectionTextField = workspace.getSectionTextField();
+        String section = sectionTextField.getText();
+        TextField instructorTextField = workspace.getInstructorTextField();
+        String instructor = instructorTextField.getText();
+        TextField dayTextField = workspace.getDayTextField();
+        String day = dayTextField.getText();
+        TextField locationTextField = workspace.getLocationTextField();
+        String location = locationTextField.getText();
+        ComboBox taOneComboBox = workspace.getSupervisingTAComboBoxOne();
+        String taOne = (String)taOneComboBox.getValue();
+        ComboBox taTwoComboBox = workspace.getSupervisingTAComboBoxTwo();
+        String taTwo = (String)taTwoComboBox.getValue();
+        CSGData data = (CSGData)app.getDataComponent();
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        
+        ObservableList<Recitation> listOfRecitations = data.getRecitations();
+        for(int i = 0; i < listOfRecitations.size(); i++)
+        {
+            Recitation r = listOfRecitations.get(i);
+            if(!r.getSection().equals(recSection) && r.getSection().equals(section)) {
+                AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+                dialog.show(props.getProperty(TA_NAME_AND_EMAIL_NOT_UNIQUE_TITLE), props.getProperty(TA_NAME_AND_EMAIL_NOT_UNIQUE_MESSAGE));
+            }
+            else if(r.getSection().equals(recSection)) {
+                r.setSection(section);
+                r.setInstructor(instructor);
+                r.setDay(day);
+                r.setLocation(location);
+                r.setTAOne(taOne);
+                r.setTATwo(taTwo);
+                listOfRecitations.set(i, r);
+
+                sectionTextField.setText("");
+                instructorTextField.setText("");
+                dayTextField.setText("");
+                locationTextField.setText("");
+                taOneComboBox.setValue(null);
+                taTwoComboBox.setValue(null);
+
+                addButton.setText(props.getProperty(ADD_RECITATION_BUTTON_TEXT));
+                addButton.setOnAction(ee -> {
+                    controller.handleAddRecitation();
+                });
+                break;
+            }
+        }
+    }
+    
+    public void undoUpdateRecitation(String section, String instructor, String day, String location, String taOne, String taTwo, Recitation recitation) {
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        CSGController controller = new CSGController(app);
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        Button addButton = workspace.getAddRecitationButton();
+        TextField sectionTextField = workspace.getSectionTextField();
+        TextField instructorTextField = workspace.getInstructorTextField();
+        TextField dayTextField = workspace.getDayTextField();
+        TextField locationTextField = workspace.getLocationTextField();
+        ComboBox taOneComboBox = workspace.getSupervisingTAComboBoxOne();
+        ComboBox taTwoComboBox = workspace.getSupervisingTAComboBoxTwo();
+        CSGData data = (CSGData)app.getDataComponent();
+        
+        ObservableList<Recitation> listOfRecitations = data.getRecitations();
+        String recitationSection = recitation.getSection();
+        String recitationInstructor = recitation.getInstructor();
+        String recitationDay = recitation.getDay();
+        String recitationLocation = recitation.getLocation();
+        String recitationTAOne = recitation.getTAOne();
+        String recitationTATwo = recitation.getTATwo();
+        for(int i = 0; i < listOfRecitations.size(); i++)
+        {
+            Recitation r = listOfRecitations.get(i);
+            if(r.getSection().equals(recitationSection)) {
+                r.setSection(section);
+                r.setInstructor(instructor);
+                r.setDay(day);
+                r.setLocation(location);
+                r.setTAOne(taOne);
+                r.setTATwo(taTwo);
+                listOfRecitations.set(i, r);
+                
+                sectionTextField.setText(recitationSection);
+                instructorTextField.setText(recitationInstructor);
+                dayTextField.setText(recitationDay);
+                locationTextField.setText(recitationLocation);
+                taOneComboBox.setValue(recitationTAOne);
+                taTwoComboBox.setValue(recitationTATwo);
+
+                addButton.setText(props.getProperty(UPDATE_RECITATION_BUTTON_TEXT));
+                addButton.setOnAction(ee -> {
+                    controller.handleUpdateRecitation(r);
+                });
+                break;
+            }
         }
     }
     
