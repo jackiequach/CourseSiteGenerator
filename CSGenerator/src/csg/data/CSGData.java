@@ -252,7 +252,7 @@ public class CSGData implements AppDataComponent {
     
     public void setTemplateDirPath(String initTemplateDirPath) {
         CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
-        Label templateDirPathLabel = workspace.getSiteTemplateHeaderLabel();
+        Label templateDirPathLabel = workspace.getSelectTemplateDirPathLabel();
         templateDirPathLabel.setText(initTemplateDirPath);
         templateDirPath = initTemplateDirPath;
     }
@@ -489,6 +489,7 @@ public class CSGData implements AppDataComponent {
         if(!containsSitePage(initFile)) {
             sitePages.add(site);
         }
+        Collections.sort(sitePages);
     }
     
     public void addRecitation(String initSection, String initInstructor, String initDay, String initLocation, String initTAOne, String initTATwo) {
