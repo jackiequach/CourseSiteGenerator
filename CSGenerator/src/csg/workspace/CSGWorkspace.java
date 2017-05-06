@@ -6,6 +6,7 @@
 package csg.workspace;
 
 import csg.CSGProperty;
+import static csg.CSGProperty.ADD_RECITATION_BUTTON_TEXT;
 import csg.CSGeneratorApp;
 import csg.data.CSGData;
 import csg.data.Recitation;
@@ -864,7 +865,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         supervisingTAComboBoxTwo = new ComboBox();
         supervisingTAComboBoxTwo.setItems(data.getTeachingAssistants());
         
-        addRecitationButton = new Button(props.getProperty(CSGProperty.ADD_BUTTON_TEXT.toString()));
+        addRecitationButton = new Button(props.getProperty(CSGProperty.ADD_RECITATION_BUTTON_TEXT.toString()));
         clearRecitationButton = new Button(props.getProperty(CSGProperty.CLEAR_BUTTON_TEXT.toString()));
        
         recitationGridPane = new GridPane();
@@ -906,6 +907,39 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         
         recitationDataPane = new BorderPane();
         recitationDataPane.setCenter(recitationDataScroll);
+        
+        // CONTROLS FOR ADDING RECITATIONS
+        deleteRecitationButton.setOnAction(e -> {
+            controller.handleDeleteRecitation(KeyCode.DELETE);
+        });
+        sectionTextField.setOnAction(e -> {
+            controller.handleAddRecitation();
+        });
+        instructorTextField.setOnAction(e -> {
+            controller.handleAddRecitation();
+        });
+        dayTextField.setOnAction(e -> {
+            controller.handleAddRecitation();
+        });
+        locationTextField.setOnAction(e -> {
+            controller.handleAddRecitation();
+        });
+        addRecitationButton.setOnAction(e -> {
+            controller.handleAddRecitation();
+        });
+        recitationTable.setOnKeyPressed(e -> {
+            controller.handleDeleteRecitation(e.getCode());
+        });
+        recitationTable.setRowFactory(tableview -> {
+            TableRow<Recitation> row = new TableRow<>();
+            row.setOnMouseClicked(e -> {
+                controller.handleSelectRecitation();
+            });
+            return row;
+        });
+        clearRecitationButton.setOnAction(e -> {
+           controller.handleClearRecitation(); 
+        });
         
         return recitationDataPane;
     }
@@ -1954,6 +1988,14 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     
     public ComboBox getStylesheetComboBox() {
         return stylesheetComboBox;
+    }
+    
+    public ComboBox getSupervisingTAComboBoxOne() {
+        return supervisingTAComboBoxOne;
+    }
+    
+    public ComboBox getSupervisingTAComboBoxTwo() {
+        return supervisingTAComboBoxTwo;
     }
     
     public Label getBannerImgPath() {
