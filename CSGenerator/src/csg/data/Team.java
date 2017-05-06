@@ -12,7 +12,7 @@ import javafx.beans.property.StringProperty;
  *
  * @author Jackie
  */
-public class Team {
+public class Team<E extends Comparable<E>> implements Comparable<E> {
     private final StringProperty name;
     private final StringProperty color;
     private final StringProperty textColor;
@@ -39,5 +39,10 @@ public class Team {
     
     public String getLink() {
         return link.get();
+    }
+
+    @Override
+    public int compareTo(E otherTeam) {
+        return getName().compareTo(((Team)otherTeam).getName());
     }
 }
