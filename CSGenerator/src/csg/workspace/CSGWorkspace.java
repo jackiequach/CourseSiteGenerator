@@ -2055,6 +2055,14 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         return endingFridayDatePicker;
     }
     
+    public ComboBox getTypeComboBox() {
+        return typeComboBox;
+    }
+    
+    public DatePicker getDateSchedulePicker() {
+        return dateSchedulePicker;
+    }
+    
     public class CheckBoxCellFactory<T> implements Callback {
         @Override
         public TableCell call(Object param) {
