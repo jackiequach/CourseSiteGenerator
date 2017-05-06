@@ -479,13 +479,13 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         siteTemplateHeaderBox = new HBox();
         String siteTemplateHeaderText = props.getProperty(CSGProperty.SITETEMPLATE_HEADER_TEXT.toString());
         siteTemplateHeaderLabel = new Label(siteTemplateHeaderText);
-        siteTemplateHeaderLabel.setText(data.getTemplateDirPath());
         siteTemplateHeaderBox.getChildren().add(siteTemplateHeaderLabel);
         
         String siteTemplateInfoText = props.getProperty(CSGProperty.SITETEMPLATE_LABEL_TEXT.toString());
         siteTemplateInfoLabel = new Label(siteTemplateInfoText);
         
         selectTemplateDirPathLabel = new Label();
+        selectTemplateDirPathLabel.setText(data.getTemplateDirPath());
         selectTemplateDirButton = new Button(props.getProperty(CSGProperty.SELECT_TEMPLATE_BUTTON_TEXT.toString()));
         
         String sitePagesHeaderText = props.getProperty(CSGProperty.SITEPAGES_LABEL_TEXT.toString());
