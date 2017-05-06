@@ -63,6 +63,34 @@ public class ScheduleItem<E extends Comparable<E>> implements Comparable<E> {
     public String getCriteria() {
         return criteria.get();
     }
+    
+    public void setType(String type) {
+        this.type.set(type);
+    }
+    
+    public void setDate(String date) {
+        this.date.set(date);
+    }
+    
+    public void setTime(String time) {
+        this.time.set(time);
+    }
+    
+    public void setTitle(String title) {
+        this.title.set(title);
+    }
+    
+    public void setTopic(String topic) {
+        this.topic.set(topic);
+    }
+    
+    public void setLink(String link) {
+        this.link.set(link);
+    }
+    
+    public void setCriteria(String criteria) {
+        this.criteria.set(criteria);
+    }
 
     @Override
     public int compareTo(E otherScheduleItem) {
