@@ -35,14 +35,24 @@ import csg.jtps.AddRecTrans;
 import csg.jtps.AddTrans;
 import csg.jtps.DeleteRecTrans;
 import csg.jtps.DeleteTrans;
+import csg.jtps.EndFridayTrans;
 import csg.jtps.EndTimeTrans;
+import csg.jtps.StartMondayTrans;
 import csg.jtps.StartTimeTrans;
 import csg.jtps.ToggleTrans;
 import csg.jtps.UpdateRecTrans;
 import csg.jtps.UpdateTrans;
 import static djf.settings.AppPropertyType.EXPORT_DIR_TITLE;
+import static djf.settings.AppPropertyType.INVALID_END_FRIDAY_FRIDAY_MESSAGE;
+import static djf.settings.AppPropertyType.INVALID_END_FRIDAY_FRIDAY_TITLE;
+import static djf.settings.AppPropertyType.INVALID_END_FRIDAY_MESSAGE;
+import static djf.settings.AppPropertyType.INVALID_END_FRIDAY_TITLE;
 import static djf.settings.AppPropertyType.INVALID_END_TIME_MESSAGE;
 import static djf.settings.AppPropertyType.INVALID_END_TIME_TITLE;
+import static djf.settings.AppPropertyType.INVALID_START_MONDAY_MESSAGE;
+import static djf.settings.AppPropertyType.INVALID_START_MONDAY_MONDAY_MESSAGE;
+import static djf.settings.AppPropertyType.INVALID_START_MONDAY_MONDAY_TITLE;
+import static djf.settings.AppPropertyType.INVALID_START_MONDAY_TITLE;
 import static djf.settings.AppPropertyType.INVALID_START_TIME_MESSAGE;
 import static djf.settings.AppPropertyType.INVALID_START_TIME_TITLE;
 import static djf.settings.AppStartupConstants.PATH_EMPTY;
@@ -50,6 +60,8 @@ import static djf.settings.AppStartupConstants.PATH_TEMPLATES;
 import djf.ui.AppMessageDialogSingleton;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -58,6 +70,7 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -618,6 +631,81 @@ public class CSGController {
         jTPS transactions = workspace.getjTPS();
         UpdateRecTrans update = new UpdateRecTrans(app, recitation.getSection(), recitation.getInstructor(), recitation.getDay(), recitation.getLocation(), recitation.getTAOne(), recitation.getTATwo(), recitation);
         transactions.addTransaction(update);
+    }
+    
+    public void handleStartingMonday() {
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        DatePicker startingMondayPicker = workspace.getStartingMondayPicker();
+        CSGData data = (CSGData)app.getDataComponent();
+        LocalDate selectedDate = startingMondayPicker.getValue();
+        LocalDate startMonday = null;
+        if(data.getStartMonday() != null)
+            startMonday = LocalDate.parse(data.getStartMonday());
+        LocalDate endFriday = null;
+        if(data.getEndFriday() != null)
+            endFriday = LocalDate.parse(data.getEndFriday());
+        if(selectedDate != null && !selectedDate.getDayOfWeek().equals(DayOfWeek.MONDAY)) {
+            AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+            dialog.show(props.getProperty(INVALID_START_MONDAY_MONDAY_TITLE), props.getProperty(INVALID_START_MONDAY_MONDAY_MESSAGE));
+            startingMondayPicker.setValue(startMonday);
+        }
+        else if(endFriday != null && selectedDate != null && selectedDate.isAfter(endFriday)) {
+            AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+            dialog.show(props.getProperty(INVALID_START_MONDAY_TITLE), props.getProperty(INVALID_START_MONDAY_MESSAGE));
+            startingMondayPicker.setValue(startMonday);
+        }
+        else if(endFriday == null || (selectedDate != null && selectedDate.isBefore(endFriday))) {
+            jTPS transactions = workspace.getjTPS();
+            StartMondayTrans start = new StartMondayTrans(app, selectedDate, startMonday, endFriday);
+            transactions.addTransaction(start);
+        }
+    }
+    
+    public void handleEndingFriday() {
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        DatePicker endingFridayPicker = workspace.getEndingFridayPicker();
+        CSGData data = (CSGData)app.getDataComponent();
+        LocalDate selectedDate = endingFridayPicker.getValue();
+        LocalDate startMonday = null;
+        if(data.getStartMonday() != null)
+            startMonday = LocalDate.parse(data.getStartMonday());
+        LocalDate endFriday = null;
+        if(data.getEndFriday() != null)
+            endFriday = LocalDate.parse(data.getEndFriday());
+        
+        if(selectedDate != null && !selectedDate.getDayOfWeek().equals(DayOfWeek.FRIDAY)) {
+            AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+            dialog.show(props.getProperty(INVALID_END_FRIDAY_FRIDAY_TITLE), props.getProperty(INVALID_END_FRIDAY_FRIDAY_MESSAGE));
+            endingFridayPicker.setValue(endFriday);
+        }
+        else if(startMonday != null && selectedDate != null && selectedDate.isBefore(startMonday)) {
+            AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+            dialog.show(props.getProperty(INVALID_END_FRIDAY_TITLE), props.getProperty(INVALID_END_FRIDAY_MESSAGE));
+            endingFridayPicker.setValue(endFriday);
+        }
+        else if(startMonday == null || (selectedDate != null && selectedDate.isAfter(startMonday))) {
+            jTPS transactions = workspace.getjTPS();
+            EndFridayTrans start = new EndFridayTrans(app, selectedDate, startMonday, endFriday);
+            transactions.addTransaction(start);
+        }
+    }
+    
+    public void handleAddScheduleItem() {
+        
+    }
+    
+    public void handleDeleteScheduleItem(KeyCode key) {
+        
+    }
+    
+    public void handleSelectScheduleItem() {
+        
+    }
+    
+    public void handleClearScheduleItem() {
+        
     }
     
     public class EmailValidator {

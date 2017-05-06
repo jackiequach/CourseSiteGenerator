@@ -33,6 +33,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import properties_manager.PropertiesManager;
 import csg.file.TimeSlot;
+import static djf.settings.AppPropertyType.CALENDAR_BOUND_MESSAGE;
+import static djf.settings.AppPropertyType.CALENDAR_BOUND_TITLE;
 import static djf.settings.AppStartupConstants.FILE_PROTOCOL;
 import static djf.settings.AppStartupConstants.PATH_IMAGES;
 import java.time.LocalDate;
@@ -292,7 +294,10 @@ public class CSGData implements AppDataComponent {
     }
     
     public String getStartMonday() {
-        return startMonday.toString();
+        if(startMonday != null)
+            return startMonday.toString();
+        else
+            return null;
     }
     
     public void setStartMonday(LocalDate initStartMonday) {
@@ -300,7 +305,10 @@ public class CSGData implements AppDataComponent {
     }
     
     public String getEndFriday() {
-        return endFriday.toString();
+        if(endFriday != null)
+            return endFriday.toString();
+        else
+            return null;
     }
     
     public void setEndFriday(LocalDate initEndFriday) {
@@ -962,5 +970,51 @@ public class CSGData implements AppDataComponent {
     
     public ObservableList<Student> getStudents() {
         return students;
+    }
+    
+    public void changeStartMonday(LocalDate chosenDate, LocalDate startMonday, LocalDate endFriday) {
+        CSGData data = (CSGData)app.getDataComponent();
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        DatePicker startingMondayPicker = workspace.getStartingMondayPicker();
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        if(startMonday != null && chosenDate.isAfter(startMonday)) {
+            AppYesNoCancelDialogSingleton yesNoDialog = AppYesNoCancelDialogSingleton.getSingleton();
+            yesNoDialog.show(props.getProperty(CALENDAR_BOUND_TITLE),props.getProperty(CALENDAR_BOUND_MESSAGE));
+            String selection = yesNoDialog.getSelection();
+            if (selection.equals(AppYesNoCancelDialogSingleton.YES)) {
+                data.setStartMonday(chosenDate);
+                app.getGUI().getAppFileController().markAsEdited(app.getGUI());
+            }
+            else {
+                startingMondayPicker.setValue(startMonday);
+            }
+        }
+        else {
+            data.setStartMonday(chosenDate);
+            app.getGUI().getAppFileController().markAsEdited(app.getGUI());
+        }
+    }
+    
+    public void changeEndFriday(LocalDate chosenDate, LocalDate startMonday, LocalDate endFriday) {
+        CSGData data = (CSGData)app.getDataComponent();
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        DatePicker endingFridayPicker = workspace.getEndingFridayPicker();
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        if(endFriday != null && chosenDate.isBefore(endFriday)) {
+            AppYesNoCancelDialogSingleton yesNoDialog = AppYesNoCancelDialogSingleton.getSingleton();
+            yesNoDialog.show(props.getProperty(CALENDAR_BOUND_TITLE),props.getProperty(CALENDAR_BOUND_MESSAGE));
+            String selection = yesNoDialog.getSelection();
+            if (selection.equals(AppYesNoCancelDialogSingleton.YES)) {
+                data.setEndFriday(chosenDate);
+                app.getGUI().getAppFileController().markAsEdited(app.getGUI());
+            }
+            else {
+                endingFridayPicker.setValue(endFriday);
+            }
+        }
+        else {
+            data.setEndFriday(chosenDate);
+            app.getGUI().getAppFileController().markAsEdited(app.getGUI());
+        }
     }
 }

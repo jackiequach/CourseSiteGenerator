@@ -674,22 +674,22 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         taTable.setEditable(true);
         // ADD BOX FOR ADDING A TA
         String namePromptText = props.getProperty(CSGProperty.NAME_PROMPT_TEXT.toString());
-        String addButtonText = props.getProperty(CSGProperty.ADD_SCHEDULE_BUTTON_TEXT.toString());
+        String addButtonText = props.getProperty(CSGProperty.ADD_BUTTON_TEXT.toString());
         String emailPromptText = props.getProperty(CSGProperty.EMAIL_PROMPT_TEXT.toString());
         nameTextField = new TextField();
         nameTextField.setPromptText(namePromptText);
-        addScheduleItemButton = new Button(addButtonText);
+        addButton = new Button(addButtonText);
         emailTextField = new TextField();
         emailTextField.setPromptText(emailPromptText);
         clearButton = new Button(props.getProperty(CSGProperty.CLEAR_BUTTON_TEXT.toString()));
         addBox = new HBox();
         nameTextField.prefWidthProperty().bind(addBox.widthProperty().multiply(.3));
         emailTextField.prefWidthProperty().bind(addBox.widthProperty().multiply(.35));
-        addScheduleItemButton.prefWidthProperty().bind(addBox.widthProperty().multiply(.2));
+        addButton.prefWidthProperty().bind(addBox.widthProperty().multiply(.2));
         clearButton.prefWidthProperty().bind(addBox.widthProperty().multiply(.15));
         addBox.getChildren().add(nameTextField);
         addBox.getChildren().add(emailTextField);
-        addBox.getChildren().add(addScheduleItemButton);
+        addBox.getChildren().add(addButton);
         addBox.getChildren().add(clearButton);
 
         startTime = new ComboBox();
@@ -1030,7 +1030,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         criteriaLabel = new Label(criteriaLabelText);
         criteriaTextField = new TextField();
         
-        addScheduleItemButton = new Button(props.getProperty(CSGProperty.ADD_BUTTON_TEXT.toString()));
+        addScheduleItemButton = new Button(props.getProperty(CSGProperty.ADD_SCHEDULE_BUTTON_TEXT.toString()));
         clearScheduleItemButton = new Button(props.getProperty(CSGProperty.CLEAR_BUTTON_TEXT.toString()));
         
         scheduleGridPane = new GridPane();
@@ -1093,6 +1093,43 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         
         scheduleDataPane = new BorderPane();
         scheduleDataPane.setCenter(scheduleDataScroll);
+        
+        deleteScheduleItemButton.setOnAction(e -> {
+            controller.handleDeleteScheduleItem(KeyCode.DELETE);
+        });
+        startingMondayPicker.setOnAction(e -> {
+            controller.handleStartingMonday();
+        });
+        endingFridayDatePicker.setOnAction(e -> {
+            controller.handleEndingFriday();
+        });
+        typeComboBox.setOnAction(e -> {
+            controller.handleAddScheduleItem();
+        });
+        dateSchedulePicker.setOnAction(e -> {
+            controller.handleAddScheduleItem();
+        });
+        timeTextField.setOnAction(e -> {
+            controller.handleAddScheduleItem();
+        });
+        titleScheduleTextField.setOnAction(e -> {
+            controller.handleAddScheduleItem();
+        });
+        topicTextField.setOnAction(e -> {
+            controller.handleAddScheduleItem();
+        });
+        linkTextField.setOnAction(e -> {
+            controller.handleAddScheduleItem();
+        });
+        criteriaTextField.setOnAction(e -> {
+            controller.handleAddScheduleItem();
+        });
+        scheduleItemTable.setOnKeyPressed(e -> {
+            controller.handleDeleteScheduleItem(e.getCode());
+        });
+        clearScheduleItemButton.setOnAction(e -> {
+           controller.handleClearScheduleItem(); 
+        });
         
         return scheduleDataPane;
     }
