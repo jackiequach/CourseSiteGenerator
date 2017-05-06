@@ -16,7 +16,6 @@ import static djf.settings.AppPropertyType.EXPORT_COMPLETED_MESSAGE;
 import static djf.settings.AppPropertyType.EXPORT_COMPLETED_TITLE;
 import static djf.settings.AppPropertyType.EXPORT_ERROR_MESSAGE;
 import static djf.settings.AppPropertyType.EXPORT_ERROR_TITLE;
-import static djf.settings.AppPropertyType.EXPORT_WORK_TITLE;
 import static djf.settings.AppPropertyType.LOAD_ERROR_MESSAGE;
 import static djf.settings.AppPropertyType.LOAD_ERROR_TITLE;
 import static djf.settings.AppPropertyType.LOAD_WORK_TITLE;
@@ -33,9 +32,7 @@ import static djf.settings.AppPropertyType.SAVE_ERROR_TITLE;
 import static djf.settings.AppPropertyType.SAVE_UNSAVED_WORK_MESSAGE;
 import static djf.settings.AppPropertyType.SAVE_UNSAVED_WORK_TITLE;
 import static djf.settings.AppPropertyType.SAVE_WORK_TITLE;
-import static djf.settings.AppStartupConstants.PATH_TEST;
 import static djf.settings.AppStartupConstants.PATH_WORK;
-import javafx.stage.DirectoryChooser;
 
 /**
  * This class provides the event programmed responses for the file controls
