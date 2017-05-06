@@ -8,8 +8,11 @@ package csg.data;
 import csg.CSGProperty;
 import static csg.CSGProperty.ADD_BUTTON_TEXT;
 import static csg.CSGProperty.ADD_RECITATION_BUTTON_TEXT;
+import static csg.CSGProperty.ADD_SCHEDULE_BUTTON_TEXT;
 import static csg.CSGProperty.INVALID_TA_EMAIL_MESSAGE;
 import static csg.CSGProperty.INVALID_TA_EMAIL_TITLE;
+import static csg.CSGProperty.RECITATION_SECTION_NOT_UNIQUE_MESSAGE;
+import static csg.CSGProperty.RECITATION_SECTION_NOT_UNIQUE_TITLE;
 import static csg.CSGProperty.TA_NAME_AND_EMAIL_NOT_UNIQUE_MESSAGE;
 import static csg.CSGProperty.TA_NAME_AND_EMAIL_NOT_UNIQUE_TITLE;
 import static csg.CSGProperty.UPDATE_BUTTON_TEXT;
@@ -79,9 +82,7 @@ public class CSGData implements AppDataComponent {
     ObservableList<ScheduleItem> scheduleItems;
     LocalDate startMonday;
     LocalDate endFriday;
-    String time;
-    String link;
-    String criteria;
+    ObservableList<String> types;
     
     ObservableList<Team> teams;
 
@@ -112,6 +113,8 @@ public class CSGData implements AppDataComponent {
         years.addAll("2017","2018","2019");
         recitations = FXCollections.observableArrayList();
         scheduleItems = FXCollections.observableArrayList();
+        types = FXCollections.observableArrayList();
+        types.addAll("Holiday","Lecture","Recitation","HW");
         teams = FXCollections.observableArrayList();
         students = FXCollections.observableArrayList();
         
@@ -160,6 +163,10 @@ public class CSGData implements AppDataComponent {
     
     public ObservableList<String> getYears() {
         return years;
+    }
+    
+    public ObservableList<String> getTypes() {
+        return types;
     }
     
     public String getSubject() {
@@ -543,7 +550,7 @@ public class CSGData implements AppDataComponent {
             Recitation r = listOfRecitations.get(i);
             if(!r.getSection().equals(recSection) && r.getSection().equals(section)) {
                 AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
-                dialog.show(props.getProperty(TA_NAME_AND_EMAIL_NOT_UNIQUE_TITLE), props.getProperty(TA_NAME_AND_EMAIL_NOT_UNIQUE_MESSAGE));
+                dialog.show(props.getProperty(RECITATION_SECTION_NOT_UNIQUE_TITLE), props.getProperty(RECITATION_SECTION_NOT_UNIQUE_MESSAGE));
             }
             else if(r.getSection().equals(recSection)) {
                 r.setSection(section);
@@ -622,6 +629,119 @@ public class CSGData implements AppDataComponent {
         ScheduleItem scheduleItem = new ScheduleItem(initType, initDate, initTime, initTitle, initTopic, initLink, initCriteria);
         if(!containsScheduleItem(initType, initDate)) {
             scheduleItems.add(scheduleItem);
+        }
+        Collections.sort(scheduleItems);
+    }
+    
+    public void removeScheduleItem(ScheduleItem scheduleItem) {
+        for (Iterator<ScheduleItem> it = scheduleItems.iterator(); it.hasNext();) {
+            ScheduleItem s = it.next();
+            if(s.compareTo(scheduleItem) == 0)
+                it.remove();
+        }
+    }
+    
+    public void updateScheduleItem(String siType, String siDate, String siTime, String siTitle, String siTopic, String siLink, String siCriteria) {
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        CSGController controller = new CSGController(app);
+        Button addButton = workspace.getAddScheduleItemButton();
+        ComboBox typeComboBox = workspace.getTypeComboBox();
+        String type = (String)(typeComboBox.getValue());
+        DatePicker dateSchedulePicker = workspace.getDateSchedulePicker();
+        String date = dateSchedulePicker.getValue().toString();
+        TextField timeTextField = workspace.getTimeTextField();
+        String time = timeTextField.getText();
+        TextField titleScheduleTextField = workspace.getTitleScheduleTextField();
+        String title = titleScheduleTextField.getText();
+        TextField topicTextField = workspace.getTopicTextField();
+        String topic = topicTextField.getText();
+        TextField linkTextField = workspace.getLinkTextField();
+        String link = linkTextField.getText();
+        TextField criteriaTextField = workspace.getCriteriaTextField();
+        String criteria = criteriaTextField.getText();
+        CSGData data = (CSGData)app.getDataComponent();
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        
+        ObservableList<ScheduleItem> listOfScheduleItems = data.getScheduleItems();
+        for(int i = 0; i < listOfScheduleItems.size(); i++)
+        {
+            ScheduleItem si = listOfScheduleItems.get(i);
+            if(si.getType().equals(siType) && si.getDate().equals(siDate) && si.getTime().equals(siTime) && si.getTitle().equals(siTitle) && si.getTopic().equals(siTopic) && si.getLink().equals(siLink) && si.getCriteria().equals(siCriteria)) {
+                si.setType(type);
+                si.setDate(date);
+                si.setTime(time);
+                si.setTitle(title);
+                si.setTopic(topic);
+                si.setLink(link);
+                si.setCriteria(criteria);
+                listOfScheduleItems.set(i, si);
+
+                typeComboBox.setValue(null);
+                dateSchedulePicker.setValue(null);
+                timeTextField.setText("");
+                titleScheduleTextField.setText("");
+                topicTextField.setText("");
+                linkTextField.setText("");
+                criteriaTextField.setText("");
+
+                addButton.setText(props.getProperty(ADD_SCHEDULE_BUTTON_TEXT));
+                addButton.setOnAction(ee -> {
+                    controller.handleAddScheduleItem();
+                });
+                break;
+            }
+        }
+    }
+    
+    public void undoUpdateScheduleItem(String type, String date, String time, String title, String topic, String link, String criteria, ScheduleItem scheduleItem) {
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        CSGController controller = new CSGController(app);
+        Button addButton = workspace.getAddScheduleItemButton();
+        ComboBox typeComboBox = workspace.getTypeComboBox();
+        DatePicker dateSchedulePicker = workspace.getDateSchedulePicker();
+        TextField timeTextField = workspace.getTimeTextField();
+        TextField titleScheduleTextField = workspace.getTitleScheduleTextField();
+        TextField topicTextField = workspace.getTopicTextField();
+        TextField linkTextField = workspace.getLinkTextField();
+        TextField criteriaTextField = workspace.getCriteriaTextField();
+        CSGData data = (CSGData)app.getDataComponent();
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        
+        ObservableList<ScheduleItem> listOfScheduleItems = data.getScheduleItems();
+        String scheduleItemType = scheduleItem.getType();
+        String scheduleItemDate = scheduleItem.getDate();
+        String scheduleItemTime = scheduleItem.getTime();
+        String scheduleItemTitle = scheduleItem.getTitle();
+        String scheduleItemTopic = scheduleItem.getTopic();
+        String scheduleItemLink = scheduleItem.getLink();
+        String scheduleItemCriteria = scheduleItem.getCriteria();
+        for(int i = 0; i < listOfScheduleItems.size(); i++)
+        {
+            ScheduleItem si = listOfScheduleItems.get(i);
+            if(si.getType().equals(scheduleItemType) && si.getDate().equals(scheduleItemDate) && si.getTime().equals(scheduleItemTime) && si.getTitle().equals(scheduleItemTitle) && si.getTopic().equals(scheduleItemTopic) && si.getLink().equals(scheduleItemLink) && si.getCriteria().equals(scheduleItemCriteria)) {
+                si.setType(type);
+                si.setDate(date);
+                si.setTime(time);
+                si.setTitle(title);
+                si.setTopic(topic);
+                si.setLink(link);
+                si.setCriteria(criteria);
+                listOfScheduleItems.set(i, si);
+
+                typeComboBox.setValue(scheduleItemType);
+                dateSchedulePicker.setValue(LocalDate.parse(scheduleItemDate));
+                timeTextField.setText(scheduleItemTime);
+                titleScheduleTextField.setText(scheduleItemTitle);
+                topicTextField.setText(scheduleItemTopic);
+                linkTextField.setText(scheduleItemLink);
+                criteriaTextField.setText(scheduleItemCriteria);
+
+                addButton.setText(props.getProperty(ADD_SCHEDULE_BUTTON_TEXT));
+                addButton.setOnAction(ee -> {
+                    controller.handleAddScheduleItem();
+                });
+                break;
+            }
         }
     }
     

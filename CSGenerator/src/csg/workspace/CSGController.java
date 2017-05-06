@@ -7,6 +7,7 @@ package csg.workspace;
 
 import csg.CSGProperty;
 import static csg.CSGProperty.ADD_RECITATION_BUTTON_TEXT;
+import static csg.CSGProperty.ADD_SCHEDULE_BUTTON_TEXT;
 import static csg.CSGProperty.INVALID_TA_EMAIL_MESSAGE;
 import static csg.CSGProperty.INVALID_TA_EMAIL_TITLE;
 import static csg.CSGProperty.MISSING_RECITATION_DAY_MESSAGE;
@@ -17,6 +18,20 @@ import static csg.CSGProperty.MISSING_RECITATION_LOCATION_MESSAGE;
 import static csg.CSGProperty.MISSING_RECITATION_LOCATION_TITLE;
 import static csg.CSGProperty.MISSING_RECITATION_SECTION_MESSAGE;
 import static csg.CSGProperty.MISSING_RECITATION_SECTION_TITLE;
+import static csg.CSGProperty.MISSING_SCHEDULE_CRITERIA_MESSAGE;
+import static csg.CSGProperty.MISSING_SCHEDULE_CRITERIA_TITLE;
+import static csg.CSGProperty.MISSING_SCHEDULE_DATE_MESSAGE;
+import static csg.CSGProperty.MISSING_SCHEDULE_DATE_TITLE;
+import static csg.CSGProperty.MISSING_SCHEDULE_LINK_MESSAGE;
+import static csg.CSGProperty.MISSING_SCHEDULE_LINK_TITLE;
+import static csg.CSGProperty.MISSING_SCHEDULE_TIME_MESSAGE;
+import static csg.CSGProperty.MISSING_SCHEDULE_TIME_TITLE;
+import static csg.CSGProperty.MISSING_SCHEDULE_TITLE_MESSAGE;
+import static csg.CSGProperty.MISSING_SCHEDULE_TITLE_TITLE;
+import static csg.CSGProperty.MISSING_SCHEDULE_TOPIC_MESSAGE;
+import static csg.CSGProperty.MISSING_SCHEDULE_TOPIC_TITLE;
+import static csg.CSGProperty.MISSING_SCHEDULE_TYPE_MESSAGE;
+import static csg.CSGProperty.MISSING_SCHEDULE_TYPE_TITLE;
 import static csg.CSGProperty.MISSING_TA_EMAIL_MESSAGE;
 import static csg.CSGProperty.MISSING_TA_EMAIL_TITLE;
 import static csg.CSGProperty.MISSING_TA_NAME_MESSAGE;
@@ -28,12 +43,15 @@ import static csg.CSGProperty.TA_NAME_AND_EMAIL_NOT_UNIQUE_TITLE;
 import csg.CSGeneratorApp;
 import csg.data.CSGData;
 import csg.data.Recitation;
+import csg.data.ScheduleItem;
 import csg.data.SitePage;
 import csg.data.TeachingAssistant;
 import csg.file.TimeSlot;
 import csg.jtps.AddRecTrans;
+import csg.jtps.AddSITrans;
 import csg.jtps.AddTrans;
 import csg.jtps.DeleteRecTrans;
+import csg.jtps.DeleteSITrans;
 import csg.jtps.DeleteTrans;
 import csg.jtps.EndFridayTrans;
 import csg.jtps.EndTimeTrans;
@@ -41,6 +59,7 @@ import csg.jtps.StartMondayTrans;
 import csg.jtps.StartTimeTrans;
 import csg.jtps.ToggleTrans;
 import csg.jtps.UpdateRecTrans;
+import csg.jtps.UpdateSITrans;
 import csg.jtps.UpdateTrans;
 import static djf.settings.AppPropertyType.EXPORT_DIR_TITLE;
 import static djf.settings.AppPropertyType.INVALID_END_FRIDAY_FRIDAY_MESSAGE;
@@ -693,19 +712,196 @@ public class CSGController {
     }
     
     public void handleAddScheduleItem() {
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        ComboBox typeComboBox = workspace.getTypeComboBox();
+        String type = (String)(typeComboBox.getValue());
+        DatePicker dateSchedulePicker = workspace.getDateSchedulePicker();
+        String date = "";
+        if(dateSchedulePicker.getValue() != null)
+            date = dateSchedulePicker.getValue().toString();
+        TextField timeTextField = workspace.getTimeTextField();
+        String time = timeTextField.getText();
+        TextField titleScheduleTextField = workspace.getTitleScheduleTextField();
+        String title = titleScheduleTextField.getText();
+        TextField topicTextField = workspace.getTopicTextField();
+        String topic = topicTextField.getText();
+        TextField linkTextField = workspace.getLinkTextField();
+        String link = linkTextField.getText();
+        TextField criteriaTextField = workspace.getCriteriaTextField();
+        String criteria = criteriaTextField.getText();
+        jTPS transactions = workspace.getjTPS();
         
+        // WE'LL NEED TO ASK THE DATA SOME QUESTIONS TOO
+        CSGData data = (CSGData)app.getDataComponent();
+        
+        // WE'LL NEED THIS IN CASE WE NEED TO DISPLAY ANY ERROR MESSAGES
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        
+        if (type == null) {
+	    AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+	    dialog.show(props.getProperty(MISSING_SCHEDULE_TYPE_TITLE), props.getProperty(MISSING_SCHEDULE_TYPE_MESSAGE));            
+        }
+        else if (date.isEmpty()) {
+            AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+	    dialog.show(props.getProperty(MISSING_SCHEDULE_DATE_TITLE), props.getProperty(MISSING_SCHEDULE_DATE_MESSAGE));
+        }
+        else if (time.isEmpty()) {
+            AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+	    dialog.show(props.getProperty(MISSING_SCHEDULE_TIME_TITLE), props.getProperty(MISSING_SCHEDULE_TIME_MESSAGE));
+        }
+        else if(title.isEmpty()) {
+            AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+	    dialog.show(props.getProperty(MISSING_SCHEDULE_TITLE_TITLE), props.getProperty(MISSING_SCHEDULE_TITLE_MESSAGE));
+        }
+        else if(topic.isEmpty()) {
+            AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+	    dialog.show(props.getProperty(MISSING_SCHEDULE_TOPIC_TITLE), props.getProperty(MISSING_SCHEDULE_TOPIC_MESSAGE));
+        }
+        else if(link.isEmpty()) {
+            AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+	    dialog.show(props.getProperty(MISSING_SCHEDULE_LINK_TITLE), props.getProperty(MISSING_SCHEDULE_LINK_MESSAGE));
+        }
+        else if(criteria.isEmpty()) {
+            AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+	    dialog.show(props.getProperty(MISSING_SCHEDULE_CRITERIA_TITLE), props.getProperty(MISSING_SCHEDULE_CRITERIA_MESSAGE));
+        }
+        else {
+            AddSITrans add = new AddSITrans(app,type,date,time,title,topic,link,criteria);
+            transactions.addTransaction(add);
+            
+            // CLEAR THE TEXT FIELDS
+            typeComboBox.setValue(null);
+            dateSchedulePicker.setValue(null);
+            timeTextField.setText("");
+            titleScheduleTextField.setText("");
+            topicTextField.setText("");
+            linkTextField.setText("");
+            criteriaTextField.setText("");
+            
+            app.getGUI().getAppFileController().markAsDone(app.getGUI());
+            app.getGUI().getAppFileController().markAsEdited(app.getGUI());
+        }
     }
     
     public void handleDeleteScheduleItem(KeyCode key) {
+        // GET THE TABLE
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        TableView scheduleItemTable = workspace.getScheduleItemTable();
         
+        // IS A RECITATION SELECTED IN THE TABLE?
+        Object selectedItem = scheduleItemTable.getSelectionModel().getSelectedItem();
+        
+        // GET THE RECITATION
+        ScheduleItem scheduleItem = (ScheduleItem)selectedItem;
+        jTPS transaction = workspace.getjTPS();
+        DeleteSITrans delete = new DeleteSITrans(app,scheduleItem);
+        
+        if(key == KeyCode.DELETE) {
+            transaction.addTransaction(delete);
+            workspace.getTypeComboBox().setValue(null);
+            workspace.getDateSchedulePicker().setValue(null);
+            workspace.getTimeTextField().setText("");
+            workspace.getTopicTextField().setText("");
+            workspace.getLinkTextField().setText("");
+            workspace.getCriteriaTextField().setText("");
+            workspace.getAddScheduleItemButton().setText(props.getProperty(ADD_SCHEDULE_BUTTON_TEXT));
+            workspace.getAddScheduleItemButton().setOnAction(ee -> {
+                handleAddScheduleItem();
+            });
+        }
+        app.getGUI().getAppFileController().markAsDone(app.getGUI());
+        app.getGUI().getAppFileController().markAsEdited(app.getGUI());
     }
     
     public void handleSelectScheduleItem() {
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        TableView scheduleItemTable = workspace.getScheduleItemTable();
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        Button addButton = workspace.getAddScheduleItemButton();
+        ComboBox typeComboBox = workspace.getTypeComboBox();
+        DatePicker dateSchedulePicker = workspace.getDateSchedulePicker();
+        TextField timeTextField = workspace.getTimeTextField();
+        TextField titleScheduleTextField = workspace.getTitleScheduleTextField();
+        TextField topicTextField = workspace.getTopicTextField();
+        TextField linkTextField = workspace.getLinkTextField();
+        TextField criteriaTextField = workspace.getCriteriaTextField();
+        Object selectedItem = scheduleItemTable.getSelectionModel().getSelectedItem();
         
+        if(selectedItem != null) {
+            ScheduleItem scheduleItem = (ScheduleItem)selectedItem;
+            typeComboBox.setValue(scheduleItem.getType());
+            dateSchedulePicker.setValue(LocalDate.parse(scheduleItem.getDate()));
+            timeTextField.setText(scheduleItem.getTime());
+            titleScheduleTextField.setText(scheduleItem.getTitle());
+            topicTextField.setText(scheduleItem.getTopic());
+            linkTextField.setText(scheduleItem.getLink());
+            criteriaTextField.setText(scheduleItem.getCriteria());
+            addButton.setText(props.getProperty(CSGProperty.UPDATE_SCHEDULE_BUTTON_TEXT.toString()));
+            typeComboBox.setOnAction(e -> {
+                handleUpdateScheduleItem(selectedItem);
+            });
+            dateSchedulePicker.setOnAction(e -> {
+                handleUpdateScheduleItem(selectedItem);
+            });
+            timeTextField.setOnAction(e -> {
+                handleUpdateScheduleItem(selectedItem);
+            });
+            titleScheduleTextField.setOnAction(e -> {
+                handleUpdateScheduleItem(selectedItem);
+            });
+            topicTextField.setOnAction(e -> {
+                handleUpdateScheduleItem(selectedItem);
+            });
+            linkTextField.setOnAction(e -> {
+                handleUpdateScheduleItem(selectedItem);
+            });
+            criteriaTextField.setOnAction(e -> {
+                handleUpdateScheduleItem(selectedItem);
+            });
+            addButton.setOnAction(e -> {
+                handleUpdateScheduleItem(selectedItem);
+            });
+        }
+    }
+    
+    public void handleUpdateScheduleItem(Object selectedItem) {
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        ScheduleItem scheduleItem = (ScheduleItem)selectedItem;
+            
+        jTPS transactions = workspace.getjTPS();
+        UpdateSITrans update = new UpdateSITrans(app, scheduleItem.getType(), scheduleItem.getDate(), scheduleItem.getTime(), scheduleItem.getTitle(), scheduleItem.getTopic(), scheduleItem.getLink(), scheduleItem.getCriteria(), scheduleItem);
+        transactions.addTransaction(update);
     }
     
     public void handleClearScheduleItem() {
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
         
+        TableView scheduleItemTable = workspace.getScheduleItemTable();
+        Button addButton = workspace.getAddScheduleItemButton();
+        ComboBox typeComboBox = workspace.getTypeComboBox();
+        DatePicker dateSchedulePicker = workspace.getDateSchedulePicker();
+        TextField timeTextField = workspace.getTimeTextField();
+        TextField titleScheduleTextField = workspace.getTitleScheduleTextField();
+        TextField topicTextField = workspace.getTopicTextField();
+        TextField linkTextField = workspace.getLinkTextField();
+        TextField criteriaTextField = workspace.getCriteriaTextField();
+        
+        scheduleItemTable.getSelectionModel().clearSelection();
+        
+        typeComboBox.setValue(null);
+        dateSchedulePicker.setValue(null);
+        timeTextField.setText("");
+        titleScheduleTextField.setText("");
+        topicTextField.setText("");
+        linkTextField.setText("");
+        criteriaTextField.setText("");
+
+        addButton.setText(props.getProperty(ADD_SCHEDULE_BUTTON_TEXT));
+        addButton.setOnAction(ee -> {
+            handleAddScheduleItem();
+        });
     }
     
     public class EmailValidator {

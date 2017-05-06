@@ -1005,6 +1005,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         String typeLabelText = props.getProperty(CSGProperty.TYPE_LABEL_TEXT.toString());
         typeLabel = new Label(typeLabelText);
         typeComboBox = new ComboBox();
+        typeComboBox.setItems(data.getTypes());
 
         String dateLabelText = props.getProperty(CSGProperty.DATE_LABEL_TEXT.toString());
         dateLabel = new Label(dateLabelText);
@@ -1103,25 +1104,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         endingFridayDatePicker.setOnAction(e -> {
             controller.handleEndingFriday();
         });
-        typeComboBox.setOnAction(e -> {
-            controller.handleAddScheduleItem();
-        });
-        dateSchedulePicker.setOnAction(e -> {
-            controller.handleAddScheduleItem();
-        });
-        timeTextField.setOnAction(e -> {
-            controller.handleAddScheduleItem();
-        });
-        titleScheduleTextField.setOnAction(e -> {
-            controller.handleAddScheduleItem();
-        });
-        topicTextField.setOnAction(e -> {
-            controller.handleAddScheduleItem();
-        });
-        linkTextField.setOnAction(e -> {
-            controller.handleAddScheduleItem();
-        });
-        criteriaTextField.setOnAction(e -> {
+        addScheduleItemButton.setOnAction(e -> {
             controller.handleAddScheduleItem();
         });
         scheduleItemTable.setOnKeyPressed(e -> {
