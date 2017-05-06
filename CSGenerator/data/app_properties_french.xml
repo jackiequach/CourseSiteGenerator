@@ -81,6 +81,9 @@
         
         <property name="DELETE_TIME_TITLE"              value="Continuer à supprimer les heures de bureau?"></property>
         <property name="DELETE_TIME_MESSAGE"            value="Voulez-vous continuer et supprimer les heures de bureau?"></property>
+        
+        <property name="CALENDAR_BOUND_TITLE"              value="Continuer à supprimer les dates?"></property>
+        <property name="CALENDAR_BOUND_MESSAGE"            value="Voulez-vous continuer et supprimer les dates de l'horaire?"></property>
 
         <!-- WORKSPACE CONTROLS STUFF -->
         <property name="COURSEDETAILS_TAB_TEXT"         value="Détails du cours"></property>

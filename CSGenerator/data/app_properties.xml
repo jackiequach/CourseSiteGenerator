@@ -81,6 +81,9 @@
         
         <property name="DELETE_TIME_TITLE"              value="Continue to remove office hours?"></property>
         <property name="DELETE_TIME_MESSAGE"            value="Do you want to continue and remove Office Hours?"></property>
+        
+        <property name="CALENDAR_BOUND_TITLE"              value="Continue to remove dates?"></property>
+        <property name="CALENDAR_BOUND_MESSAGE"            value="Do you want to continue and remove dates from schedule?"></property>
 
         <!-- WORKSPACE CONTROLS STUFF -->
         <property name="COURSEDETAILS_TAB_TEXT"         value="Course Details"></property>
