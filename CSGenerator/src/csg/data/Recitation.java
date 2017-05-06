@@ -33,24 +33,48 @@ public class Recitation<E extends Comparable<E>> implements Comparable<E>  {
         return section.get();
     }
     
+    public void setSection(String section) {
+        this.section.set(section);
+    }
+    
     public String getInstructor() {
         return instructor.get();
+    }
+    
+    public void setInstructor(String instructor) {
+        this.instructor.set(instructor);
     }
     
     public String getDay() {
         return day.get();
     }
     
+    public void setDay(String day) {
+        this.day.set(day);
+    }
+    
     public String getLocation() {
         return location.get();
+    }
+    
+    public void setLocation(String location) {
+        this.location.set(location);
     }
     
     public String getTAOne() {
         return taOne.get();
     }
     
+    public void setTAOne(String taOne) {
+        this.taOne.set(taOne);
+    }
+    
     public String getTATwo() {
         return taTwo.get();
+    }
+    
+    public void setTATwo(String taTwo) {
+        this.taTwo.set(taTwo);
     }
 
     @Override
