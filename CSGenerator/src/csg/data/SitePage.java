@@ -14,7 +14,7 @@ import javafx.beans.property.StringProperty;
  *
  * @author Jackie
  */
-public class SitePage {
+public class SitePage<E extends Comparable<E>> implements Comparable<E> {
     private final BooleanProperty use;
     private final StringProperty title;
     private final StringProperty fileName;
@@ -49,5 +49,10 @@ public class SitePage {
     
     public String getScript() {
         return script.get();
+    }
+
+    @Override
+    public int compareTo(E otherSitePage) {
+        return getFile().compareTo(((SitePage)otherSitePage).getFile());
     }
 }
