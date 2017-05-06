@@ -219,6 +219,21 @@
         <property name="RECITATION_SECTION_NOT_UNIQUE_TITLE"        value="Recitation Section Not Unique"></property>
         <property name="RECITATION_SECTION_NOT_UNIQUE_MESSAGE"      value="You must provide a unique Recitation Section"></property>
         
+        <property name="MISSING_SCHEDULE_TYPE_TITLE"        value="Missing Schedule Item Type"></property>
+        <property name="MISSING_SCHEDULE_TYPE_MESSAGE"      value="You must provide a Schedule Item Type"></property>
+        <property name="MISSING_SCHEDULE_DATE_TITLE"        value="Missing Schedule Item Date"></property>
+        <property name="MISSING_SCHEDULE_DATE_MESSAGE"      value="You must provide a Schedule Item Date"></property>
+        <property name="MISSING_SCHEDULE_TIME_TITLE"        value="Missing Schedule Item Time"></property>
+        <property name="MISSING_SCHEDULE_TIME_MESSAGE"      value="You must provide a Schedule Item Time"></property>
+        <property name="MISSING_SCHEDULE_TITLE_TITLE"       value="Missing Schedule Item Title"></property>
+        <property name="MISSING_SCHEDULE_TITLE_MESSAGE"     value="You must provide a Schedule Item Title"></property>
+        <property name="MISSING_SCHEDULE_TOPIC_TITLE"       value="Missing Schedule Item Topic"></property>
+        <property name="MISSING_SCHEDULE_TOPIC_MESSAGE"     value="You must provide a Schedule Item Topic"></property>
+        <property name="MISSING_SCHEDULE_LINK_TITLE"        value="Missing Schedule Item Link"></property>
+        <property name="MISSING_SCHEDULE_LINK_MESSAGE"      value="You must provide a Schedule Item Link"></property>
+        <property name="MISSING_SCHEDULE_CRITERIA_TITLE"    value="Missing Schedule Item Criteria"></property>
+        <property name="MISSING_SCHEDULE_CRITERIA_MESSAGE"  value="You must provide a Schedule Item Criteria"></property>
+        
     </property_list>
     <property_options_list>
         <property_options name="OFFICE_HOURS_TABLE_HEADERS">

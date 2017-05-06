@@ -219,6 +219,21 @@
         <property name="RECITATION_SECTION_NOT_UNIQUE_TITLE"        value="Section récitation non unique"></property>
         <property name="RECITATION_SECTION_NOT_UNIQUE_MESSAGE"      value="Vous devez fournir une section unique de récitation"></property>
         
+        <property name="MISSING_SCHEDULE_TYPE_TITLE"        value="Type d'élément de l'horaire manquant"></property>
+        <property name="MISSING_SCHEDULE_TYPE_MESSAGE"      value="Vous devez fournir un type d'élément de planification"></property>
+        <property name="MISSING_SCHEDULE_DATE_TITLE"        value="Calendrier manquant Date de l'article"></property>
+        <property name="MISSING_SCHEDULE_DATE_MESSAGE"      value="Vous devez fournir une Date de l'Annexe"></property>
+        <property name="MISSING_SCHEDULE_TIME_TITLE"        value="Temps d'article de l'horaire manquant"></property>
+        <property name="MISSING_SCHEDULE_TIME_MESSAGE"      value="Vous devez fournir un horaire horaire"></property>
+        <property name="MISSING_SCHEDULE_TITLE_TITLE"       value="Titre de l'article de l'horaire manquant"></property>
+        <property name="MISSING_SCHEDULE_TITLE_MESSAGE"     value="Vous devez fournir un titre d'élément de l'horaire"></property>
+        <property name="MISSING_SCHEDULE_TOPIC_TITLE"       value="Sujet du poste d'horaire manquant"></property>
+        <property name="MISSING_SCHEDULE_TOPIC_MESSAGE"     value="Vous devez fournir un sujet d'élément"></property>
+        <property name="MISSING_SCHEDULE_LINK_TITLE"        value="Numéro d'article manquant"></property>
+        <property name="MISSING_SCHEDULE_LINK_MESSAGE"      value="Vous devez fournir un lien d'élément d'horaire"></property>
+        <property name="MISSING_SCHEDULE_CRITERIA_TITLE"    value="Critères de l'élément de l'horaire manquant"></property>
+        <property name="MISSING_SCHEDULE_CRITERIA_MESSAGE"  value="Vous devez fournir un critère de l'élément de l'horaire"></property>
+        
     </property_list>
     <property_options_list>
         <property_options name="OFFICE_HOURS_TABLE_HEADERS">
