@@ -52,6 +52,14 @@
         <property name="INVALID_START_TIME_MESSAGE"     value="Vous devez choisir une heure de début avant l'heure de fin"></property>
         <property name="INVALID_END_TIME_TITLE"         value="L'heure de fin est avant l'heure de début"></property>
         <property name="INVALID_END_TIME_MESSAGE"       value="Vous devez choisir une heure de fin qui est après l'heure de début"></property>
+        <property name="INVALID_START_MONDAY_TITLE"         value="La date de début est avant la date de fin"></property>
+        <property name="INVALID_START_MONDAY_MESSAGE"       value="Vous devez choisir une date de début avant la date de fin"></property>
+        <property name="INVALID_END_FRIDAY_TITLE"         value="La date de fin est avant la date de début"></property>
+        <property name="INVALID_END_FRIDAY_MESSAGE"       value="Vous devez choisir une date de fin après la date de début"></property>
+        <property name="INVALID_START_MONDAY_MONDAY_TITLE"         value="Début lundi n'est pas un lundi"></property>
+        <property name="INVALID_START_MONDAY_MONDAY_MESSAGE"       value="Vous devez choisir un lundi"></property>
+        <property name="INVALID_END_FRIDAY_FRIDAY_TITLE"         value="La fin vendredi n'est pas un vendredi"></property>
+        <property name="INVALID_END_FRIDAY_FRIDAY_MESSAGE"       value="Vous devez choisir un vendredi"></property>
 	
         <!-- VERIFICATION MESSAGES -->
 	
