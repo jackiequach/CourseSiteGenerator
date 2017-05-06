@@ -5,6 +5,7 @@
  */
 package csg.data;
 
+import java.time.LocalDate;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -12,7 +13,7 @@ import javafx.beans.property.StringProperty;
  *
  * @author Jackie
  */
-public class ScheduleItem {
+public class ScheduleItem<E extends Comparable<E>> implements Comparable<E> {
     private final StringProperty type;
     private final StringProperty date;
     private final StringProperty time;
@@ -61,5 +62,18 @@ public class ScheduleItem {
     
     public String getCriteria() {
         return criteria.get();
+    }
+
+    @Override
+    public int compareTo(E otherScheduleItem) {
+        if(LocalDate.parse(getDate()).isBefore(LocalDate.parse(((ScheduleItem)otherScheduleItem).getDate()))) {
+            return -1;
+        }
+        else if(LocalDate.parse(getDate()).isEqual(LocalDate.parse(((ScheduleItem)otherScheduleItem).getDate()))) {
+            return 0;
+        }
+        else {
+            return 1;
+        }
     }
 }
