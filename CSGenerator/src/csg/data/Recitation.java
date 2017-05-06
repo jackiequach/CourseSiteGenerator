@@ -12,7 +12,7 @@ import javafx.beans.property.StringProperty;
  *
  * @author Jackie
  */
-public class Recitation<E extends Comparable<E>> implements Comparable<E>  {
+public class Recitation<E extends Comparable<E>> implements Comparable<E> {
     private final StringProperty section;
     private final StringProperty instructor;
     private final StringProperty day;
