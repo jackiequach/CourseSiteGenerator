@@ -360,6 +360,8 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         PropertiesManager props = PropertiesManager.getPropertiesManager();
         
         tabs = new TabPane();
+
+        controller = new CSGController(app);
         
         courseDetailsTab = new Tab();
         courseDetailsTab.setText(props.getProperty(CSGProperty.COURSEDETAILS_TAB_TEXT.toString()));
@@ -597,6 +599,36 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         courseDetailsPane = new BorderPane();
         courseDetailsPane.setCenter(courseDetailsScroll);
         
+        // CONTROLS FOR ADDING TAs
+        subjectComboBox.setOnAction(e -> {
+            controller.handleCourseInfo();
+        });
+        numberComboBox.setOnAction(e -> {
+            controller.handleCourseInfo();
+        });
+        semesterComboBox.setOnAction(e -> {
+            controller.handleCourseInfo();
+        });
+        yearComboBox.setOnKeyPressed(e -> {
+            controller.handleCourseInfo();
+        });
+        titleTextField.setOnKeyPressed(e -> {
+            controller.handleCourseInfo();
+        });
+        instructorNameTextField.setOnKeyPressed(e -> {
+            controller.handleCourseInfo();
+        });
+        instructorHomeTextField.setOnKeyPressed(e -> {
+            controller.handleCourseInfo();
+        });
+        
+        changeExportDirButton.setOnKeyPressed(e -> {
+            controller.handleChangeExportDir();
+        });
+        selectTemplateDirButton.setOnKeyPressed(e -> {
+            controller.handleSelectTemplate();
+        });
+        
         return courseDetailsPane;
     }
     
@@ -715,11 +747,8 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         // MAKE SURE THE TABLE EXTENDS DOWN FAR ENOUGH
         taTable.prefHeightProperty().bind(taDataPane.heightProperty().multiply(1.9));
 
-        // NOW LET'S SETUP THE EVENT HANDLING
-        controller = new CSGController(app);
-
         deleteTAButton.setOnAction(e -> {
-            controller.handleDelete(KeyCode.DELETE);
+            controller.handleDeleteTA(KeyCode.DELETE);
         });
         
         // CONTROLS FOR ADDING TAs
@@ -733,7 +762,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
             controller.handleAddTA();
         });
         taTable.setOnKeyPressed(e -> {
-            controller.handleDelete(e.getCode());
+            controller.handleDeleteTA(e.getCode());
         });
         taTable.setRowFactory(tableview -> {
             TableRow<TeachingAssistant> row = new TableRow<>();
