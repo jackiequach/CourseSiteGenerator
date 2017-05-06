@@ -16,6 +16,7 @@ import static csg.CSGProperty.TA_NAME_AND_EMAIL_NOT_UNIQUE_MESSAGE;
 import static csg.CSGProperty.TA_NAME_AND_EMAIL_NOT_UNIQUE_TITLE;
 import csg.CSGeneratorApp;
 import csg.data.CSGData;
+import csg.data.SitePage;
 import csg.data.TeachingAssistant;
 import csg.file.TimeSlot;
 import csg.jtps.AddTrans;
@@ -24,16 +25,22 @@ import csg.jtps.EndTimeTrans;
 import csg.jtps.StartTimeTrans;
 import csg.jtps.ToggleTrans;
 import csg.jtps.UpdateTrans;
+import static djf.settings.AppPropertyType.EXPORT_DIR_TITLE;
 import static djf.settings.AppPropertyType.INVALID_END_TIME_MESSAGE;
 import static djf.settings.AppPropertyType.INVALID_END_TIME_TITLE;
 import static djf.settings.AppPropertyType.INVALID_START_TIME_MESSAGE;
 import static djf.settings.AppPropertyType.INVALID_START_TIME_TITLE;
+import static djf.settings.AppStartupConstants.PATH_EMPTY;
+import static djf.settings.AppStartupConstants.PATH_TEMPLATES;
 import djf.ui.AppMessageDialogSingleton;
+import java.io.File;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.beans.property.StringProperty;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
@@ -41,6 +48,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.DirectoryChooser;
 import jtps.jTPS;
 import properties_manager.PropertiesManager;
 
@@ -367,11 +375,56 @@ public class CSGController {
     }
     
     public void handleChangeExportDir() {
-        
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        CSGData data = (CSGData)app.getDataComponent();
+        DirectoryChooser dc = new DirectoryChooser();
+        dc.setInitialDirectory(new File(PATH_EMPTY));
+        dc.setTitle(props.getProperty(EXPORT_DIR_TITLE));
+
+        File directory = dc.showDialog(app.getGUI().getWindow());
+        if (directory != null) {
+            data.setExportDirPath(directory.getPath());
+        }
     }
     
     public void handleSelectTemplate() {
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        CSGData data = (CSGData)app.getDataComponent();
+        ObservableList<SitePage> sitePages = data.getSitePages();
         
+        DirectoryChooser dc = new DirectoryChooser();
+        dc.setInitialDirectory(new File(PATH_TEMPLATES));
+        dc.setTitle(props.getProperty(EXPORT_DIR_TITLE));
+
+        File directory = dc.showDialog(app.getGUI().getWindow());
+        if (directory != null) {
+            data.setTemplateDirPath(directory.getPath());
+            File[] directoryListing = directory.listFiles(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String name) {
+                    return name.endsWith(".html");
+                }
+            });
+            if(directoryListing != null) {
+                for(File htmlFile : directoryListing) {
+                    if(htmlFile.getName().equals("index.html")) {
+                        sitePages.add(new SitePage(true, "Home", htmlFile.getName(), "HomeBuilder.js"));
+                    }
+                    if(htmlFile.getName().equals("syllabus.html")) {
+                        sitePages.add(new SitePage(true, "Syllabus", htmlFile.getName(), "SyllabusBuilder.js"));
+                    }
+                    if(htmlFile.getName().equals("schedule.html")) {
+                        sitePages.add(new SitePage(true, "Schedule", htmlFile.getName(), "ScheduleBuilder.js"));
+                    }
+                    if(htmlFile.getName().equals("hws.html")) {
+                        sitePages.add(new SitePage(true, "HWs", htmlFile.getName(), "HWsBuilder.js"));
+                    }
+                    if(htmlFile.getName().equals("projects.html")) {
+                        sitePages.add(new SitePage(true, "Projects", htmlFile.getName(), "ProjectsBuilder.js"));
+                    }
+                }
+            }
+        }
     }
     
     public class EmailValidator {
