@@ -75,6 +75,7 @@
 	<property name="SAVE_WORK_TITLE"		value="Enregistrer votre travail"></property>
 	<property name="LOAD_WORK_TITLE"		value="Sélectionnez le fichier de travail à charger"></property>
         <property name="EXPORT_WORK_TITLE"              value="Exporter votre travail"></property>
+        <property name="EXPORT_DIR_TITLE"               value="Choisissez votre répertoire d'exportation"></property>
 	<property name="WORK_FILE_EXT"			value=".json"></property>
 	<property name="WORK_FILE_EXT_DESC"		value="Horaires de bureau TA"></property>
         
