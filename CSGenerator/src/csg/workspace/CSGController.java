@@ -6,24 +6,39 @@
 package csg.workspace;
 
 import csg.CSGProperty;
+import static csg.CSGProperty.ADD_RECITATION_BUTTON_TEXT;
 import static csg.CSGProperty.INVALID_TA_EMAIL_MESSAGE;
 import static csg.CSGProperty.INVALID_TA_EMAIL_TITLE;
+import static csg.CSGProperty.MISSING_RECITATION_DAY_MESSAGE;
+import static csg.CSGProperty.MISSING_RECITATION_DAY_TITLE;
+import static csg.CSGProperty.MISSING_RECITATION_INSTRUCTOR_MESSAGE;
+import static csg.CSGProperty.MISSING_RECITATION_INSTRUCTOR_TITLE;
+import static csg.CSGProperty.MISSING_RECITATION_LOCATION_MESSAGE;
+import static csg.CSGProperty.MISSING_RECITATION_LOCATION_TITLE;
+import static csg.CSGProperty.MISSING_RECITATION_SECTION_MESSAGE;
+import static csg.CSGProperty.MISSING_RECITATION_SECTION_TITLE;
 import static csg.CSGProperty.MISSING_TA_EMAIL_MESSAGE;
 import static csg.CSGProperty.MISSING_TA_EMAIL_TITLE;
 import static csg.CSGProperty.MISSING_TA_NAME_MESSAGE;
 import static csg.CSGProperty.MISSING_TA_NAME_TITLE;
+import static csg.CSGProperty.RECITATION_SECTION_NOT_UNIQUE_MESSAGE;
+import static csg.CSGProperty.RECITATION_SECTION_NOT_UNIQUE_TITLE;
 import static csg.CSGProperty.TA_NAME_AND_EMAIL_NOT_UNIQUE_MESSAGE;
 import static csg.CSGProperty.TA_NAME_AND_EMAIL_NOT_UNIQUE_TITLE;
 import csg.CSGeneratorApp;
 import csg.data.CSGData;
+import csg.data.Recitation;
 import csg.data.SitePage;
 import csg.data.TeachingAssistant;
 import csg.file.TimeSlot;
+import csg.jtps.AddRecTrans;
 import csg.jtps.AddTrans;
+import csg.jtps.DeleteRecTrans;
 import csg.jtps.DeleteTrans;
 import csg.jtps.EndTimeTrans;
 import csg.jtps.StartTimeTrans;
 import csg.jtps.ToggleTrans;
+import csg.jtps.UpdateRecTrans;
 import csg.jtps.UpdateTrans;
 import static djf.settings.AppPropertyType.EXPORT_DIR_TITLE;
 import static djf.settings.AppPropertyType.INVALID_END_TIME_MESSAGE;
@@ -234,12 +249,6 @@ public class CSGController {
     
     public void handleUpdateTA(Object selectedItem) {
         CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
-        TableView taTable = workspace.getTATable();
-        Button addButton = workspace.getAddButton();
-        TextField nameTextField = workspace.getNameTextField();
-        TextField emailTextField = workspace.getEmailTextField();
-        CSGData data = (CSGData)app.getDataComponent();
-        PropertiesManager props = PropertiesManager.getPropertiesManager();
         EmailValidator emailValidator = new EmailValidator();
         TeachingAssistant ta = (TeachingAssistant)selectedItem;
             
@@ -425,6 +434,190 @@ public class CSGController {
                 }
             }
         }
+    }
+    
+    public void handleAddRecitation() {
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        TextField sectionTextField = workspace.getSectionTextField();
+        String section = sectionTextField.getText();
+        TextField instructorTextField = workspace.getInstructorTextField();
+        String instructor = instructorTextField.getText();
+        TextField dayTextField = workspace.getDayTextField();
+        String day = dayTextField.getText();
+        TextField locationTextField = workspace.getLocationTextField();
+        String location = locationTextField.getText();
+        ComboBox taOneComboBox = workspace.getSupervisingTAComboBoxOne();
+        String taOne = "";
+        String taTwo = "";
+        if(taOneComboBox.getValue() != null) {
+            taOne = ((TeachingAssistant)taOneComboBox.getValue()).getName();
+        }
+        ComboBox taTwoComboBox = workspace.getSupervisingTAComboBoxTwo();
+        if(taTwoComboBox.getValue() != null) {
+            taTwo = ((TeachingAssistant)taTwoComboBox.getValue()).getName();
+        }
+        jTPS transactions = workspace.getjTPS();
+        
+        // WE'LL NEED TO ASK THE DATA SOME QUESTIONS TOO
+        CSGData data = (CSGData)app.getDataComponent();
+        
+        // WE'LL NEED THIS IN CASE WE NEED TO DISPLAY ANY ERROR MESSAGES
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        
+        if (section.isEmpty()) {
+	    AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+	    dialog.show(props.getProperty(MISSING_RECITATION_SECTION_TITLE), props.getProperty(MISSING_RECITATION_SECTION_MESSAGE));            
+        }
+        else if (instructor.isEmpty()) {
+            AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+	    dialog.show(props.getProperty(MISSING_RECITATION_INSTRUCTOR_TITLE), props.getProperty(MISSING_RECITATION_INSTRUCTOR_MESSAGE));
+        }
+        else if (day.isEmpty()) {
+            AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+	    dialog.show(props.getProperty(MISSING_RECITATION_DAY_TITLE), props.getProperty(MISSING_RECITATION_DAY_MESSAGE));
+        }
+        else if(location.isEmpty()) {
+            AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+	    dialog.show(props.getProperty(MISSING_RECITATION_LOCATION_TITLE), props.getProperty(MISSING_RECITATION_LOCATION_MESSAGE));
+        }
+        else if (data.containsRecitation(section)) {
+	    AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+	    dialog.show(props.getProperty(RECITATION_SECTION_NOT_UNIQUE_TITLE), props.getProperty(RECITATION_SECTION_NOT_UNIQUE_MESSAGE));                                    
+        }
+        else {
+            AddRecTrans add = new AddRecTrans(app,section,instructor,day,location,taOne,taTwo);
+            transactions.addTransaction(add);
+            
+            // CLEAR THE TEXT FIELDS
+            sectionTextField.setText("");
+            instructorTextField.setText("");
+            dayTextField.setText("");
+            locationTextField.setText("");
+            taOneComboBox.setValue(null);
+            taOneComboBox.setValue(null);
+            
+            // AND SEND THE CARET BACK TO THE NAME TEXT FIELD FOR EASY DATA ENTRY
+            sectionTextField.requestFocus();
+            
+            app.getGUI().getAppFileController().markAsDone(app.getGUI());
+            app.getGUI().getAppFileController().markAsEdited(app.getGUI());
+        }
+    }
+    
+    public void handleDeleteRecitation(KeyCode key) {
+        // GET THE TABLE
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        TableView recitationTable = workspace.getRecitationTable();
+        
+        // IS A RECITATION SELECTED IN THE TABLE?
+        Object selectedItem = recitationTable.getSelectionModel().getSelectedItem();
+        
+        // GET THE RECITATION
+        Recitation recitation = (Recitation)selectedItem;
+        jTPS transaction = workspace.getjTPS();
+        DeleteRecTrans delete = new DeleteRecTrans(app,recitation);
+        
+        if(key == KeyCode.DELETE) {
+            transaction.addTransaction(delete);
+            workspace.getSectionTextField().setText("");
+            workspace.getInstructorTextField().setText("");
+            workspace.getDayTextField().setText("");
+            workspace.getLocationTextField().setText("");
+            workspace.getSupervisingTAComboBoxOne().setValue(null);
+            workspace.getSupervisingTAComboBoxTwo().setValue(null);
+            workspace.getAddRecitationButton().setText(props.getProperty(ADD_RECITATION_BUTTON_TEXT));
+            workspace.getAddRecitationButton().setOnAction(ee -> {
+                handleAddRecitation();
+            });
+        }
+        app.getGUI().getAppFileController().markAsDone(app.getGUI());
+        app.getGUI().getAppFileController().markAsEdited(app.getGUI());
+    }
+    
+    public void handleClearRecitation() {
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        
+        TableView recitationTable = workspace.getRecitationTable();
+        Button addButton = workspace.getAddRecitationButton();
+        TextField sectionTextField = workspace.getSectionTextField();
+        TextField instructorTextField = workspace.getInstructorTextField();
+        TextField dayTextField = workspace.getDayTextField();
+        TextField locationTextField = workspace.getLocationTextField();
+        ComboBox taOneComboBox = workspace.getSupervisingTAComboBoxOne();
+        ComboBox taTwoComboBox = workspace.getSupervisingTAComboBoxTwo();
+        
+        recitationTable.getSelectionModel().clearSelection();
+        
+        sectionTextField.setText("");
+        instructorTextField.setText("");
+        dayTextField.setText("");
+        locationTextField.setText("");
+        taOneComboBox.setValue(null);
+        taTwoComboBox.setValue(null);
+
+        sectionTextField.requestFocus();
+
+        addButton.setText(props.getProperty(ADD_RECITATION_BUTTON_TEXT));
+        addButton.setOnAction(ee -> {
+            handleAddRecitation();
+        });
+    }
+    
+    public void handleSelectRecitation() {
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        TableView recitationTable = workspace.getRecitationTable();
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        Button addButton = workspace.getAddRecitationButton();
+        TextField sectionTextField = workspace.getSectionTextField();
+        TextField instructorTextField = workspace.getInstructorTextField();
+        TextField dayTextField = workspace.getDayTextField();
+        TextField locationTextField = workspace.getLocationTextField();
+        ComboBox taOneComboBox = workspace.getSupervisingTAComboBoxOne();
+        ComboBox taTwoComboBox = workspace.getSupervisingTAComboBoxTwo();
+        Object selectedItem = recitationTable.getSelectionModel().getSelectedItem();
+        
+        if(selectedItem != null) {
+            Recitation recitation = (Recitation)selectedItem;
+            sectionTextField.setText(recitation.getSection());
+            instructorTextField.setText(recitation.getInstructor());
+            dayTextField.setText(recitation.getDay());
+            locationTextField.setText(recitation.getLocation());
+            taOneComboBox.setValue(recitation.getTAOne());
+            taTwoComboBox.setValue(recitation.getTATwo());
+            addButton.setText(props.getProperty(CSGProperty.UPDATE_RECITATION_BUTTON_TEXT.toString()));
+            sectionTextField.setOnAction(e -> {
+                handleUpdateRecitation(selectedItem);
+            });
+            instructorTextField.setOnAction(e -> {
+                handleUpdateRecitation(selectedItem);
+            });
+            dayTextField.setOnAction(e -> {
+                handleUpdateRecitation(selectedItem);
+            });
+            locationTextField.setOnAction(e -> {
+                handleUpdateRecitation(selectedItem);
+            });
+            taOneComboBox.setOnAction(e -> {
+                handleUpdateRecitation(selectedItem);
+            });
+            taTwoComboBox.setOnAction(e -> {
+                handleUpdateRecitation(selectedItem);
+            });
+            addButton.setOnAction(e -> {
+                handleUpdateRecitation(selectedItem);
+            });
+        }
+    }
+
+    public void handleUpdateRecitation(Object selectedItem) {
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        Recitation recitation = (Recitation)selectedItem;
+            
+        jTPS transactions = workspace.getjTPS();
+        UpdateRecTrans update = new UpdateRecTrans(app, recitation.getSection(), recitation.getInstructor(), recitation.getDay(), recitation.getLocation(), recitation.getTAOne(), recitation.getTATwo(), recitation);
+        transactions.addTransaction(update);
     }
     
     public class EmailValidator {
