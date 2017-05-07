@@ -107,6 +107,9 @@ import static djf.settings.AppPropertyType.INVALID_START_MONDAY_MONDAY_TITLE;
 import static djf.settings.AppPropertyType.INVALID_START_MONDAY_TITLE;
 import static djf.settings.AppPropertyType.INVALID_START_TIME_MESSAGE;
 import static djf.settings.AppPropertyType.INVALID_START_TIME_TITLE;
+import static djf.settings.AppPropertyType.LEFT_FOOTER_TITLE;
+import static djf.settings.AppPropertyType.RIGHT_FOOTER_TITLE;
+import static djf.settings.AppStartupConstants.FILE_PROTOCOL;
 import static djf.settings.AppStartupConstants.PATH_EMPTY;
 import static djf.settings.AppStartupConstants.PATH_TEMPLATES;
 import djf.ui.AppMessageDialogSingleton;
@@ -126,6 +129,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -508,45 +512,54 @@ public class CSGController {
     public void handleSelectBannerImg() {
         PropertiesManager props = PropertiesManager.getPropertiesManager();
         CSGData data = (CSGData)app.getDataComponent();
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
         FileChooser fc = new FileChooser();
         fc.setInitialDirectory(new File(PATH_EMPTY));
         fc.setTitle(props.getProperty(BANNER_TITLE));
         fc.getExtensionFilters().addAll(
         new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
 
-        File selectedFile = fc.showSaveDialog(app.getGUI().getWindow());
+        File selectedFile = fc.showOpenDialog(app.getGUI().getWindow());
         if (selectedFile != null) {
-            data.setBannerImgPath(selectedFile.getPath());
+            data.setBannerImgPath(FILE_PROTOCOL + selectedFile.getPath());
+            Image temp = new Image(FILE_PROTOCOL + selectedFile.getPath());
+            workspace.getBannerImgView().setImage(temp);
         }
     }
     
     public void handleSelectLeftFooterImg() {
         PropertiesManager props = PropertiesManager.getPropertiesManager();
         CSGData data = (CSGData)app.getDataComponent();
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
         FileChooser fc = new FileChooser();
         fc.setInitialDirectory(new File(PATH_EMPTY));
-        fc.setTitle(props.getProperty(BANNER_TITLE));
+        fc.setTitle(props.getProperty(LEFT_FOOTER_TITLE));
         fc.getExtensionFilters().addAll(
         new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
 
-        File selectedFile = fc.showSaveDialog(app.getGUI().getWindow());
+        File selectedFile = fc.showOpenDialog(app.getGUI().getWindow());
         if (selectedFile != null) {
-            data.setLeftFooterImgPath(selectedFile.getPath());
+            data.setLeftFooterImgPath(FILE_PROTOCOL + selectedFile.getPath());
+            Image temp = new Image(FILE_PROTOCOL + selectedFile.getPath());
+            workspace.getLeftFooterImgView().setImage(temp);
         }
     }
     
     public void handleSelectRightFooterImg() {
         PropertiesManager props = PropertiesManager.getPropertiesManager();
         CSGData data = (CSGData)app.getDataComponent();
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
         FileChooser fc = new FileChooser();
         fc.setInitialDirectory(new File(PATH_EMPTY));
-        fc.setTitle(props.getProperty(BANNER_TITLE));
+        fc.setTitle(props.getProperty(RIGHT_FOOTER_TITLE));
         fc.getExtensionFilters().addAll(
         new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
 
-        File selectedFile = fc.showSaveDialog(app.getGUI().getWindow());
+        File selectedFile = fc.showOpenDialog(app.getGUI().getWindow());
         if (selectedFile != null) {
-            data.setRightFooterImgPath(selectedFile.getPath());
+            data.setRightFooterImgPath(FILE_PROTOCOL + selectedFile.getPath());
+            Image temp = new Image(FILE_PROTOCOL + selectedFile.getPath());
+            workspace.getRightFooterImgView().setImage(temp);
         }
     }
     
