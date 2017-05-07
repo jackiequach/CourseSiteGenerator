@@ -861,9 +861,9 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         supervisingLabelOne = new Label(supervisingLabelText);
         supervisingLabelTwo = new Label(supervisingLabelText);
         supervisingTAComboBoxOne = new ComboBox();
-        supervisingTAComboBoxOne.setItems(data.getTeachingAssistants());
         supervisingTAComboBoxTwo = new ComboBox();
-        supervisingTAComboBoxTwo.setItems(data.getTeachingAssistants());
+        supervisingTAComboBoxOne.setItems(data.getTeachingAssistantNames());
+        supervisingTAComboBoxTwo.setItems(data.getTeachingAssistantNames());
         
         addRecitationButton = new Button(props.getProperty(CSGProperty.ADD_RECITATION_BUTTON_TEXT.toString()));
         clearRecitationButton = new Button(props.getProperty(CSGProperty.CLEAR_BUTTON_TEXT.toString()));
@@ -1201,9 +1201,9 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         studentTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         ObservableList<Student> tableDataS = data.getStudents();
         studentTable.setItems(tableDataS);
-        String firstNameColumnText = props.getProperty(CSGProperty.NAME_COLUMN_TEXT.toString());
-        String lastNameColumnText = props.getProperty(CSGProperty.COLOR_COLUMN_TEXT.toString());
-        String teamColumnText = props.getProperty(CSGProperty.TEXTCOL_COLUMN_TEXT.toString());
+        String firstNameColumnText = props.getProperty(CSGProperty.FIRSTN_COLUMN_TEXT.toString());
+        String lastNameColumnText = props.getProperty(CSGProperty.LASTN_COLUMN_TEXT.toString());
+        String teamColumnText = props.getProperty(CSGProperty.TEAM_COLUMN_TEXT.toString());
         String roleColumnText = props.getProperty(CSGProperty.LINK_COLUMN_TEXT.toString());
         firstNameColumn = new TableColumn(firstNameColumnText);
         firstNameColumn.setCellValueFactory(
@@ -1240,7 +1240,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         String teamLabelText = props.getProperty(CSGProperty.TEAM_LABEL_TEXT.toString());
         teamLabel = new Label(teamLabelText);
         teamComboBox = new ComboBox();
-        teamComboBox.setItems(data.getTeams());
+        teamComboBox.setItems(data.getTeamNames());
                 
         String roleLabelText = props.getProperty(CSGProperty.ROLE_LABEL_TEXT.toString());
         roleLabel = new Label(roleLabelText);
@@ -1337,6 +1337,26 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         });
         clearTeamButton.setOnAction(e -> {
            controller.handleClearTeam(); 
+        });
+        
+        studentsDeleteButton.setOnAction(e -> {
+            controller.handleDeleteStudent(KeyCode.DELETE);
+        });
+        addStudentButton.setOnAction(e -> {
+            controller.handleAddStudent();
+        });
+        studentTable.setOnKeyPressed(e -> {
+            controller.handleDeleteStudent(e.getCode());
+        });
+        studentTable.setRowFactory(tableview -> {
+            TableRow<Student> row = new TableRow<>();
+            row.setOnMouseClicked(e -> {
+                controller.handleSelectStudent();
+            });
+            return row;
+        });
+        clearStudentButton.setOnAction(e -> {
+           controller.handleClearStudent(); 
         });
         
         return projectDataPane;
@@ -2079,6 +2099,10 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     
     public ColorPicker getTextColorPicker() {
         return textColorPicker;
+    }
+    
+    public ComboBox getTeamComboBox() {
+        return teamComboBox;
     }
     
     public class CheckBoxCellFactory<T> implements Callback {

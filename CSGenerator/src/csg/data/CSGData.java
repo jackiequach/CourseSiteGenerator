@@ -9,17 +9,21 @@ import csg.CSGProperty;
 import static csg.CSGProperty.ADD_BUTTON_TEXT;
 import static csg.CSGProperty.ADD_RECITATION_BUTTON_TEXT;
 import static csg.CSGProperty.ADD_SCHEDULE_BUTTON_TEXT;
+import static csg.CSGProperty.ADD_STUDENT_BUTTON_TEXT;
 import static csg.CSGProperty.ADD_TEAM_BUTTON_TEXT;
 import static csg.CSGProperty.INVALID_TA_EMAIL_MESSAGE;
 import static csg.CSGProperty.INVALID_TA_EMAIL_TITLE;
 import static csg.CSGProperty.RECITATION_SECTION_NOT_UNIQUE_MESSAGE;
 import static csg.CSGProperty.RECITATION_SECTION_NOT_UNIQUE_TITLE;
+import static csg.CSGProperty.STUDENT_NAME_NOT_UNIQUE_MESSAGE;
+import static csg.CSGProperty.STUDENT_NAME_NOT_UNIQUE_TITLE;
 import static csg.CSGProperty.TA_NAME_AND_EMAIL_NOT_UNIQUE_MESSAGE;
 import static csg.CSGProperty.TA_NAME_AND_EMAIL_NOT_UNIQUE_TITLE;
 import static csg.CSGProperty.TEAM_NAME_AND_COLOR_NOT_UNIQUE_MESSAGE;
 import static csg.CSGProperty.TEAM_NAME_AND_COLOR_NOT_UNIQUE_TITLE;
 import static csg.CSGProperty.UPDATE_BUTTON_TEXT;
 import static csg.CSGProperty.UPDATE_RECITATION_BUTTON_TEXT;
+import static csg.CSGProperty.UPDATE_STUDENT_BUTTON_TEXT;
 import static csg.CSGProperty.UPDATE_TEAM_BUTTON_TEXT;
 import csg.CSGeneratorApp;
 import csg.workspace.CSGController;
@@ -59,6 +63,7 @@ public class CSGData implements AppDataComponent {
     CSGeneratorApp app;
 
     ObservableList<TeachingAssistant> teachingAssistants;
+    ObservableList<String> teachingAssistantNames;
     
     ObservableList<SitePage> sitePages;
     String subject;
@@ -91,6 +96,7 @@ public class CSGData implements AppDataComponent {
     ObservableList<String> types;
     
     ObservableList<Team> teams;
+    ObservableList<String> teamNames;
 
     ObservableList<Student> students;
     
@@ -108,6 +114,7 @@ public class CSGData implements AppDataComponent {
         app = initApp;
         
         teachingAssistants = FXCollections.observableArrayList();
+        teachingAssistantNames = FXCollections.observableArrayList();
         sitePages = FXCollections.observableArrayList();
         subjects = FXCollections.observableArrayList();
         subjects.addAll("CSE","AMS","MEC","BME");
@@ -122,6 +129,7 @@ public class CSGData implements AppDataComponent {
         types = FXCollections.observableArrayList();
         types.addAll("Holiday","Lecture","Recitation","HW");
         teams = FXCollections.observableArrayList();
+        teamNames = FXCollections.observableArrayList(); 
         students = FXCollections.observableArrayList();
         
         bannerImgPath = FILE_PROTOCOL + PATH_IMAGES + DEFAULT_BANNER_IMG;
@@ -342,6 +350,10 @@ public class CSGData implements AppDataComponent {
 
     public ObservableList getTeachingAssistants() {
         return teachingAssistants;
+    }
+    
+    public ObservableList getTeachingAssistantNames() {
+        return teachingAssistantNames;
     }
     
     public String getCellKey(int col, int row) {
@@ -755,13 +767,21 @@ public class CSGData implements AppDataComponent {
         Team team = new Team(initName, initColor, initTextColor, initLink);
         if(!containsTeam(initName, initColor)) {
             teams.add(team);
+            teamNames.add(team.getName());
         }
+        Collections.sort(teams);
     }
     
     public void removeTeam(Team team) {
+        String teamName = team.getName();
         for (Iterator<Team> it = teams.iterator(); it.hasNext();) {
             Team t = it.next();
             if(t.compareTo(team) == 0)
+                it.remove();
+        }
+        for (Iterator<String> it = teamNames.iterator(); it.hasNext();) {
+            String t = it.next();
+            if(t.compareTo(teamName) == 0)
                 it.remove();
         }
     }
@@ -857,6 +877,101 @@ public class CSGData implements AppDataComponent {
         if(!containsStudent(initFirstName, initFirstName)) {
             students.add(student);
         }
+        Collections.sort(students);
+    }
+    
+    public void removeStudent(Student student) {
+        for (Iterator<Student> it = students.iterator(); it.hasNext();) {
+            Student s = it.next();
+            if(s.compareTo(student) == 0)
+                it.remove();
+        }
+    }
+    
+    public void updateStudent(String studentFirstName, String studentLastName) {
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        CSGController controller = new CSGController(app);
+        Button addButton = workspace.getAddStudentButton();
+        TextField firstNameTextField = workspace.getFirstNameTextField();
+        String firstName = firstNameTextField.getText();
+        TextField lastNameTextField = workspace.getLastNameTextField();
+        String lastName = lastNameTextField.getText();
+        ComboBox teamComboBox = workspace.getTeamComboBox();
+        String team = ((String)teamComboBox.getValue());
+        TextField roleTextField = workspace.getRoleTextField();
+        String role = roleTextField.getText();
+        CSGData data = (CSGData)app.getDataComponent();
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        
+        ObservableList<Student> listOfStudents = data.getStudents();
+        for(int i = 0; i < listOfStudents.size(); i++)
+        {
+            Student s = listOfStudents.get(i);
+            if((!s.getFirstName().equals(studentFirstName) && s.getFirstName().equals(firstName)) && (!s.getLastName().equals(studentLastName) && s.getLastName().equals(lastName))) {
+                AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+                dialog.show(props.getProperty(STUDENT_NAME_NOT_UNIQUE_TITLE), props.getProperty(STUDENT_NAME_NOT_UNIQUE_MESSAGE));
+            }
+            else if(s.getFirstName().equals(studentFirstName) && s.getLastName().equals(studentLastName)) {
+                s.setFirstName(firstName);
+                s.setLastName(lastName);
+                s.setTeam(team);
+                s.setRole(role);
+                listOfStudents.set(i, s);
+
+                firstNameTextField.setText("");
+                lastNameTextField.setText("");
+                teamComboBox.setValue(null);
+                roleTextField.setText("");
+                
+                firstNameTextField.requestFocus();
+
+                addButton.setText(props.getProperty(ADD_STUDENT_BUTTON_TEXT));
+                addButton.setOnAction(ee -> {
+                    controller.handleAddStudent();
+                });
+                break;
+            }
+        }
+    }
+    
+    public void undoUpdateStudent(String firstName, String lastName, String team, String role, Student student) {
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        CSGController controller = new CSGController(app);
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        Button addButton = workspace.getAddStudentButton();
+        TextField firstNameTextField = workspace.getFirstNameTextField();
+        TextField lastNameTextField = workspace.getLastNameTextField();
+        ComboBox teamComboBox = workspace.getTeamComboBox();
+        TextField roleTextField = workspace.getRoleTextField();
+        CSGData data = (CSGData)app.getDataComponent();
+        
+        ObservableList<Student> listOfStudents = data.getStudents();
+        String studentFirstName = student.getFirstName();
+        String studentLastName = student.getLastName();
+        String studentTeam = student.getTeam();
+        String studentRole = student.getRole();
+        for(int i = 0; i < listOfStudents.size(); i++)
+        {
+            Student s = listOfStudents.get(i);
+            if(s.getFirstName().equals(studentFirstName) && s.getLastName().equals(studentLastName)) {
+                s.setFirstName(firstName);
+                s.setLastName(lastName);
+                s.setTeam(team);
+                s.setRole(role);
+                listOfStudents.set(i, s);
+                
+                firstNameTextField.setText(studentFirstName);
+                lastNameTextField.setText(studentLastName);
+                teamComboBox.setValue(studentTeam);
+                roleTextField.setText(studentRole);
+
+                addButton.setText(props.getProperty(UPDATE_STUDENT_BUTTON_TEXT));
+                addButton.setOnAction(ee -> {
+                    controller.handleUpdateStudent(s);
+                });
+                break;
+            }
+        }
     }
 
     public void addTA(Boolean initUndergrad, String initName, String initEmail) {
@@ -866,6 +981,7 @@ public class CSGData implements AppDataComponent {
         // ADD THE TA
         if (!containsTA(initName)) {
             teachingAssistants.add(ta);
+            teachingAssistantNames.add(ta.getName());
         }
 
         // SORT THE TAS
@@ -882,6 +998,11 @@ public class CSGData implements AppDataComponent {
         for (Iterator<TeachingAssistant> it = teachingAssistants.iterator(); it.hasNext();) {
             TeachingAssistant t = it.next();
             if(t.compareTo(ta) == 0)
+                it.remove();
+        }
+        for (Iterator<String> it = teachingAssistantNames.iterator(); it.hasNext();) {
+            String t = it.next();
+            if(t.compareTo(taName) == 0)
                 it.remove();
         }
     }
@@ -1186,6 +1307,10 @@ public class CSGData implements AppDataComponent {
     
     public ObservableList<Team> getTeams() {
         return teams;
+    }
+    
+    public ObservableList<String> getTeamNames() {
+        return teamNames;
     }
     
     public ObservableList<Student> getStudents() {

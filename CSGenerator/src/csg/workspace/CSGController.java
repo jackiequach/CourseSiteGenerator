@@ -8,6 +8,7 @@ package csg.workspace;
 import csg.CSGProperty;
 import static csg.CSGProperty.ADD_RECITATION_BUTTON_TEXT;
 import static csg.CSGProperty.ADD_SCHEDULE_BUTTON_TEXT;
+import static csg.CSGProperty.ADD_STUDENT_BUTTON_TEXT;
 import static csg.CSGProperty.ADD_TEAM_BUTTON_TEXT;
 import static csg.CSGProperty.INVALID_TA_EMAIL_MESSAGE;
 import static csg.CSGProperty.INVALID_TA_EMAIL_TITLE;
@@ -33,6 +34,14 @@ import static csg.CSGProperty.MISSING_SCHEDULE_TOPIC_MESSAGE;
 import static csg.CSGProperty.MISSING_SCHEDULE_TOPIC_TITLE;
 import static csg.CSGProperty.MISSING_SCHEDULE_TYPE_MESSAGE;
 import static csg.CSGProperty.MISSING_SCHEDULE_TYPE_TITLE;
+import static csg.CSGProperty.MISSING_STUDENT_FIRST_NAME_MESSAGE;
+import static csg.CSGProperty.MISSING_STUDENT_FIRST_NAME_TITLE;
+import static csg.CSGProperty.MISSING_STUDENT_LAST_NAME_MESSAGE;
+import static csg.CSGProperty.MISSING_STUDENT_LAST_NAME_TITLE;
+import static csg.CSGProperty.MISSING_STUDENT_ROLE_MESSAGE;
+import static csg.CSGProperty.MISSING_STUDENT_ROLE_TITLE;
+import static csg.CSGProperty.MISSING_STUDENT_TEAM_MESSAGE;
+import static csg.CSGProperty.MISSING_STUDENT_TEAM_TITLE;
 import static csg.CSGProperty.MISSING_TA_EMAIL_MESSAGE;
 import static csg.CSGProperty.MISSING_TA_EMAIL_TITLE;
 import static csg.CSGProperty.MISSING_TA_NAME_MESSAGE;
@@ -47,6 +56,8 @@ import static csg.CSGProperty.MISSING_TEAM_TEXT_COLOR_MESSAGE;
 import static csg.CSGProperty.MISSING_TEAM_TEXT_COLOR_TITLE;
 import static csg.CSGProperty.RECITATION_SECTION_NOT_UNIQUE_MESSAGE;
 import static csg.CSGProperty.RECITATION_SECTION_NOT_UNIQUE_TITLE;
+import static csg.CSGProperty.STUDENT_NAME_NOT_UNIQUE_MESSAGE;
+import static csg.CSGProperty.STUDENT_NAME_NOT_UNIQUE_TITLE;
 import static csg.CSGProperty.TA_NAME_AND_EMAIL_NOT_UNIQUE_MESSAGE;
 import static csg.CSGProperty.TA_NAME_AND_EMAIL_NOT_UNIQUE_TITLE;
 import static csg.CSGProperty.TEAM_NAME_AND_COLOR_NOT_UNIQUE_MESSAGE;
@@ -56,15 +67,18 @@ import csg.data.CSGData;
 import csg.data.Recitation;
 import csg.data.ScheduleItem;
 import csg.data.SitePage;
+import csg.data.Student;
 import csg.data.TeachingAssistant;
 import csg.data.Team;
 import csg.file.TimeSlot;
 import csg.jtps.AddRecTrans;
 import csg.jtps.AddSITrans;
+import csg.jtps.AddStudentTrans;
 import csg.jtps.AddTeamTrans;
 import csg.jtps.AddTrans;
 import csg.jtps.DeleteRecTrans;
 import csg.jtps.DeleteSITrans;
+import csg.jtps.DeleteStudentTrans;
 import csg.jtps.DeleteTeamTrans;
 import csg.jtps.DeleteTrans;
 import csg.jtps.EndFridayTrans;
@@ -74,6 +88,7 @@ import csg.jtps.StartTimeTrans;
 import csg.jtps.ToggleTrans;
 import csg.jtps.UpdateRecTrans;
 import csg.jtps.UpdateSITrans;
+import csg.jtps.UpdateStudentTrans;
 import csg.jtps.UpdateTeamTrans;
 import csg.jtps.UpdateTrans;
 import static djf.settings.AppPropertyType.EXPORT_DIR_TITLE;
@@ -499,11 +514,11 @@ public class CSGController {
         String taOne = "";
         String taTwo = "";
         if(taOneComboBox.getValue() != null) {
-            taOne = ((TeachingAssistant)taOneComboBox.getValue()).getName();
+            taOne = (String)taOneComboBox.getValue();
         }
         ComboBox taTwoComboBox = workspace.getSupervisingTAComboBoxTwo();
         if(taTwoComboBox.getValue() != null) {
-            taTwo = ((TeachingAssistant)taTwoComboBox.getValue()).getName();
+            taTwo = (String)taTwoComboBox.getValue();
         }
         jTPS transactions = workspace.getjTPS();
         
@@ -1025,6 +1040,151 @@ public class CSGController {
         addButton.setText(props.getProperty(ADD_TEAM_BUTTON_TEXT));
         addButton.setOnAction(ee -> {
             handleAddTeam();
+        });
+    }
+    
+    public void handleAddStudent() {
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        TextField firstNameTextField = workspace.getFirstNameTextField();
+        String firstName = firstNameTextField.getText();
+        TextField lastNameTextField = workspace.getLastNameTextField();
+        String lastName = lastNameTextField.getText();
+        ComboBox teamComboBox = workspace.getTeamComboBox();
+        String team = (String)(teamComboBox.getValue());
+        TextField roleTextField = workspace.getRoleTextField();
+        String role = roleTextField.getText();
+        
+        jTPS transactions = workspace.getjTPS();
+        
+        // WE'LL NEED TO ASK THE DATA SOME QUESTIONS TOO
+        CSGData data = (CSGData)app.getDataComponent();
+        
+        // WE'LL NEED THIS IN CASE WE NEED TO DISPLAY ANY ERROR MESSAGES
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        
+        if (firstName.isEmpty()) {
+	    AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+	    dialog.show(props.getProperty(MISSING_STUDENT_FIRST_NAME_TITLE), props.getProperty(MISSING_STUDENT_FIRST_NAME_MESSAGE));            
+        }
+        else if (lastName.isEmpty()) {
+            AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+	    dialog.show(props.getProperty(MISSING_STUDENT_LAST_NAME_TITLE), props.getProperty(MISSING_STUDENT_LAST_NAME_MESSAGE));
+        }
+        else if (team.isEmpty()) {
+            AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+	    dialog.show(props.getProperty(MISSING_STUDENT_TEAM_TITLE), props.getProperty(MISSING_STUDENT_TEAM_MESSAGE));
+        }
+        else if(role.isEmpty()) {
+            AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+	    dialog.show(props.getProperty(MISSING_STUDENT_ROLE_TITLE), props.getProperty(MISSING_STUDENT_ROLE_MESSAGE));
+        }
+        else if (data.containsStudent(firstName,lastName)) {
+	    AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+	    dialog.show(props.getProperty(STUDENT_NAME_NOT_UNIQUE_TITLE), props.getProperty(STUDENT_NAME_NOT_UNIQUE_MESSAGE));                                    
+        }
+        else {
+            AddStudentTrans add = new AddStudentTrans(app,firstName,lastName,team,role);
+            transactions.addTransaction(add);
+            
+            // CLEAR THE TEXT FIELDS
+            firstNameTextField.setText("");
+            lastNameTextField.setText("");
+            teamComboBox.setValue(null);
+            roleTextField.setText("");
+            
+            // AND SEND THE CARET BACK TO THE NAME TEXT FIELD FOR EASY DATA ENTRY
+            firstNameTextField.requestFocus();
+            
+            app.getGUI().getAppFileController().markAsDone(app.getGUI());
+            app.getGUI().getAppFileController().markAsEdited(app.getGUI());
+        }
+    }
+    
+    public void handleDeleteStudent(KeyCode key) {
+        // GET THE TABLE
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        TableView studentTable = workspace.getStudentTable();
+        
+        // IS A RECITATION SELECTED IN THE TABLE?
+        Object selectedItem = studentTable.getSelectionModel().getSelectedItem();
+        
+        // GET THE RECITATION
+        Student student = (Student)selectedItem;
+        jTPS transaction = workspace.getjTPS();
+        DeleteStudentTrans delete = new DeleteStudentTrans(app,student);
+        
+        if(key == KeyCode.DELETE) {
+            transaction.addTransaction(delete);
+            workspace.getFirstNameTextField().setText("");
+            workspace.getLastNameTextField().setText("");
+            workspace.getTeamComboBox().setValue(null);
+            workspace.getRoleTextField().setText("");
+            workspace.getAddStudentButton().setText(props.getProperty(ADD_STUDENT_BUTTON_TEXT));
+            workspace.getAddStudentButton().setOnAction(ee -> {
+                handleAddStudent();
+            });
+        }
+        app.getGUI().getAppFileController().markAsDone(app.getGUI());
+        app.getGUI().getAppFileController().markAsEdited(app.getGUI());
+    }
+    
+    public void handleSelectStudent() {
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        TableView studentTable = workspace.getStudentTable();
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        Button addButton = workspace.getAddStudentButton();
+        TextField firstNameTextField = workspace.getFirstNameTextField();
+        TextField lastNameTextField = workspace.getLastNameTextField();
+        ComboBox teamComboBox = workspace.getTeamComboBox();
+        TextField roleTextField = workspace.getRoleTextField();
+        Object selectedItem = studentTable.getSelectionModel().getSelectedItem();
+        
+        if(selectedItem != null) {
+            Student student = (Student)selectedItem;
+            firstNameTextField.setText(student.getFirstName());
+            lastNameTextField.setText(student.getLastName());
+            teamComboBox.setValue(student.getTeam());
+            roleTextField.setText(student.getRole());
+            addButton.setText(props.getProperty(CSGProperty.UPDATE_STUDENT_BUTTON_TEXT.toString()));
+            addButton.setOnAction(e -> {
+                handleUpdateStudent(selectedItem);
+            });
+        }
+    }
+    
+    public void handleUpdateStudent(Object selectedItem) {
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        Student student = (Student)selectedItem;
+            
+        jTPS transactions = workspace.getjTPS();
+        UpdateStudentTrans update = new UpdateStudentTrans(app, student.getFirstName(), student.getLastName(), student.getTeam(), student.getRole(), student);
+        transactions.addTransaction(update);
+    }
+    
+    public void handleClearStudent() {
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        
+        TableView studentTable = workspace.getStudentTable();
+        Button addButton = workspace.getAddStudentButton();
+        TextField firstNameTextField = workspace.getFirstNameTextField();
+        TextField lastNameTextField = workspace.getLastNameTextField();
+        ComboBox teamComboBox = workspace.getTeamComboBox();
+        TextField roleTextField = workspace.getRoleTextField();
+        
+        studentTable.getSelectionModel().clearSelection();
+        
+        firstNameTextField.setText("");
+        lastNameTextField.setText("");
+        teamComboBox.setValue(null);
+        roleTextField.setText("");
+
+        firstNameTextField.requestFocus();
+
+        addButton.setText(props.getProperty(ADD_STUDENT_BUTTON_TEXT));
+        addButton.setOnAction(ee -> {
+            handleAddStudent();
         });
     }
     
