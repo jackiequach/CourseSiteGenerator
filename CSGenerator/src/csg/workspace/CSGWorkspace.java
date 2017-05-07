@@ -17,6 +17,8 @@ import csg.data.Team;
 import csg.style.CSGStyle;
 import djf.components.AppDataComponent;
 import djf.components.AppWorkspaceComponent;
+import static djf.settings.AppStartupConstants.PATH_WORK;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.collections.ObservableList;
@@ -561,6 +563,11 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         String stylesheetText = props.getProperty(CSGProperty.SS_LABEL_TEXT.toString()); 
         stylesheetLabel = new Label(stylesheetText);
         stylesheetComboBox = new ComboBox();
+        File workCssFolder = new File(PATH_WORK + "/css");
+        File[] listOfCss = workCssFolder.listFiles();
+        for(File file : listOfCss) {
+            stylesheetComboBox.getItems().addAll(file.getName());
+        }
         
         String ssNoteText = props.getProperty(CSGProperty.SS_NOTE_TEXT.toString());
         ssNoteLabel = new Label(ssNoteText);
@@ -609,26 +616,37 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         semesterComboBox.setOnAction(e -> {
             controller.handleCourseInfo();
         });
-        yearComboBox.setOnKeyPressed(e -> {
+        yearComboBox.setOnAction(e -> {
             controller.handleCourseInfo();
         });
-        titleTextField.setOnKeyPressed(e -> {
+        titleTextField.setOnAction(e -> {
             controller.handleCourseInfo();
         });
-        instructorNameTextField.setOnKeyPressed(e -> {
+        instructorNameTextField.setOnAction(e -> {
             controller.handleCourseInfo();
         });
-        instructorHomeTextField.setOnKeyPressed(e -> {
+        instructorHomeTextField.setOnAction(e -> {
             controller.handleCourseInfo();
         });
         
-        changeExportDirButton.setOnKeyPressed(e -> {
+        changeExportDirButton.setOnAction(e -> {
             controller.handleChangeExportDir();
         });
-        selectTemplateDirButton.setOnKeyPressed(e -> {
+        selectTemplateDirButton.setOnAction(e -> {
             controller.handleSelectTemplate();
         });
-        
+        changeBannerButton.setOnAction(e -> {
+            controller.handleSelectBannerImg();
+        });
+        changeLeftFooterButton.setOnAction(e -> {
+            controller.handleSelectLeftFooterImg();
+        });
+        changeRightFooterButton.setOnAction(e -> {
+            controller.handleSelectRightFooterImg();
+        });
+        stylesheetComboBox.setOnAction(e -> {
+            controller.handleStylesheet();
+        });
         return courseDetailsPane;
     }
     

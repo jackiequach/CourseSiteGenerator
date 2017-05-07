@@ -93,6 +93,7 @@ import csg.jtps.UpdateSITrans;
 import csg.jtps.UpdateStudentTrans;
 import csg.jtps.UpdateTeamTrans;
 import csg.jtps.UpdateTrans;
+import static djf.settings.AppPropertyType.BANNER_TITLE;
 import static djf.settings.AppPropertyType.EXPORT_DIR_TITLE;
 import static djf.settings.AppPropertyType.INVALID_END_FRIDAY_FRIDAY_MESSAGE;
 import static djf.settings.AppPropertyType.INVALID_END_FRIDAY_FRIDAY_TITLE;
@@ -130,6 +131,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import jtps.jTPS;
 import properties_manager.PropertiesManager;
 
@@ -500,6 +503,58 @@ public class CSGController {
                 }
             }
         }
+    }
+    
+    public void handleSelectBannerImg() {
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        CSGData data = (CSGData)app.getDataComponent();
+        FileChooser fc = new FileChooser();
+        fc.setInitialDirectory(new File(PATH_EMPTY));
+        fc.setTitle(props.getProperty(BANNER_TITLE));
+        fc.getExtensionFilters().addAll(
+        new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
+
+        File selectedFile = fc.showSaveDialog(app.getGUI().getWindow());
+        if (selectedFile != null) {
+            data.setBannerImgPath(selectedFile.getPath());
+        }
+    }
+    
+    public void handleSelectLeftFooterImg() {
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        CSGData data = (CSGData)app.getDataComponent();
+        FileChooser fc = new FileChooser();
+        fc.setInitialDirectory(new File(PATH_EMPTY));
+        fc.setTitle(props.getProperty(BANNER_TITLE));
+        fc.getExtensionFilters().addAll(
+        new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
+
+        File selectedFile = fc.showSaveDialog(app.getGUI().getWindow());
+        if (selectedFile != null) {
+            data.setLeftFooterImgPath(selectedFile.getPath());
+        }
+    }
+    
+    public void handleSelectRightFooterImg() {
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        CSGData data = (CSGData)app.getDataComponent();
+        FileChooser fc = new FileChooser();
+        fc.setInitialDirectory(new File(PATH_EMPTY));
+        fc.setTitle(props.getProperty(BANNER_TITLE));
+        fc.getExtensionFilters().addAll(
+        new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
+
+        File selectedFile = fc.showSaveDialog(app.getGUI().getWindow());
+        if (selectedFile != null) {
+            data.setRightFooterImgPath(selectedFile.getPath());
+        }
+    }
+    
+    public void handleStylesheet() {
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        CSGData data = (CSGData)app.getDataComponent();
+        ComboBox stylesheetComboBox = workspace.getStylesheetComboBox();
+        data.setStylesheet((String)stylesheetComboBox.getValue());
     }
     
     public void handleAddRecitation() {
