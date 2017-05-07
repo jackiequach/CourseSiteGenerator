@@ -40,6 +40,22 @@ public class Team<E extends Comparable<E>> implements Comparable<E> {
     public String getLink() {
         return link.get();
     }
+    
+    public void setName(String name) {
+        this.name.set(name);
+    }
+    
+    public void setColor(String color) {
+        this.color.set(color);
+    }
+    
+    public void setTextColor(String textColor) {
+        this.textColor.set(textColor);
+    }
+    
+    public void setLink(String link) {
+        this.link.set(link);
+    }
 
     @Override
     public int compareTo(E otherTeam) {
