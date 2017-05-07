@@ -1110,6 +1110,13 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         scheduleItemTable.setOnKeyPressed(e -> {
             controller.handleDeleteScheduleItem(e.getCode());
         });
+        scheduleItemTable.setRowFactory(tableview -> {
+            TableRow<ScheduleItem> row = new TableRow<>();
+            row.setOnMouseClicked(e -> {
+                controller.handleSelectScheduleItem();
+            });
+            return row;
+        });
         clearScheduleItemButton.setOnAction(e -> {
            controller.handleClearScheduleItem(); 
         });
@@ -1311,6 +1318,26 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         
         projectDataPane = new BorderPane();
         projectDataPane.setCenter(projectDataScroll);
+        
+        teamsDeleteButton.setOnAction(e -> {
+            controller.handleDeleteTeam(KeyCode.DELETE);
+        });
+        addTeamButton.setOnAction(e -> {
+            controller.handleAddTeam();
+        });
+        teamTable.setOnKeyPressed(e -> {
+            controller.handleDeleteTeam(e.getCode());
+        });
+        teamTable.setRowFactory(tableview -> {
+            TableRow<Team> row = new TableRow<>();
+            row.setOnMouseClicked(e -> {
+                controller.handleSelectTeam();
+            });
+            return row;
+        });
+        clearTeamButton.setOnAction(e -> {
+           controller.handleClearTeam(); 
+        });
         
         return projectDataPane;
     }
@@ -2044,6 +2071,14 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     
     public DatePicker getDateSchedulePicker() {
         return dateSchedulePicker;
+    }
+    
+    public ColorPicker getColorPicker() {
+        return colorPicker;
+    }
+    
+    public ColorPicker getTextColorPicker() {
+        return textColorPicker;
     }
     
     public class CheckBoxCellFactory<T> implements Callback {

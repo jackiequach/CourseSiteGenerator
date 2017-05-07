@@ -9,14 +9,18 @@ import csg.CSGProperty;
 import static csg.CSGProperty.ADD_BUTTON_TEXT;
 import static csg.CSGProperty.ADD_RECITATION_BUTTON_TEXT;
 import static csg.CSGProperty.ADD_SCHEDULE_BUTTON_TEXT;
+import static csg.CSGProperty.ADD_TEAM_BUTTON_TEXT;
 import static csg.CSGProperty.INVALID_TA_EMAIL_MESSAGE;
 import static csg.CSGProperty.INVALID_TA_EMAIL_TITLE;
 import static csg.CSGProperty.RECITATION_SECTION_NOT_UNIQUE_MESSAGE;
 import static csg.CSGProperty.RECITATION_SECTION_NOT_UNIQUE_TITLE;
 import static csg.CSGProperty.TA_NAME_AND_EMAIL_NOT_UNIQUE_MESSAGE;
 import static csg.CSGProperty.TA_NAME_AND_EMAIL_NOT_UNIQUE_TITLE;
+import static csg.CSGProperty.TEAM_NAME_AND_COLOR_NOT_UNIQUE_MESSAGE;
+import static csg.CSGProperty.TEAM_NAME_AND_COLOR_NOT_UNIQUE_TITLE;
 import static csg.CSGProperty.UPDATE_BUTTON_TEXT;
 import static csg.CSGProperty.UPDATE_RECITATION_BUTTON_TEXT;
+import static csg.CSGProperty.UPDATE_TEAM_BUTTON_TEXT;
 import csg.CSGeneratorApp;
 import csg.workspace.CSGController;
 import csg.workspace.CSGWorkspace;
@@ -41,9 +45,11 @@ import static djf.settings.AppPropertyType.CALENDAR_BOUND_TITLE;
 import static djf.settings.AppStartupConstants.FILE_PROTOCOL;
 import static djf.settings.AppStartupConstants.PATH_IMAGES;
 import java.time.LocalDate;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
 
 /**
  *
@@ -485,7 +491,7 @@ public class CSGData implements AppDataComponent {
     
     public boolean containsTeam(String testName, String testColor) {
         for(Team team : teams) {
-            if(team.getName().equals(testName) && team.getColor().equals(testColor)) {
+            if(team.getName().equals(testName) || team.getColor().equals(testColor)) {
                 return true;
             }
         }
@@ -749,6 +755,100 @@ public class CSGData implements AppDataComponent {
         Team team = new Team(initName, initColor, initTextColor, initLink);
         if(!containsTeam(initName, initColor)) {
             teams.add(team);
+        }
+    }
+    
+    public void removeTeam(Team team) {
+        for (Iterator<Team> it = teams.iterator(); it.hasNext();) {
+            Team t = it.next();
+            if(t.compareTo(team) == 0)
+                it.remove();
+        }
+    }
+    
+    public void updateTeam(String teamName, String teamColor) {
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        CSGController controller = new CSGController(app);
+        Button addButton = workspace.getAddTeamButton();
+        TextField nameTextField = workspace.getNameTeamTextField();
+        String name = nameTextField.getText();
+        ColorPicker colorPicker = workspace.getColorPicker();
+        String color = Integer.toHexString(colorPicker.getValue().hashCode());
+        ColorPicker textColorPicker = workspace.getTextColorPicker();
+        String textColor = Integer.toHexString(textColorPicker.getValue().hashCode());
+        TextField linkTextField = workspace.getLinkTeamTextField();
+        String link = linkTextField.getText();
+        CSGData data = (CSGData)app.getDataComponent();
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        
+        ObservableList<Team> listOfTeams = data.getTeams();
+        for(int i = 0; i < listOfTeams.size(); i++)
+        {
+            Team t = listOfTeams.get(i);
+            if((!t.getName().equals(teamName) && t.getName().equals(name)) || (!t.getColor().equals(teamColor) && t.getColor().equals(color))) {
+                AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+                dialog.show(props.getProperty(TEAM_NAME_AND_COLOR_NOT_UNIQUE_TITLE), props.getProperty(TEAM_NAME_AND_COLOR_NOT_UNIQUE_MESSAGE));
+            }
+            else if(t.getName().equals(teamName)) {
+                t.setName(name);
+                t.setColor(color);
+                t.setTextColor(textColor);
+                t.setLink(link);
+                listOfTeams.set(i, t);
+
+                nameTextField.setText("");
+                colorPicker.setValue(Color.WHITE);
+                textColorPicker.setValue(Color.WHITE);
+                linkTextField.setText("");
+                
+                nameTextField.requestFocus();
+
+                addButton.setText(props.getProperty(ADD_TEAM_BUTTON_TEXT));
+                addButton.setOnAction(ee -> {
+                    controller.handleAddTeam();
+                });
+                break;
+            }
+        }
+    }
+    
+    public void undoUpdateTeam(String name, String color, String textColor, String link, Team team) {
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        CSGController controller = new CSGController(app);
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        Button addButton = workspace.getAddTeamButton();
+        TextField nameTextField = workspace.getNameTeamTextField();
+        ColorPicker colorPicker = workspace.getColorPicker();
+        ColorPicker textColorPicker = workspace.getTextColorPicker();
+        TextField linkTextField = workspace.getLinkTeamTextField();
+        CSGData data = (CSGData)app.getDataComponent();
+        
+        ObservableList<Team> listOfTeams = data.getTeams();
+        String teamName = team.getName();
+        String teamColor = team.getColor();
+        String teamTextColor = team.getTextColor();
+        String teamLink = team.getLink();
+        for(int i = 0; i < listOfTeams.size(); i++)
+        {
+            Team t = listOfTeams.get(i);
+            if(t.getName().equals(teamName)) {
+                t.setName(name);
+                t.setColor(color);
+                t.setTextColor(textColor);
+                t.setLink(link);
+                listOfTeams.set(i, t);
+                
+                nameTextField.setText(teamName);
+                colorPicker.setValue(Color.web(teamColor));
+                textColorPicker.setValue(Color.web(teamTextColor));
+                linkTextField.setText(teamLink);
+
+                addButton.setText(props.getProperty(UPDATE_TEAM_BUTTON_TEXT));
+                addButton.setOnAction(ee -> {
+                    controller.handleUpdateTeam(t);
+                });
+                break;
+            }
         }
     }
     

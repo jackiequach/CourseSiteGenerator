@@ -8,6 +8,7 @@ package csg.workspace;
 import csg.CSGProperty;
 import static csg.CSGProperty.ADD_RECITATION_BUTTON_TEXT;
 import static csg.CSGProperty.ADD_SCHEDULE_BUTTON_TEXT;
+import static csg.CSGProperty.ADD_TEAM_BUTTON_TEXT;
 import static csg.CSGProperty.INVALID_TA_EMAIL_MESSAGE;
 import static csg.CSGProperty.INVALID_TA_EMAIL_TITLE;
 import static csg.CSGProperty.MISSING_RECITATION_DAY_MESSAGE;
@@ -36,22 +37,35 @@ import static csg.CSGProperty.MISSING_TA_EMAIL_MESSAGE;
 import static csg.CSGProperty.MISSING_TA_EMAIL_TITLE;
 import static csg.CSGProperty.MISSING_TA_NAME_MESSAGE;
 import static csg.CSGProperty.MISSING_TA_NAME_TITLE;
+import static csg.CSGProperty.MISSING_TEAM_COLOR_MESSAGE;
+import static csg.CSGProperty.MISSING_TEAM_COLOR_TITLE;
+import static csg.CSGProperty.MISSING_TEAM_LINK_MESSAGE;
+import static csg.CSGProperty.MISSING_TEAM_LINK_TITLE;
+import static csg.CSGProperty.MISSING_TEAM_NAME_MESSAGE;
+import static csg.CSGProperty.MISSING_TEAM_NAME_TITLE;
+import static csg.CSGProperty.MISSING_TEAM_TEXT_COLOR_MESSAGE;
+import static csg.CSGProperty.MISSING_TEAM_TEXT_COLOR_TITLE;
 import static csg.CSGProperty.RECITATION_SECTION_NOT_UNIQUE_MESSAGE;
 import static csg.CSGProperty.RECITATION_SECTION_NOT_UNIQUE_TITLE;
 import static csg.CSGProperty.TA_NAME_AND_EMAIL_NOT_UNIQUE_MESSAGE;
 import static csg.CSGProperty.TA_NAME_AND_EMAIL_NOT_UNIQUE_TITLE;
+import static csg.CSGProperty.TEAM_NAME_AND_COLOR_NOT_UNIQUE_MESSAGE;
+import static csg.CSGProperty.TEAM_NAME_AND_COLOR_NOT_UNIQUE_TITLE;
 import csg.CSGeneratorApp;
 import csg.data.CSGData;
 import csg.data.Recitation;
 import csg.data.ScheduleItem;
 import csg.data.SitePage;
 import csg.data.TeachingAssistant;
+import csg.data.Team;
 import csg.file.TimeSlot;
 import csg.jtps.AddRecTrans;
 import csg.jtps.AddSITrans;
+import csg.jtps.AddTeamTrans;
 import csg.jtps.AddTrans;
 import csg.jtps.DeleteRecTrans;
 import csg.jtps.DeleteSITrans;
+import csg.jtps.DeleteTeamTrans;
 import csg.jtps.DeleteTrans;
 import csg.jtps.EndFridayTrans;
 import csg.jtps.EndTimeTrans;
@@ -60,6 +74,7 @@ import csg.jtps.StartTimeTrans;
 import csg.jtps.ToggleTrans;
 import csg.jtps.UpdateRecTrans;
 import csg.jtps.UpdateSITrans;
+import csg.jtps.UpdateTeamTrans;
 import csg.jtps.UpdateTrans;
 import static djf.settings.AppPropertyType.EXPORT_DIR_TITLE;
 import static djf.settings.AppPropertyType.INVALID_END_FRIDAY_FRIDAY_MESSAGE;
@@ -88,6 +103,7 @@ import java.util.regex.Pattern;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableView;
@@ -95,6 +111,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
 import jtps.jTPS;
 import properties_manager.PropertiesManager;
@@ -619,24 +636,6 @@ public class CSGController {
             taOneComboBox.setValue(recitation.getTAOne());
             taTwoComboBox.setValue(recitation.getTATwo());
             addButton.setText(props.getProperty(CSGProperty.UPDATE_RECITATION_BUTTON_TEXT.toString()));
-            sectionTextField.setOnAction(e -> {
-                handleUpdateRecitation(selectedItem);
-            });
-            instructorTextField.setOnAction(e -> {
-                handleUpdateRecitation(selectedItem);
-            });
-            dayTextField.setOnAction(e -> {
-                handleUpdateRecitation(selectedItem);
-            });
-            locationTextField.setOnAction(e -> {
-                handleUpdateRecitation(selectedItem);
-            });
-            taOneComboBox.setOnAction(e -> {
-                handleUpdateRecitation(selectedItem);
-            });
-            taTwoComboBox.setOnAction(e -> {
-                handleUpdateRecitation(selectedItem);
-            });
             addButton.setOnAction(e -> {
                 handleUpdateRecitation(selectedItem);
             });
@@ -838,27 +837,6 @@ public class CSGController {
             linkTextField.setText(scheduleItem.getLink());
             criteriaTextField.setText(scheduleItem.getCriteria());
             addButton.setText(props.getProperty(CSGProperty.UPDATE_SCHEDULE_BUTTON_TEXT.toString()));
-            typeComboBox.setOnAction(e -> {
-                handleUpdateScheduleItem(selectedItem);
-            });
-            dateSchedulePicker.setOnAction(e -> {
-                handleUpdateScheduleItem(selectedItem);
-            });
-            timeTextField.setOnAction(e -> {
-                handleUpdateScheduleItem(selectedItem);
-            });
-            titleScheduleTextField.setOnAction(e -> {
-                handleUpdateScheduleItem(selectedItem);
-            });
-            topicTextField.setOnAction(e -> {
-                handleUpdateScheduleItem(selectedItem);
-            });
-            linkTextField.setOnAction(e -> {
-                handleUpdateScheduleItem(selectedItem);
-            });
-            criteriaTextField.setOnAction(e -> {
-                handleUpdateScheduleItem(selectedItem);
-            });
             addButton.setOnAction(e -> {
                 handleUpdateScheduleItem(selectedItem);
             });
@@ -901,6 +879,152 @@ public class CSGController {
         addButton.setText(props.getProperty(ADD_SCHEDULE_BUTTON_TEXT));
         addButton.setOnAction(ee -> {
             handleAddScheduleItem();
+        });
+    }
+    
+    public void handleAddTeam() {
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        TextField nameTextField = workspace.getNameTeamTextField();
+        String name = nameTextField.getText();
+        ColorPicker colorPicker = workspace.getColorPicker();
+        String color = Integer.toHexString(colorPicker.getValue().hashCode());
+        ColorPicker textColorPicker = workspace.getTextColorPicker();
+        String textColor = Integer.toHexString(textColorPicker.getValue().hashCode());
+        TextField linkTextField = workspace.getLinkTeamTextField();
+        String link = linkTextField.getText();
+        
+        jTPS transactions = workspace.getjTPS();
+        
+        // WE'LL NEED TO ASK THE DATA SOME QUESTIONS TOO
+        CSGData data = (CSGData)app.getDataComponent();
+        
+        // WE'LL NEED THIS IN CASE WE NEED TO DISPLAY ANY ERROR MESSAGES
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        
+        if (name.isEmpty()) {
+	    AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+	    dialog.show(props.getProperty(MISSING_TEAM_NAME_TITLE), props.getProperty(MISSING_TEAM_NAME_MESSAGE));            
+        }
+        else if (color.isEmpty()) {
+            AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+	    dialog.show(props.getProperty(MISSING_TEAM_COLOR_TITLE), props.getProperty(MISSING_TEAM_COLOR_MESSAGE));
+        }
+        else if (textColor.isEmpty()) {
+            AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+	    dialog.show(props.getProperty(MISSING_TEAM_TEXT_COLOR_TITLE), props.getProperty(MISSING_TEAM_TEXT_COLOR_MESSAGE));
+        }
+        else if(link.isEmpty()) {
+            AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+	    dialog.show(props.getProperty(MISSING_TEAM_LINK_TITLE), props.getProperty(MISSING_TEAM_LINK_MESSAGE));
+        }
+        else if (data.containsTeam(name,color)) {
+	    AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+	    dialog.show(props.getProperty(TEAM_NAME_AND_COLOR_NOT_UNIQUE_TITLE), props.getProperty(TEAM_NAME_AND_COLOR_NOT_UNIQUE_MESSAGE));                                    
+        }
+        else {
+            AddTeamTrans add = new AddTeamTrans(app,name,color,textColor,link);
+            transactions.addTransaction(add);
+            
+            // CLEAR THE TEXT FIELDS
+            nameTextField.setText("");
+            colorPicker.setValue(Color.WHITE);
+            textColorPicker.setValue(Color.WHITE);
+            linkTextField.setText("");
+            
+            // AND SEND THE CARET BACK TO THE NAME TEXT FIELD FOR EASY DATA ENTRY
+            nameTextField.requestFocus();
+            
+            app.getGUI().getAppFileController().markAsDone(app.getGUI());
+            app.getGUI().getAppFileController().markAsEdited(app.getGUI());
+        }
+    }
+    
+    public void handleDeleteTeam(KeyCode key) {
+        // GET THE TABLE
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        TableView teamTable = workspace.getTeamTable();
+        
+        // IS A RECITATION SELECTED IN THE TABLE?
+        Object selectedItem = teamTable.getSelectionModel().getSelectedItem();
+        
+        // GET THE TEAM
+        Team team = (Team)selectedItem;
+        jTPS transaction = workspace.getjTPS();
+        DeleteTeamTrans delete = new DeleteTeamTrans(app,team);
+        
+        if(key == KeyCode.DELETE) {
+            transaction.addTransaction(delete);
+            workspace.getNameTeamTextField().setText("");
+            workspace.getColorPicker().setValue(Color.WHITE);
+            workspace.getTextColorPicker().setValue(Color.WHITE);
+            workspace.getLinkTeamTextField().setText("");
+            workspace.getAddTeamButton().setText(props.getProperty(ADD_TEAM_BUTTON_TEXT));
+            workspace.getAddTeamButton().setOnAction(ee -> {
+                handleAddTeam();
+            });
+        }
+        app.getGUI().getAppFileController().markAsDone(app.getGUI());
+        app.getGUI().getAppFileController().markAsEdited(app.getGUI());
+    }
+    
+    public void handleSelectTeam() {
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        TableView teamTable = workspace.getTeamTable();
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        Button addButton = workspace.getAddTeamButton();
+        TextField nameTextField = workspace.getNameTeamTextField();
+        ColorPicker colorPicker = workspace.getColorPicker();
+        ColorPicker textColorPicker = workspace.getTextColorPicker();
+        TextField linkTextField = workspace.getLinkTeamTextField();
+        Object selectedItem = teamTable.getSelectionModel().getSelectedItem();
+        
+        if(selectedItem != null) {
+            Team team = (Team)selectedItem;
+            nameTextField.setText(team.getName());
+            colorPicker.setValue(Color.web(team.getColor()));
+            textColorPicker.setValue(Color.web(team.getTextColor()));
+            linkTextField.setText(team.getLink());
+            addButton.setText(props.getProperty(CSGProperty.UPDATE_TEAM_BUTTON_TEXT.toString()));
+            addButton.setOnAction(e -> {
+                handleUpdateTeam(selectedItem);
+            });
+            
+        }
+    }
+    
+    public void handleUpdateTeam(Object selectedItem) {
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        Team team = (Team)selectedItem;
+            
+        jTPS transactions = workspace.getjTPS();
+        UpdateTeamTrans update = new UpdateTeamTrans(app, team.getName(), team.getColor(), team.getTextColor(), team.getLink(), team);
+        transactions.addTransaction(update);
+    }
+    
+    public void handleClearTeam() {
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        
+        TableView teamTable = workspace.getTeamTable();
+        Button addButton = workspace.getAddTeamButton();
+        TextField nameTextField = workspace.getNameTeamTextField();
+        ColorPicker colorPicker = workspace.getColorPicker();
+        ColorPicker textColorPicker = workspace.getTextColorPicker();
+        TextField linkTextField = workspace.getLinkTeamTextField();
+        
+        teamTable.getSelectionModel().clearSelection();
+        
+        nameTextField.setText("");
+        colorPicker.setValue(Color.WHITE);
+        textColorPicker.setValue(Color.WHITE);
+        linkTextField.setText("");
+
+        nameTextField.requestFocus();
+
+        addButton.setText(props.getProperty(ADD_TEAM_BUTTON_TEXT));
+        addButton.setOnAction(ee -> {
+            handleAddTeam();
         });
     }
     
