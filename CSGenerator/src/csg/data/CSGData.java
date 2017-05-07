@@ -129,7 +129,7 @@ public class CSGData implements AppDataComponent {
         recitations = FXCollections.observableArrayList();
         scheduleItems = FXCollections.observableArrayList();
         types = FXCollections.observableArrayList();
-        types.addAll("Holiday","Lecture","Recitation","HW");
+        types.addAll("Holiday","HW","Lecture","Recitation","Reference");
         teams = FXCollections.observableArrayList();
         teamNames = FXCollections.observableArrayList(); 
         students = FXCollections.observableArrayList();
