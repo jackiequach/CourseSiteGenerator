@@ -216,6 +216,8 @@
         <property name="MISSING_RECITATION_DAY_MESSAGE"             value="Vous devez fournir un jour / heure de récitation"></property>
         <property name="MISSING_RECITATION_LOCATION_TITLE"          value="Lieu de récitation manquant"></property>
         <property name="MISSING_RECITATION_LOCATION_MESSAGE"        value="Vous devez fournir un lieu de récitation"></property>
+        <property name="RECITATION_TA_NOT_UNIQUE_TITLE"             value="Surveillance TA non unique"></property>
+        <property name="RECITATION_TA_NOT_UNIQUE_MESSAGE"           value="Vous devez fournir un service de supervision unique"></property>
         <property name="RECITATION_SECTION_NOT_UNIQUE_TITLE"        value="Section récitation non unique"></property>
         <property name="RECITATION_SECTION_NOT_UNIQUE_MESSAGE"      value="Vous devez fournir une section unique de récitation"></property>
         

@@ -56,6 +56,8 @@ import static csg.CSGProperty.MISSING_TEAM_TEXT_COLOR_MESSAGE;
 import static csg.CSGProperty.MISSING_TEAM_TEXT_COLOR_TITLE;
 import static csg.CSGProperty.RECITATION_SECTION_NOT_UNIQUE_MESSAGE;
 import static csg.CSGProperty.RECITATION_SECTION_NOT_UNIQUE_TITLE;
+import static csg.CSGProperty.RECITATION_TA_NOT_UNIQUE_MESSAGE;
+import static csg.CSGProperty.RECITATION_TA_NOT_UNIQUE_TITLE;
 import static csg.CSGProperty.STUDENT_NAME_NOT_UNIQUE_MESSAGE;
 import static csg.CSGProperty.STUDENT_NAME_NOT_UNIQUE_TITLE;
 import static csg.CSGProperty.TA_NAME_AND_EMAIL_NOT_UNIQUE_MESSAGE;
@@ -558,7 +560,7 @@ public class CSGController {
             dayTextField.setText("");
             locationTextField.setText("");
             taOneComboBox.setValue(null);
-            taOneComboBox.setValue(null);
+            taTwoComboBox.setValue(null);
             
             // AND SEND THE CARET BACK TO THE NAME TEXT FIELD FOR EASY DATA ENTRY
             sectionTextField.requestFocus();
@@ -678,7 +680,9 @@ public class CSGController {
         if(chosenTAOne != null && !chosenTAOne.equals(taTwo)) {
             data.setTAOne(chosenTAOne);
         }
-        else {
+        else if(chosenTAOne != null && chosenTAOne.equals(taTwo))  {
+            AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+            dialog.show(props.getProperty(RECITATION_TA_NOT_UNIQUE_TITLE), props.getProperty(RECITATION_TA_NOT_UNIQUE_MESSAGE));
             supervisingTAOneComboBox.setValue(taOne);
         }
         ComboBox supervisingTATwoComboBox = workspace.getSupervisingTAComboBoxTwo();
@@ -686,7 +690,9 @@ public class CSGController {
         if(chosenTATwo != null && !chosenTATwo.equals(taOne)) {
             data.setTATwo(chosenTATwo);
         }
-        else {
+        else if(chosenTATwo != null && chosenTATwo.equals(taOne)) {
+            AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+            dialog.show(props.getProperty(RECITATION_TA_NOT_UNIQUE_TITLE), props.getProperty(RECITATION_TA_NOT_UNIQUE_MESSAGE));
             supervisingTATwoComboBox.setValue(taTwo);
         }
     }
@@ -841,6 +847,7 @@ public class CSGController {
             workspace.getTypeComboBox().setValue(null);
             workspace.getDateSchedulePicker().setValue(null);
             workspace.getTimeTextField().setText("");
+            workspace.getTitleScheduleTextField().setText("");
             workspace.getTopicTextField().setText("");
             workspace.getLinkTextField().setText("");
             workspace.getCriteriaTextField().setText("");
@@ -1095,7 +1102,7 @@ public class CSGController {
             AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
 	    dialog.show(props.getProperty(MISSING_STUDENT_LAST_NAME_TITLE), props.getProperty(MISSING_STUDENT_LAST_NAME_MESSAGE));
         }
-        else if (team.isEmpty()) {
+        else if (team == null) {
             AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
 	    dialog.show(props.getProperty(MISSING_STUDENT_TEAM_TITLE), props.getProperty(MISSING_STUDENT_TEAM_MESSAGE));
         }

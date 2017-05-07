@@ -604,8 +604,8 @@ public class CSGData implements AppDataComponent {
                 instructorTextField.setText("");
                 dayTextField.setText("");
                 locationTextField.setText("");
-                taOneComboBox.setValue(null);
-                taTwoComboBox.setValue(null);
+                taOneComboBox.getSelectionModel().clearSelection();
+                taTwoComboBox.getSelectionModel().clearSelection();
 
                 addButton.setText(props.getProperty(ADD_RECITATION_BUTTON_TEXT));
                 addButton.setOnAction(ee -> {
@@ -803,6 +803,11 @@ public class CSGData implements AppDataComponent {
         for (Iterator<String> it = teamNames.iterator(); it.hasNext();) {
             String t = it.next();
             if(t.compareTo(teamName) == 0)
+                it.remove();
+        }
+        for (Iterator<Student> it = students.iterator(); it.hasNext();) {
+            Student s = it.next();
+            if(s.getTeam().compareTo(teamName) == 0)
                 it.remove();
         }
     }
@@ -1025,6 +1030,18 @@ public class CSGData implements AppDataComponent {
             String t = it.next();
             if(t.compareTo(taName) == 0)
                 it.remove();
+        }
+        for(int i = 0; i < recitations.size(); i++)
+        {
+            Recitation r = recitations.get(i);
+            if(r.getTAOne().compareTo(ta.getName()) == 0) {
+                r.setTAOne("");
+                recitations.set(i, r);
+            }
+            if(r.getTATwo().compareTo(ta.getName()) == 0) {
+                r.setTATwo("");
+                recitations.set(i, r);
+            }
         }
     }
     

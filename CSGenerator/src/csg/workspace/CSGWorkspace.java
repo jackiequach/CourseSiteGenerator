@@ -6,7 +6,6 @@
 package csg.workspace;
 
 import csg.CSGProperty;
-import static csg.CSGProperty.ADD_RECITATION_BUTTON_TEXT;
 import csg.CSGeneratorApp;
 import csg.data.CSGData;
 import csg.data.Recitation;
@@ -973,7 +972,7 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         String scheduleItemsHeaderLabelText = props.getProperty(CSGProperty.SCHIT_HEADER_TEXT.toString());
         scheduleItemsHeaderLabel = new Label(scheduleItemsHeaderLabelText);
         deleteScheduleItemButton = new Button(props.getProperty(CSGProperty.DELETE_BUTTON_TEXT.toString()));
-        deleteScheduleItemButton.prefHeightProperty().bind(scheduleItemsHeaderBox.heightProperty().multiply(1.5));
+        deleteScheduleItemButton.prefHeightProperty().bind(scheduleItemsHeaderLabel.heightProperty().multiply(1.5));
         scheduleItemsHeaderBox.getChildren().addAll(scheduleItemsHeaderLabel, deleteScheduleItemButton);
 
         scheduleItemTable = new TableView();
