@@ -245,6 +245,17 @@
         <property name="TEAM_NAME_AND_COLOR_NOT_UNIQUE_TITLE"            value="Team Name and Color Not Unique"></property>
         <property name="TEAM_NAME_AND_COLOR_NOT_UNIQUE_MESSAGE"          value="You must provide a unique Team Name and Color"></property>
         
+        <property name="MISSING_STUDENT_FIRST_NAME_TITLE"           value="Missing Student First Name"></property>
+        <property name="MISSING_STUDENT_FIRST_NAME_MESSAGE"         value="You must provide a Student First Name"></property>
+        <property name="MISSING_STUDENT_LAST_NAME_TITLE"            value="Missing Student Last Name"></property>
+        <property name="MISSING_STUDENT_LAST_NAME_MESSAGE"          value="You must provide a Student Last Name"></property>
+        <property name="MISSING_STUDENT_TEAM_TITLE"                 value="Missing Student Team"></property>
+        <property name="MISSING_STUDENT_TEAM_MESSAGE"               value="You must provide a Student Team"></property>
+        <property name="MISSING_STUDENT_ROLE_TITLE"                 value="Missing Student Role"></property>
+        <property name="MISSING_STUDENT_ROLE_MESSAGE"               value="You must provide a Student Role"></property>
+        <property name="STUDENT_NAME_NOT_UNIQUE_TITLE"              value="Name Not Unique"></property>
+        <property name="STUDENT_NAME_NOT_UNIQUE_MESSAGE"            value="You must provide a unique Student Name"></property>
+        
     </property_list>
     <property_options_list>
         <property_options name="OFFICE_HOURS_TABLE_HEADERS">

@@ -245,6 +245,17 @@
         <property name="TEAM_NAME_AND_COLOR_NOT_UNIQUE_TITLE"            value="Nom de l'équipe et couleur non unique"></property>
         <property name="TEAM_NAME_AND_COLOR_NOT_UNIQUE_MESSAGE"          value="Vous devez fournir un nom d'équipe unique et une couleur"></property>
         
+        <property name="MISSING_STUDENT_FIRST_NAME_TITLE"           value="Prénom de l'élève manquant"></property>
+        <property name="MISSING_STUDENT_FIRST_NAME_MESSAGE"         value="Vous devez fournir un prénom de l'élèvee"></property>
+        <property name="MISSING_STUDENT_LAST_NAME_TITLE"            value="Nom d'étudiant manquant"></property>
+        <property name="MISSING_STUDENT_LAST_NAME_MESSAGE"          value="Vous devez fournir un nom de famille étudiant"></property>
+        <property name="MISSING_STUDENT_TEAM_TITLE"                 value="Équipe étudiante manquante"></property>
+        <property name="MISSING_STUDENT_TEAM_MESSAGE"               value="Vous devez fournir une équipe étudiante"></property>
+        <property name="MISSING_STUDENT_ROLE_TITLE"                 value="Rôle des étudiants disparus"></property>
+        <property name="MISSING_STUDENT_ROLE_MESSAGE"               value="Vous devez fournir un rôle d'élève"></property>
+        <property name="STUDENT_NAME_NOT_UNIQUE_TITLE"              value="Nom non unique"></property>
+        <property name="STUDENT_NAME_NOT_UNIQUE_MESSAGE"            value="Vous devez fournir un nom unique de l'élève"></property>
+        
     </property_list>
     <property_options_list>
         <property_options name="OFFICE_HOURS_TABLE_HEADERS">
