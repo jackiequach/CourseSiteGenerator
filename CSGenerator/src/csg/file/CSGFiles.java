@@ -17,6 +17,7 @@ import csg.workspace.CSGController;
 import csg.workspace.CSGWorkspace;
 import djf.components.AppDataComponent;
 import djf.components.AppFileComponent;
+import static djf.settings.AppStartupConstants.FILE_PROTOCOL;
 import static djf.settings.AppStartupConstants.PATH_WORK;
 import java.io.File;
 import java.io.FileInputStream;
@@ -175,13 +176,12 @@ public class CSGFiles implements AppFileComponent {
 	// NOW BUILD THE TA JSON OBJCTS TO SAVE
 	JsonArrayBuilder taArrayBuilder = Json.createArrayBuilder();
 	ObservableList<TeachingAssistant> tas = dataManager.getTeachingAssistants();
-	for (TeachingAssistant ta : tas) {	
-            if(ta.isUndergrad()) {
-                JsonObject taJson = Json.createObjectBuilder()
-                    .add(JSON_NAME, ta.getName())
-                    .add(JSON_EMAIL, ta.getEmail()).build();
-                taArrayBuilder.add(taJson);
-            }
+	for (TeachingAssistant ta : tas) {
+            JsonObject taJson = Json.createObjectBuilder()
+                .add(JSON_UNDERGRAD, ta.isUndergrad())
+                .add(JSON_NAME, ta.getName())
+                .add(JSON_EMAIL, ta.getEmail()).build();
+            taArrayBuilder.add(taJson);
 	}
 	JsonArray undergradTAsArray = taArrayBuilder.build();
 
@@ -271,6 +271,69 @@ public class CSGFiles implements AppFileComponent {
             .add(JSON_SCHEDULE, scheduleArray)
             .add(JSON_TEAMS, teamsArray)
             .add(JSON_STUDENTS, studentsArray)
+            .build();
+	
+	// AND NOW OUTPUT IT TO A JSON FILE WITH PRETTY PRINTING
+	Map<String, Object> properties = new HashMap<>(1);
+	properties.put(JsonGenerator.PRETTY_PRINTING, true);
+	JsonWriterFactory writerFactory = Json.createWriterFactory(properties);
+	StringWriter sw = new StringWriter();
+	JsonWriter jsonWriter = writerFactory.createWriter(sw);
+	jsonWriter.writeObject(dataManagerJSO);
+	jsonWriter.close();
+
+	// INIT THE WRITER
+	OutputStream os = new FileOutputStream(filePath);
+	JsonWriter jsonFileWriter = Json.createWriter(os);
+	jsonFileWriter.writeObject(dataManagerJSO);
+	String prettyPrinted = sw.toString();
+	PrintWriter pw = new PrintWriter(filePath);
+	pw.write(prettyPrinted);
+	pw.close();
+    }
+    
+    public void saveHomeJson(AppDataComponent data, String filePath) throws IOException {
+        CSGData dataManager = (CSGData)data;
+        
+        JsonArrayBuilder courseInfoArrayBuilder = Json.createArrayBuilder();
+        JsonObject courseInfo = Json.createObjectBuilder()
+            .add(JSON_SUBJECT, dataManager.getSubject())
+            .add(JSON_NUMBER, dataManager.getNumber())
+            .add(JSON_SEMESTER, dataManager.getSemester())
+            .add(JSON_YEAR, dataManager.getYear())
+            .add(JSON_TITLE_CI, dataManager.getTitle())
+            .add(JSON_INSTRUCTOR_NAME, dataManager.getInstructorName())
+            .add(JSON_INSTRUCTOR_HOME, dataManager.getInstructorHome())
+            .add(JSON_EXPORT_DIR, dataManager.getExportDirPath())
+            .add(JSON_TEMPLATE_DIR, dataManager.getTemplateDirPath()).build();
+        courseInfoArrayBuilder.add(courseInfo);
+        JsonArray courseInfoArray = courseInfoArrayBuilder.build();
+        
+        JsonArrayBuilder sitePagesArrayBuilder = Json.createArrayBuilder();
+        ObservableList<SitePage> sitePages = dataManager.getSitePages();
+	for (SitePage sitePage : sitePages) {	    
+	    JsonObject siteJson = Json.createObjectBuilder()
+                .add(JSON_USE, sitePage.getUse())
+                .add(JSON_NAVBAR, sitePage.getNavbar())
+                .add(JSON_FILE, sitePage.getFile())
+                .add(JSON_SCRIPT, sitePage.getScript()).build();
+	    sitePagesArrayBuilder.add(siteJson);
+	}
+        JsonArray sitePagesArray = sitePagesArrayBuilder.build();
+        
+        JsonArrayBuilder pageStyleArrayBuilder = Json.createArrayBuilder();
+        JsonObject pageStyle = Json.createObjectBuilder()
+            .add(JSON_BANNER_IMG, dataManager.getBannerImgPath())
+            .add(JSON_LEFT_IMG, dataManager.getLeftFooterImgPath())
+            .add(JSON_RIGHT_IMG, dataManager.getRightFooterImgPath())
+            .add(JSON_STYLESHEET, dataManager.getStylesheet()).build();
+        pageStyleArrayBuilder.add(pageStyle);
+        JsonArray pageStyleArray = pageStyleArrayBuilder.build();
+        
+        JsonObject dataManagerJSO = Json.createObjectBuilder()
+            .add(JSON_COURSE_INFO, courseInfoArray)
+            .add(JSON_SITE_PAGES, sitePagesArray)
+            .add(JSON_PAGE_STYLE, pageStyleArray)
             .build();
 	
 	// AND NOW OUTPUT IT TO A JSON FILE WITH PRETTY PRINTING
@@ -857,17 +920,20 @@ public class CSGFiles implements AppFileComponent {
         FileUtils.copyDirectory(srcDir,destDir);
         
         String cssFile = dataC.getStylesheet();
-        File srcCss = new File(PATH_WORK + cssFile);
-        File destCss = new File(destDir + "/css");
-        FileUtils.copyFileToDirectory(srcCss, destCss);
+        File srcCss = new File(PATH_WORK + "css/" + cssFile);
+        File destCss = new File(destDir + "/css/" + cssFile);
+        FileUtils.copyFile(srcCss, destCss);
         
-        File srcBannerImg = new File(dataC.getBannerImgPath());
-        File srcLeftFooterImg = new File(dataC.getLeftFooterImgPath());
-        File srcRightFooterImg = new File(dataC.getRightFooterImgPath());
-        File destImg = new File(destDir + "/images");
-        FileUtils.copyFileToDirectory(srcBannerImg, destImg);
-        FileUtils.copyFileToDirectory(srcLeftFooterImg, destImg);
-        FileUtils.copyFileToDirectory(srcRightFooterImg, destImg);
+        File srcBannerImg = new File(dataC.getBannerImgPath().split(":")[1]);
+        File srcLeftFooterImg = new File(dataC.getLeftFooterImgPath().split(":")[1]);
+        File srcRightFooterImg = new File(dataC.getRightFooterImgPath().split(":")[1]);
+        File destBannerImg = new File(destDir + "/images/banner" + "." + srcBannerImg.getPath().split("\\.")[2]);
+        File destLeftFooterImg = new File(destDir + "/images/leftFooter" + "." + srcLeftFooterImg.getPath().split("\\.")[2]);
+        File destRightFooterImg = new File(destDir + "/images/rightFooter" + "." + srcRightFooterImg.getPath().split("\\.")[2]);
+        FileUtils.copyFile(srcBannerImg, destBannerImg);
+        FileUtils.copyFile(srcLeftFooterImg, destLeftFooterImg);
+        FileUtils.copyFile(srcRightFooterImg, destRightFooterImg);
+        saveHomeJson(data,destDir+"\\js\\HomeBuilder.json");
         saveTAJson(data,destDir+"\\js\\OfficeHoursGridData.json");
         saveRecitationsJson(data,destDir+"\\js\\RecitationsData.json");
         saveScheduleJson(data,destDir+"\\js\\ScheduleData.json");
