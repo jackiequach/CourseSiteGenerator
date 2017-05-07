@@ -40,6 +40,22 @@ public class Student<E extends Comparable<E>> implements Comparable<E> {
     public String getRole() {
         return role.get();
     }
+    
+    public void setFirstName(String firstName) {
+        this.firstName.set(firstName);
+    }
+    
+    public void setLastName(String lastName) {
+        this.lastName.set(lastName);
+    }
+    
+    public void setTeam(String team) {
+        this.team.set(team);
+    }
+    
+    public void setRole(String role) {
+        this.role.set(role);
+    }
 
     @Override
     public int compareTo(E otherStudent) {
