@@ -628,14 +628,14 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         yearComboBox.setOnAction(e -> {
             controller.handleCourseInfo();
         });
-        titleTextField.setOnAction(e -> {
-            controller.handleCourseInfo();
+        titleTextField.textProperty().addListener((observable,oldvalue,newValue) -> {
+            data.setTitle(newValue);
         });
-        instructorNameTextField.setOnAction(e -> {
-            controller.handleCourseInfo();
+        instructorNameTextField.textProperty().addListener((observable,oldvalue,newValue)-> {
+            data.setInstructorName(newValue);;
         });
-        instructorHomeTextField.setOnAction(e -> {
-            controller.handleCourseInfo();
+        instructorHomeTextField.textProperty().addListener((observable,oldvalue,newValue)-> {
+            data.setInstructorHome(newValue);;
         });
         
         changeExportDirButton.setOnAction(e -> {
