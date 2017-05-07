@@ -203,7 +203,7 @@ public class CSGFiles implements AppFileComponent {
 	    JsonObject recitationJson = Json.createObjectBuilder()
                 .add(JSON_SECTION, recitation.getSection())
                 .add(JSON_INSTRUCTOR, recitation.getInstructor())
-                .add(JSON_DAY, recitation.getDay())
+                .add(JSON_DAY_REC, recitation.getDay())
                 .add(JSON_LOCATION, recitation.getLocation())
                 .add(JSON_TA_ONE, recitation.getTAOne())
                 .add(JSON_TA_TWO, recitation.getTATwo()).build();
@@ -417,7 +417,7 @@ public class CSGFiles implements AppFileComponent {
 	    JsonObject recitationJson = Json.createObjectBuilder()
                 .add(JSON_SECTION, recitation.getSection())
                 .add(JSON_INSTRUCTOR, recitation.getInstructor())
-                .add(JSON_DAY, recitation.getDay())
+                .add(JSON_DAY_REC, recitation.getDay())
                 .add(JSON_LOCATION, recitation.getLocation())
                 .add(JSON_TA_ONE, recitation.getTAOne())
                 .add(JSON_TA_TWO, recitation.getTATwo()).build();
