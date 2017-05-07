@@ -924,6 +924,12 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         locationTextField.setOnAction(e -> {
             controller.handleAddRecitation();
         });
+        supervisingTAComboBoxOne.setOnAction(e -> {
+            controller.handleSuperTA();
+        });
+        supervisingTAComboBoxTwo.setOnAction(e -> {
+            controller.handleSuperTA();
+        });
         addRecitationButton.setOnAction(e -> {
             controller.handleAddRecitation();
         });

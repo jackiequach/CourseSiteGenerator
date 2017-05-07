@@ -89,6 +89,8 @@ public class CSGData implements AppDataComponent {
     public static final String DEFAULT_RIGHT_IMG = "CSLogo.png";
     
     ObservableList<Recitation> recitations;
+    String taOne;
+    String taTwo;
     
     ObservableList<ScheduleItem> scheduleItems;
     LocalDate startMonday;
@@ -138,6 +140,9 @@ public class CSGData implements AppDataComponent {
         
         startHour = MIN_START_HOUR;
         endHour = MAX_END_HOUR;
+        
+        taOne = "";
+        taTwo = "";
         
         officeHours = new HashMap();
         
@@ -342,6 +347,22 @@ public class CSGData implements AppDataComponent {
 
     public int getEndHour() {
         return endHour;
+    }
+    
+    public void setTAOne(String initTAOne) {
+        taOne = initTAOne;
+    }
+    
+    public String getTAOne() {
+        return taOne;
+    }
+    
+    public void setTATwo(String initTATwo) {
+        taTwo = initTATwo;
+    }
+    
+    public String getTATwo() {
+        return taTwo;
     }
     
     public ArrayList<String> getGridHeaders() {

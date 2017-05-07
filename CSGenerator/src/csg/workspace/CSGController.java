@@ -666,6 +666,31 @@ public class CSGController {
         transactions.addTransaction(update);
     }
     
+    public void handleSuperTA() {
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        CSGData data = (CSGData)app.getDataComponent();
+        String taOne = data.getTAOne();
+        String taTwo = data.getTATwo();
+        
+        ComboBox supervisingTAOneComboBox = workspace.getSupervisingTAComboBoxOne();
+        String chosenTAOne = (String)supervisingTAOneComboBox.getValue();
+        if(chosenTAOne != null && !chosenTAOne.equals(taTwo)) {
+            data.setTAOne(chosenTAOne);
+        }
+        else {
+            supervisingTAOneComboBox.setValue(taOne);
+        }
+        ComboBox supervisingTATwoComboBox = workspace.getSupervisingTAComboBoxTwo();
+        String chosenTATwo = (String)supervisingTATwoComboBox.getValue();
+        if(chosenTATwo != null && !chosenTATwo.equals(taOne)) {
+            data.setTATwo(chosenTATwo);
+        }
+        else {
+            supervisingTATwoComboBox.setValue(taTwo);
+        }
+    }
+    
     public void handleStartingMonday() {
         CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
         PropertiesManager props = PropertiesManager.getPropertiesManager();
