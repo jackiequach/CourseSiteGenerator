@@ -481,6 +481,9 @@ public class CSGFiles implements AppFileComponent {
         CSGData dataManager = (CSGData)data;
         
         JsonArrayBuilder workArrayBuilder = Json.createArrayBuilder();
+        JsonObject semesterJson = Json.createObjectBuilder()
+            .add(JSON_SEMESTER, dataManager.getSemester() + " " + dataManager.getYear()).build();
+        workArrayBuilder.add(semesterJson);
 	ObservableList<Team> teams = dataManager.getTeams();
 	for (Team team : teams) {
             JsonArrayBuilder studentsArrayBuilder = Json.createArrayBuilder();
