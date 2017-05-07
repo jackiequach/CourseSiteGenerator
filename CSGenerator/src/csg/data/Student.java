@@ -12,7 +12,7 @@ import javafx.beans.property.StringProperty;
  *
  * @author Jackie
  */
-public class Student {
+public class Student<E extends Comparable<E>> implements Comparable<E> {
     private final StringProperty firstName;
     private final StringProperty lastName;
     private final StringProperty team;
@@ -39,5 +39,12 @@ public class Student {
     
     public String getRole() {
         return role.get();
+    }
+
+    @Override
+    public int compareTo(E otherStudent) {
+        if(getFirstName().equals(((Student)otherStudent).getFirstName()) && getLastName().equals(((Student)otherStudent).getLastName()))
+            return 0;
+        return getFirstName().compareTo(((Student)otherStudent).getFirstName());
     }
 }
