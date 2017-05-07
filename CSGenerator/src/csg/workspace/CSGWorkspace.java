@@ -152,16 +152,19 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     Label bannerSchoolImgLabel;
     Label bannerImgPath;
     Image bannerSchoolImg;
+    ImageView bannerSchoolImgView;
     Button changeBannerButton;
     
     Label leftFooterImgLabel;
     Label leftFooterImgPath;
     Image leftFooterImg;
+    ImageView leftFooterImgView;
     Button changeLeftFooterButton;
     
     Label rightFooterImgLabel;
     Label rightFooterImgPath;
     Image rightFooterImg;
+    ImageView rightFooterImgView;
     Button changeRightFooterButton;
     
     Label stylesheetLabel;
@@ -546,18 +549,24 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         bannerSchoolImgLabel = new Label(bannerSchoolImgText);
         bannerImgPath = new Label(data.getBannerImgPath());
         bannerSchoolImg = new Image(bannerImgPath.getText());
+        bannerSchoolImgView = new ImageView();
+        bannerSchoolImgView.setImage(bannerSchoolImg);
         changeBannerButton = new Button(props.getProperty(CSGProperty.CHANGE_BUTTON_TEXT.toString()));
         
         String leftFooterImgText = props.getProperty(CSGProperty.LF_LABEL_TEXT.toString());
         leftFooterImgLabel = new Label(leftFooterImgText);
         leftFooterImgPath = new Label(data.getLeftFooterImgPath());
         leftFooterImg = new Image(leftFooterImgPath.getText());
+        leftFooterImgView = new ImageView();
+        leftFooterImgView.setImage(leftFooterImg);
         changeLeftFooterButton = new Button(props.getProperty(CSGProperty.CHANGE_BUTTON_TEXT.toString()));
 
         String rightFooterImgText = props.getProperty(CSGProperty.RF_LABEL_TEXT.toString());
         rightFooterImgLabel = new Label(rightFooterImgText);
         rightFooterImgPath = new Label(data.getRightFooterImgPath());
         rightFooterImg = new Image(rightFooterImgPath.getText());
+        rightFooterImgView = new ImageView();
+        rightFooterImgView.setImage(rightFooterImg);
         changeRightFooterButton = new Button(props.getProperty(CSGProperty.CHANGE_BUTTON_TEXT.toString()));
 
         String stylesheetText = props.getProperty(CSGProperty.SS_LABEL_TEXT.toString()); 
@@ -577,13 +586,13 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         pageStyleGridPane.setPadding(new Insets(10, 10, 10, 10));
         pageStyleGridPane.add(pageStyleHeaderBox, 0, 0);
         pageStyleGridPane.add(bannerSchoolImgLabel, 0, 1);
-        pageStyleGridPane.add(new ImageView(bannerSchoolImg), 1, 1);
+        pageStyleGridPane.add(bannerSchoolImgView, 1, 1);
         pageStyleGridPane.add(changeBannerButton, 2, 1);
         pageStyleGridPane.add(leftFooterImgLabel, 0, 2);
-        pageStyleGridPane.add(new ImageView(leftFooterImg), 1, 2);
+        pageStyleGridPane.add(leftFooterImgView, 1, 2);
         pageStyleGridPane.add(changeLeftFooterButton, 2, 2);
         pageStyleGridPane.add(rightFooterImgLabel, 0, 3);
-        pageStyleGridPane.add(new ImageView(rightFooterImg), 1, 3);
+        pageStyleGridPane.add(rightFooterImgView, 1, 3);
         pageStyleGridPane.add(changeRightFooterButton, 2, 3);
         pageStyleGridPane.add(stylesheetLabel, 0, 4);
         pageStyleGridPane.add(stylesheetComboBox, 1, 4);
@@ -2126,6 +2135,18 @@ public class CSGWorkspace extends AppWorkspaceComponent {
     
     public ComboBox getTeamComboBox() {
         return teamComboBox;
+    }
+    
+    public ImageView getBannerImgView() {
+        return bannerSchoolImgView;
+    }
+    
+    public ImageView getLeftFooterImgView() {
+        return leftFooterImgView;
+    }
+    
+    public ImageView getRightFooterImgView() {
+        return rightFooterImgView;
     }
     
     public class CheckBoxCellFactory<T> implements Callback {
