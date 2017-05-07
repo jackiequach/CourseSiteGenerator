@@ -451,9 +451,6 @@ public class CSGController {
         data.setNumber((String)numberComboBox.getValue());
         data.setSemester((String)semesterComboBox.getValue());
         data.setYear((String)yearComboBox.getValue());
-        data.setTitle(titleTextField.getText());
-        data.setInstructorName(instructorNameTextField.getText());
-        data.setInstructorHome(instructorHomeTextField.getText());
     }
     
     public void handleChangeExportDir() {
@@ -740,28 +737,20 @@ public class CSGController {
         CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
         PropertiesManager props = PropertiesManager.getPropertiesManager();
         CSGData data = (CSGData)app.getDataComponent();
-        String taOne = data.getTAOne();
-        String taTwo = data.getTATwo();
         
         ComboBox supervisingTAOneComboBox = workspace.getSupervisingTAComboBoxOne();
-        String chosenTAOne = (String)supervisingTAOneComboBox.getValue();
-        if(chosenTAOne != null && !chosenTAOne.equals(taTwo)) {
-            data.setTAOne(chosenTAOne);
-        }
-        else if(chosenTAOne != null && chosenTAOne.equals(taTwo))  {
-            AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
-            dialog.show(props.getProperty(RECITATION_TA_NOT_UNIQUE_TITLE), props.getProperty(RECITATION_TA_NOT_UNIQUE_MESSAGE));
-            supervisingTAOneComboBox.setValue(taOne);
-        }
         ComboBox supervisingTATwoComboBox = workspace.getSupervisingTAComboBoxTwo();
+        String chosenTAOne = (String)supervisingTAOneComboBox.getValue();
         String chosenTATwo = (String)supervisingTATwoComboBox.getValue();
-        if(chosenTATwo != null && !chosenTATwo.equals(taOne)) {
-            data.setTATwo(chosenTATwo);
-        }
-        else if(chosenTATwo != null && chosenTATwo.equals(taOne)) {
+        if(chosenTAOne != null && chosenTATwo != null && chosenTAOne.equals(chosenTATwo))  {
+            supervisingTAOneComboBox.setValue(null);
             AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
             dialog.show(props.getProperty(RECITATION_TA_NOT_UNIQUE_TITLE), props.getProperty(RECITATION_TA_NOT_UNIQUE_MESSAGE));
-            supervisingTATwoComboBox.setValue(taTwo);
+        }
+        if(chosenTATwo != null && chosenTAOne != null && chosenTATwo.equals(chosenTAOne)) {
+            supervisingTATwoComboBox.setValue(null);
+            AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+            dialog.show(props.getProperty(RECITATION_TA_NOT_UNIQUE_TITLE), props.getProperty(RECITATION_TA_NOT_UNIQUE_MESSAGE));
         }
     }
     
