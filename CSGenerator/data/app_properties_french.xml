@@ -86,9 +86,9 @@
         <property name="EXPORT_DIR_TITLE"               value="Choisissez votre répertoire d'exportation"></property>
 	<property name="WORK_FILE_EXT"			value=".json"></property>
 	<property name="WORK_FILE_EXT_DESC"		value="Horaires de bureau TA"></property>
-	<property name="BANNER_TITLE"                   value="Choose Banner Image"></property>
-	<property name="LEFT_FOOTER_TITLE"              value="Choose Left Footer Image"></property>
-	<property name="RIGHT_FOOTER_TITLE"             value="Choose Right Footer Image"></property>
+	<property name="BANNER_TITLE"                   value="Choisissez l'image de la bannière"></property>
+	<property name="LEFT_FOOTER_TITLE"              value="Choisissez l'image de pied de gauche"></property>
+	<property name="RIGHT_FOOTER_TITLE"             value="Choisissez l'image du pied droit"></property>
         
         <property name="DELETE_TIME_TITLE"              value="Continuer à supprimer les heures de bureau?"></property>
         <property name="DELETE_TIME_MESSAGE"            value="Voulez-vous continuer et supprimer les heures de bureau?"></property>
