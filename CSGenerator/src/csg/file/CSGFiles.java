@@ -736,7 +736,7 @@ public class CSGFiles implements AppFileComponent {
             JsonObject jsonRecitation = jsonRecitationArray.getJsonObject(i);
             String section = jsonRecitation.getString(JSON_SECTION);
             String instructor = jsonRecitation.getString(JSON_INSTRUCTOR);
-            String day = jsonRecitation.getString(JSON_DAY);
+            String day = jsonRecitation.getString(JSON_DAY_REC);
             String location = jsonRecitation.getString(JSON_LOCATION);
             String taOne = jsonRecitation.getString(JSON_TA_ONE);
             String taTwo = jsonRecitation.getString(JSON_TA_TWO);
