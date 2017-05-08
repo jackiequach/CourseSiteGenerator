@@ -630,12 +630,15 @@ public class CSGWorkspace extends AppWorkspaceComponent {
         });
         titleTextField.textProperty().addListener((observable,oldvalue,newValue) -> {
             data.setTitle(newValue);
+            app.getGUI().getAppFileController().markAsEdited(app.getGUI());
         });
         instructorNameTextField.textProperty().addListener((observable,oldvalue,newValue)-> {
-            data.setInstructorName(newValue);;
+            data.setInstructorName(newValue);
+            app.getGUI().getAppFileController().markAsEdited(app.getGUI());
         });
         instructorHomeTextField.textProperty().addListener((observable,oldvalue,newValue)-> {
-            data.setInstructorHome(newValue);;
+            data.setInstructorHome(newValue);
+            app.getGUI().getAppFileController().markAsEdited(app.getGUI());
         });
         
         changeExportDirButton.setOnAction(e -> {
