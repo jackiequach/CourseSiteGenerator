@@ -17,7 +17,6 @@ import csg.workspace.CSGController;
 import csg.workspace.CSGWorkspace;
 import djf.components.AppDataComponent;
 import djf.components.AppFileComponent;
-import static djf.settings.AppStartupConstants.FILE_PROTOCOL;
 import static djf.settings.AppStartupConstants.PATH_WORK;
 import java.io.File;
 import java.io.FileInputStream;
@@ -58,6 +57,7 @@ public class CSGFiles implements AppFileComponent {
     static final String JSON_UNDERGRAD = "undergrad";
     static final String JSON_NAME = "name";
     static final String JSON_UNDERGRAD_TAS = "undergrad_tas";
+    static final String JSON_TAS = "tas";
     static final String JSON_EMAIL = "email";
     
     static final String JSON_COURSE_INFO = "course_info";
@@ -303,9 +303,7 @@ public class CSGFiles implements AppFileComponent {
             .add(JSON_YEAR, dataManager.getYear())
             .add(JSON_TITLE_CI, dataManager.getTitle())
             .add(JSON_INSTRUCTOR_NAME, dataManager.getInstructorName())
-            .add(JSON_INSTRUCTOR_HOME, dataManager.getInstructorHome())
-            .add(JSON_EXPORT_DIR, dataManager.getExportDirPath())
-            .add(JSON_TEMPLATE_DIR, dataManager.getTemplateDirPath()).build();
+            .add(JSON_INSTRUCTOR_HOME, dataManager.getInstructorHome()).build();
         courseInfoArrayBuilder.add(courseInfo);
         JsonArray courseInfoArray = courseInfoArrayBuilder.build();
         
@@ -359,6 +357,7 @@ public class CSGFiles implements AppFileComponent {
         CSGData dataManager = (CSGData)data;
         // NOW BUILD THE TA JSON OBJCTS TO SAVE
 	JsonArrayBuilder taArrayBuilder = Json.createArrayBuilder();
+	JsonArrayBuilder gradTaArrayBuilder = Json.createArrayBuilder();
 	ObservableList<TeachingAssistant> tas = dataManager.getTeachingAssistants();
 	for (TeachingAssistant ta : tas) {	
             if(ta.isUndergrad()) {
@@ -367,8 +366,15 @@ public class CSGFiles implements AppFileComponent {
                     .add(JSON_EMAIL, ta.getEmail()).build();
                 taArrayBuilder.add(taJson);
             }
+            else {
+                JsonObject gradTAJson = Json.createObjectBuilder()
+                    .add(JSON_NAME, ta.getName())
+                    .add(JSON_EMAIL, ta.getEmail()).build();
+                gradTaArrayBuilder.add(gradTAJson);
+            }
 	}
 	JsonArray undergradTAsArray = taArrayBuilder.build();
+	JsonArray gradTAsArray = gradTaArrayBuilder.build();
         
 	// NOW BUILD THE TIME SLOT JSON OBJCTS TO SAVE
 	JsonArrayBuilder timeSlotArrayBuilder = Json.createArrayBuilder();
@@ -386,6 +392,7 @@ public class CSGFiles implements AppFileComponent {
             .add(JSON_START_HOUR, "" + dataManager.getStartHour())
             .add(JSON_END_HOUR, "" + dataManager.getEndHour())
             .add(JSON_UNDERGRAD_TAS, undergradTAsArray)
+            .add(JSON_TAS, gradTAsArray)
             .add(JSON_OFFICE_HOURS, timeSlotsArray)
             .build();
 	
@@ -921,15 +928,15 @@ public class CSGFiles implements AppFileComponent {
         
         String cssFile = dataC.getStylesheet();
         File srcCss = new File(PATH_WORK + "css/" + cssFile);
-        File destCss = new File(destDir + "/css/" + cssFile);
+        File destCss = new File(destDir + "/css/cssFile.css");
         FileUtils.copyFile(srcCss, destCss);
         
         File srcBannerImg = new File(dataC.getBannerImgPath().split(":")[1]);
         File srcLeftFooterImg = new File(dataC.getLeftFooterImgPath().split(":")[1]);
         File srcRightFooterImg = new File(dataC.getRightFooterImgPath().split(":")[1]);
-        File destBannerImg = new File(destDir + "/images/banner" + "." + srcBannerImg.getPath().split("\\.")[2]);
-        File destLeftFooterImg = new File(destDir + "/images/leftFooter" + "." + srcLeftFooterImg.getPath().split("\\.")[2]);
-        File destRightFooterImg = new File(destDir + "/images/rightFooter" + "." + srcRightFooterImg.getPath().split("\\.")[2]);
+        File destBannerImg = new File(destDir + "/images/banner" + ".png");
+        File destLeftFooterImg = new File(destDir + "/images/leftFooter" + ".png");
+        File destRightFooterImg = new File(destDir + "/images/rightFooter" + ".png");
         FileUtils.copyFile(srcBannerImg, destBannerImg);
         FileUtils.copyFile(srcLeftFooterImg, destLeftFooterImg);
         FileUtils.copyFile(srcRightFooterImg, destRightFooterImg);
