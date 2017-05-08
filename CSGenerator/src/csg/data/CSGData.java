@@ -524,7 +524,6 @@ public class CSGData implements AppDataComponent {
         if(!containsSitePage(initFile)) {
             sitePages.add(site);
         }
-        Collections.sort(sitePages);
     }
     
     public void addRecitation(String initSection, String initInstructor, String initDay, String initLocation, String initTAOne, String initTATwo) {
