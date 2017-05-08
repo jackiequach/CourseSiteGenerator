@@ -441,9 +441,6 @@ public class CSGController {
         ComboBox numberComboBox = workspace.getNumberComboBox();
         ComboBox semesterComboBox = workspace.getSemesterComboBox();
         ComboBox yearComboBox = workspace.getYearComboBox();
-        TextField titleTextField = workspace.getTitleTextField();
-        TextField instructorNameTextField = workspace.getInstructorNameTextField();
-        TextField instructorHomeTextField = workspace.getInstructorHomeTextField();
         
         CSGData data = (CSGData)app.getDataComponent();
         
@@ -451,6 +448,8 @@ public class CSGController {
         data.setNumber((String)numberComboBox.getValue());
         data.setSemester((String)semesterComboBox.getValue());
         data.setYear((String)yearComboBox.getValue());
+        
+        app.getGUI().getAppFileController().markAsEdited(app.getGUI());
     }
     
     public void handleChangeExportDir() {
@@ -463,6 +462,7 @@ public class CSGController {
         File directory = dc.showDialog(app.getGUI().getWindow());
         if (directory != null) {
             data.setExportDirPath(directory.getPath());
+            app.getGUI().getAppFileController().markAsEdited(app.getGUI());
         }
     }
     
@@ -479,6 +479,7 @@ public class CSGController {
         if (directory != null) {
             sitePages.clear();
             data.setTemplateDirPath(directory.getPath());
+            app.getGUI().getAppFileController().markAsEdited(app.getGUI());
             File[] directoryListing = directory.listFiles(new FilenameFilter() {
                 @Override
                 public boolean accept(File dir, String name) {
@@ -527,9 +528,10 @@ public class CSGController {
 
         File selectedFile = fc.showOpenDialog(app.getGUI().getWindow());
         if (selectedFile != null) {
-            data.setBannerImgPath(FILE_PROTOCOL + selectedFile.getPath());
+            data.setBannerImgPath(selectedFile.getPath());
             Image temp = new Image(FILE_PROTOCOL + selectedFile.getPath());
             workspace.getBannerImgView().setImage(temp);
+            app.getGUI().getAppFileController().markAsEdited(app.getGUI());
         }
     }
     
@@ -545,9 +547,10 @@ public class CSGController {
 
         File selectedFile = fc.showOpenDialog(app.getGUI().getWindow());
         if (selectedFile != null) {
-            data.setLeftFooterImgPath(FILE_PROTOCOL + selectedFile.getPath());
+            data.setLeftFooterImgPath(selectedFile.getPath());
             Image temp = new Image(FILE_PROTOCOL + selectedFile.getPath());
             workspace.getLeftFooterImgView().setImage(temp);
+            app.getGUI().getAppFileController().markAsEdited(app.getGUI());
         }
     }
     
@@ -563,9 +566,10 @@ public class CSGController {
 
         File selectedFile = fc.showOpenDialog(app.getGUI().getWindow());
         if (selectedFile != null) {
-            data.setRightFooterImgPath(FILE_PROTOCOL + selectedFile.getPath());
+            data.setRightFooterImgPath(selectedFile.getPath());
             Image temp = new Image(FILE_PROTOCOL + selectedFile.getPath());
             workspace.getRightFooterImgView().setImage(temp);
+            app.getGUI().getAppFileController().markAsEdited(app.getGUI());
         }
     }
     
@@ -574,6 +578,7 @@ public class CSGController {
         CSGData data = (CSGData)app.getDataComponent();
         ComboBox stylesheetComboBox = workspace.getStylesheetComboBox();
         data.setStylesheet((String)stylesheetComboBox.getValue());
+        app.getGUI().getAppFileController().markAsEdited(app.getGUI());
     }
     
     public void handleAddRecitation() {
