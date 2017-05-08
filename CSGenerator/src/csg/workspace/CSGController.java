@@ -477,6 +477,7 @@ public class CSGController {
 
         File directory = dc.showDialog(app.getGUI().getWindow());
         if (directory != null) {
+            sitePages.clear();
             data.setTemplateDirPath(directory.getPath());
             File[] directoryListing = directory.listFiles(new FilenameFilter() {
                 @Override
@@ -489,15 +490,23 @@ public class CSGController {
                     if(htmlFile.getName().equals("index.html")) {
                         sitePages.add(new SitePage(true, "Home", htmlFile.getName(), "HomeBuilder.js"));
                     }
+                }
+                for(File htmlFile : directoryListing) {
                     if(htmlFile.getName().equals("syllabus.html")) {
                         sitePages.add(new SitePage(true, "Syllabus", htmlFile.getName(), "SyllabusBuilder.js"));
                     }
+                }
+                for(File htmlFile : directoryListing) {
                     if(htmlFile.getName().equals("schedule.html")) {
                         sitePages.add(new SitePage(true, "Schedule", htmlFile.getName(), "ScheduleBuilder.js"));
                     }
+                }
+                for(File htmlFile : directoryListing) {
                     if(htmlFile.getName().equals("hws.html")) {
                         sitePages.add(new SitePage(true, "HWs", htmlFile.getName(), "HWsBuilder.js"));
                     }
+                }
+                for(File htmlFile : directoryListing) {
                     if(htmlFile.getName().equals("projects.html")) {
                         sitePages.add(new SitePage(true, "Projects", htmlFile.getName(), "ProjectsBuilder.js"));
                     }
