@@ -311,6 +311,9 @@ public class CSGData implements AppDataComponent {
     }
     
     public void setStylesheet(String initStylesheet) {
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        ComboBox stylesheetComboBox = workspace.getStylesheetComboBox();
+        stylesheetComboBox.setValue(initStylesheet);
         stylesheet = initStylesheet;
     }
     
@@ -322,6 +325,9 @@ public class CSGData implements AppDataComponent {
     }
     
     public void setStartMonday(LocalDate initStartMonday) {
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        DatePicker startingMondayPicker = workspace.getStartingMondayPicker();
+        startingMondayPicker.setValue(initStartMonday);
         startMonday = initStartMonday;
     }
     
@@ -333,6 +339,9 @@ public class CSGData implements AppDataComponent {
     }
     
     public void setEndFriday(LocalDate initEndFriday) {
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
+        DatePicker endingFridayPicker = workspace.getEndingFridayPicker();
+        endingFridayPicker.setValue(initEndFriday);
         endFriday = initEndFriday;
     }
     
