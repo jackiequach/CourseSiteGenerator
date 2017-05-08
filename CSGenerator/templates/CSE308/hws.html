@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<!-- saved from url=(0056)http://www3.cs.stonybrook.edu/~cse308/Section01/hws.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<meta name="description" content="CSE 308 - Software Engineering - Spring 2017 HWs Page">
+	<title>CSE 308 HWs</title> 
+	<link rel="stylesheet" type="text/css" href="./css/course_homepage_layout.css">
+	<link rel="stylesheet" type="text/css" href="./css/cssFile.css">
+
+        <!-- LINK TO OUR JavaScript FILE AND JQuery -->
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="./js/HomeBuilder.js"></script>
+        <script src="./js/HWsBuilder.js"></script>
+
+	<!-- ONCE THE PAGE FULLY LOADS INITIALIZE THE SLIDESHOW -->
+        <script>
+	    $(document).ready()
+	    {
+                initCourseInfoHW();
+		initHWs();
+	    }
+        </script>
+    </head>
+
+    <body>
+
+	<div id="content">
+
+	    <div id="navbar">
+                <a href="http://www.stonybrook.edu"><img alt="Stony Brook University" class="sbu_navbar" src="./images/banner.png"></a>
+
+	    </div>
+
+	    <div id="banner">
+	    </div>
+
+	    <div id="desc">
+
+		<h3>Homework Assignments</h3>
+
+		<p>Note that the grading criteria for all homework assignments will be posted here along with links to homework instructions.</p>
+
+		<table class="hws">
+                    <tbody id="hws">
+                        <tr class="hws" style="background-color:rgb(235,215,215)">
+                            <th class="hws">Homework</th>
+                            <th class="hws">Due Date</th>  
+                            <th class="hws">Grading Criteria</th>         
+                        </tr>
+                        
+                        <!-- THIS WILL BE FILLED IN BY JAVASCRIPT -->
+                    </tbody>
+                </table>
+		<br>
+		<br>
+		<br>
+		<hr>
+
+		<a href="http://www.stonybrook.edu/"><img class="stonybrook" src="./images/leftFooter.png" alt="Stony Brook University"></a>
+		<a href="http://www.cs.stonybrook.edu/"><img class="cs" src="./images/rightFooter.png" alt="CS"></a>
+		<p class="footer">
+		    Web page created and maintained<br>
+		    by Richard McKenna<br>
+		    <a href="http://www.digits.com/"><img src="http://counter.digits.com/wc/-d/4/rtm_counter" width="60" height="20" alt="counter"></a>
+		</p>
+	    </div>
+	</div>
+
+    
+
+</body></html>

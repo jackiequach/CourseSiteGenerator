@@ -198,13 +198,13 @@ public class JsonJUnitTest {
     @Test
     public void startMondayCheck() {
         CSGData data = (CSGData)app.getDataComponent();
-        assertEquals("04/22/2012", data.getStartMonday());
+        assertEquals("2012-04-22", data.getStartMonday());
     }
     
     @Test
     public void endFridayCheck() {
         CSGData data = (CSGData)app.getDataComponent();
-        assertEquals("05/22/2012", data.getEndFriday());
+        assertEquals("2012-05-22", data.getEndFriday());
     }
     
     @Test

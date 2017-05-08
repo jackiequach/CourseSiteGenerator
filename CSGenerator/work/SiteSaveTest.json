@@ -1,0 +1,96 @@
+
+{
+    "course_info":[
+        {
+            "subject":"CSE",
+            "number":"219",
+            "semester":"Fall",
+            "year":"2017",
+            "ciTitle":"Computer Science III",
+            "instructorName":"Richard Mckenna",
+            "instructorHome":"http://http://www3.cs.stonybrook.edu/~richard/",
+            "exportDir":"..\\Courses\\CSE219\\Fall2017\\public",
+            "templateDir":".\\templates\\CSE219"
+        }
+    ],
+    "site_pages":[
+        {
+            "use":true,
+            "navbar":"HWs",
+            "file":"index.html",
+            "script":"HomeBuilder.js"
+        }
+    ],
+    "page_style":[
+        {
+            "bannerImg":"file:./images/SBUDarkRedShieldLogo.png",
+            "leftImg":"file:./images/SBUWhiteShieldLogo.jpg",
+            "rightImg":"file:./images/CSLogo.png",
+            "stylesheet":"sea_wolf.css"
+        }
+    ],
+    "startHour":"0",
+    "endHour":"23",
+    "undergrad_tas":[
+        {
+            "undergrad":false,
+            "name":"Jane Doe",
+            "email":"jane.doe@gmail.com"
+        },
+        {
+            "undergrad":true,
+            "name":"John Doe",
+            "email":"john.doe@gmail.com"
+        }
+    ],
+    "officeHours":[
+        {
+            "day":"WEDNESDAY",
+            "time":"1_30am",
+            "name":"John Doe"
+        }
+    ],
+    "recitations":[
+        {
+            "section":"R01",
+            "instructor":"Mckenna",
+            "day":"Wed 3:30pm-4:23pm",
+            "location":"Old CS 2114",
+            "taOne":"Jane Doe",
+            "taTwo":"Joe Shmo"
+        }
+    ],
+    "calendar_boundaries":[
+        {
+            "startMonday":"2012-04-22",
+            "endFriday":"2012-05-22"
+        }
+    ],
+    "schedule_items":[
+        {
+            "type":"Holiday",
+            "date":"02/03/2017",
+            "time":"9:00am",
+            "title":"SNOW DAY",
+            "topic":"topic",
+            "link":"this is a link",
+            "criteria":"this is criteria"
+        }
+    ],
+    "teams":[
+        {
+            "nameTeam":"C4 Comics",
+            "color":"235399",
+            "textColor":"ffffff",
+            "link":"thisalink"
+        }
+    ],
+    "students":[
+        {
+            "firstName":"Jane",
+            "lastName":"Doe",
+            "team":"C4 Comics",
+            "role":"Lead Programmer"
+        }
+    ]
+}

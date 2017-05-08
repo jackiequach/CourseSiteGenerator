@@ -1,0 +1,259 @@
+
+{
+    "course_info":[
+        {
+            "subject":"CSE",
+            "number":"219",
+            "semester":"Winter",
+            "year":"2018",
+            "ciTitle":"Computer Science III",
+            "instructorName":"Mckenna",
+            "instructorHome":"http://http://www3.cs.stonybrook.edu/~richard/",
+            "exportDir":"C:\\Users\\Ronald\\Documents\\NetBeansProjects\\CSGenerator\\Courses\\CSE219\\Winter2018",
+            "templateDir":"C:\\Users\\Ronald\\Documents\\NetBeansProjects\\CSGenerator\\CSGenerator\\templates\\CSE219"
+        }
+    ],
+    "site_pages":[
+        {
+            "use":true,
+            "navbar":"Home",
+            "file":"index.html",
+            "script":"HomeBuilder.js"
+        },
+        {
+            "use":true,
+            "navbar":"Syllabus",
+            "file":"syllabus.html",
+            "script":"SyllabusBuilder.js"
+        },
+        {
+            "use":true,
+            "navbar":"Schedule",
+            "file":"schedule.html",
+            "script":"ScheduleBuilder.js"
+        },
+        {
+            "use":true,
+            "navbar":"HWs",
+            "file":"hws.html",
+            "script":"HWsBuilder.js"
+        }
+    ],
+    "page_style":[
+        {
+            "bannerImg":"file:./images/SBUDarkRedShieldLogo.png",
+            "leftImg":"file:./images/SBUWhiteShieldLogo.jpg",
+            "rightImg":"file:./images/CSLogo.png",
+            "stylesheet":"sea_wolf.css"
+        }
+    ],
+    "startHour":"6",
+    "endHour":"9",
+    "undergrad_tas":[
+        {
+            "undergrad":true,
+            "name":"Jane So",
+            "email":"jane.so@stonybrook.edu"
+        },
+        {
+            "undergrad":false,
+            "name":"Joe Shmo",
+            "email":"joe.shmo@stonybrook.edu"
+        },
+        {
+            "undergrad":true,
+            "name":"John Doe",
+            "email":"john.doe@stonybrook.edu"
+        },
+        {
+            "undergrad":true,
+            "name":"Rob Bob",
+            "email":"rob.bob@stonybrook.edu"
+        }
+    ],
+    "officeHours":[
+        {
+            "day":"MONDAY",
+            "time":"6_00am",
+            "name":"Joe Shmo"
+        },
+        {
+            "day":"TUESDAY",
+            "time":"6_00am",
+            "name":"John Doe"
+        },
+        {
+            "day":"TUESDAY",
+            "time":"6_00am",
+            "name":"Joe Shmo"
+        },
+        {
+            "day":"TUESDAY",
+            "time":"6_30am",
+            "name":"John Doe"
+        },
+        {
+            "day":"TUESDAY",
+            "time":"6_30am",
+            "name":"Joe Shmo"
+        },
+        {
+            "day":"FRIDAY",
+            "time":"6_30am",
+            "name":"John Doe"
+        },
+        {
+            "day":"THURSDAY",
+            "time":"7_00am",
+            "name":"Joe Shmo"
+        },
+        {
+            "day":"FRIDAY",
+            "time":"7_00am",
+            "name":"Joe Shmo"
+        },
+        {
+            "day":"MONDAY",
+            "time":"7_30am",
+            "name":"John Doe"
+        },
+        {
+            "day":"MONDAY",
+            "time":"7_30am",
+            "name":"Joe Shmo"
+        },
+        {
+            "day":"TUESDAY",
+            "time":"7_30am",
+            "name":"John Doe"
+        },
+        {
+            "day":"TUESDAY",
+            "time":"7_30am",
+            "name":"Joe Shmo"
+        },
+        {
+            "day":"THURSDAY",
+            "time":"7_30am",
+            "name":"John Doe"
+        },
+        {
+            "day":"THURSDAY",
+            "time":"7_30am",
+            "name":"Joe Shmo"
+        },
+        {
+            "day":"FRIDAY",
+            "time":"8_00am",
+            "name":"John Doe"
+        },
+        {
+            "day":"MONDAY",
+            "time":"8_30am",
+            "name":"Joe Shmo"
+        },
+        {
+            "day":"WEDNESDAY",
+            "time":"8_30am",
+            "name":"Joe Shmo"
+        },
+        {
+            "day":"THURSDAY",
+            "time":"8_30am",
+            "name":"Jane So"
+        },
+        {
+            "day":"THURSDAY",
+            "time":"8_30am",
+            "name":"John Doe"
+        },
+        {
+            "day":"THURSDAY",
+            "time":"8_30am",
+            "name":"Joe Shmo"
+        },
+        {
+            "day":"FRIDAY",
+            "time":"8_30am",
+            "name":"Joe Shmo"
+        }
+    ],
+    "recitations":[
+        {
+            "section":"R06",
+            "instructor":"Mckenna",
+            "day_time":"Tuesday 9am",
+            "location":"Old CS 2021",
+            "ta_1":"Joe Shmo",
+            "ta_2":"John Doe"
+        },
+        {
+            "section":"R07",
+            "instructor":"Mckenna",
+            "day_time":"Wednesday 9am",
+            "location":"Old CS 2021",
+            "ta_1":"Jane So",
+            "ta_2":"John Doe"
+        }
+    ],
+    "calendar_boundaries":[
+        {
+            "startMonday":"2017-05-01",
+            "endFriday":"2017-06-09"
+        }
+    ],
+    "schedule_items":[
+        {
+            "type":"Holiday",
+            "date":"2017-05-03",
+            "time":"lala",
+            "title":"lalaa",
+            "topic":"laaa",
+            "link":"laad",
+            "criteria":"laaaa"
+        },
+        {
+            "type":"Lecture",
+            "date":"2017-05-05",
+            "time":"zooo",
+            "title":"zoo",
+            "topic":"zoooo",
+            "link":"zooo",
+            "criteria":"zooo"
+        },
+        {
+            "type":"HW",
+            "date":"2017-05-22",
+            "time":"pooo",
+            "title":"pooo",
+            "topic":"poo",
+            "link":"pooo",
+            "criteria":"pooo"
+        },
+        {
+            "type":"Recitation",
+            "date":"2017-05-22",
+            "time":"doo",
+            "title":"doo",
+            "topic":"doo",
+            "link":"doo",
+            "criteria":"doo"
+        }
+    ],
+    "teams":[
+        {
+            "name":"Atomic Comic",
+            "color":"999999ff",
+            "textColor":"4d3399ff",
+            "link":"atomicomic.com"
+        }
+    ],
+    "students":[
+        {
+            "firstName":"Louis",
+            "lastName":"Joe",
+            "team":"Atomic Comic",
+            "role":"Lead Designer"
+        }
+    ]
+}
