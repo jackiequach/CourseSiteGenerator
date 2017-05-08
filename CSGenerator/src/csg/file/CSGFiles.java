@@ -17,6 +17,7 @@ import csg.workspace.CSGController;
 import csg.workspace.CSGWorkspace;
 import djf.components.AppDataComponent;
 import djf.components.AppFileComponent;
+import static djf.settings.AppStartupConstants.FILE_PROTOCOL;
 import static djf.settings.AppStartupConstants.PATH_WORK;
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javafx.collections.ObservableList;
+import javafx.scene.image.Image;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
@@ -550,31 +552,30 @@ public class CSGFiles implements AppFileComponent {
     public void saveProjectsJson(AppDataComponent data, String filePath) throws IOException {
         CSGData dataManager = (CSGData)data;
         
-        JsonArrayBuilder workArrayBuilder = Json.createArrayBuilder();
-        JsonObject semesterJson = Json.createObjectBuilder()
-            .add(JSON_SEMESTER, dataManager.getSemester() + " " + dataManager.getYear()).build();
-        workArrayBuilder.add(semesterJson);
+        JsonArrayBuilder projectArrayBuilder = Json.createArrayBuilder();
 	ObservableList<Team> teams = dataManager.getTeams();
 	for (Team team : teams) {
             JsonArrayBuilder studentsArrayBuilder = Json.createArrayBuilder();
             ObservableList<Student> students = dataManager.getStudents();
             for (Student student : students) {
                 if(student.getTeam().equals(team.getName())) {
-                    JsonObject studentJson = Json.createObjectBuilder()
-                        .add(JSON_FIRST_NAME, student.getFirstName())
-                        .add(JSON_LAST_NAME, student.getLastName()).build();
-                    studentsArrayBuilder.add(studentJson);
+                    studentsArrayBuilder.add(student.getFirstName() + " " + student.getLastName());
                 }
             }
             JsonArray studentsArray = studentsArrayBuilder.build();
-	    JsonObject teamJson = Json.createObjectBuilder()
+	    JsonObject projectsJson = Json.createObjectBuilder()
                 .add(JSON_NAME_TEAM, team.getName())
                 .add(JSON_STUDENTS, studentsArray)
                 .add(JSON_LINK, team.getLink()).build();
-	    workArrayBuilder.add(teamJson);
+	    projectArrayBuilder.add(projectsJson);
 	}
-	JsonArray workArray = workArrayBuilder.build();
-        
+        JsonArray projectArray = projectArrayBuilder.build();
+        JsonObject workObjects = Json.createObjectBuilder()
+            .add(JSON_SEMESTER, dataManager.getSemester() + " " + dataManager.getYear())
+            .add(JSON_PROJECTS, projectArray).build();
+        JsonArrayBuilder workArrayBuilder = Json.createArrayBuilder()
+            .add(workObjects);
+        JsonArray workArray = workArrayBuilder.build();
         
         JsonObject dataManagerJSO = Json.createObjectBuilder()
             .add(JSON_WORK, workArray)
@@ -690,15 +691,22 @@ public class CSGFiles implements AppFileComponent {
             dataManager.addSitePage(use, navbarTitle, fileName, script);
         }
         
+        CSGWorkspace workspace = (CSGWorkspace)app.getWorkspaceComponent();
         JsonArray jsonPageStyleArray = json.getJsonArray(JSON_PAGE_STYLE);
         for(int i = 0; i < jsonPageStyleArray.size(); i++) {
             JsonObject jsonPageStyle = jsonPageStyleArray.getJsonObject(i);
             String bannerImgPath = jsonPageStyle.getString(JSON_BANNER_IMG);
             dataManager.setBannerImgPath(bannerImgPath);
+            Image temp = new Image(FILE_PROTOCOL + bannerImgPath);
+            workspace.getBannerImgView().setImage(temp);
             String leftFooterImgPath = jsonPageStyle.getString(JSON_LEFT_IMG);
             dataManager.setLeftFooterImgPath(leftFooterImgPath);
+            Image temp1 = new Image(FILE_PROTOCOL + leftFooterImgPath);
+            workspace.getLeftFooterImgView().setImage(temp1);
             String rightFooterImgPath = jsonPageStyle.getString(JSON_RIGHT_IMG);
             dataManager.setRightFooterImgPath(rightFooterImgPath);
+            Image temp2 = new Image(FILE_PROTOCOL + rightFooterImgPath);
+            workspace.getRightFooterImgView().setImage(temp2);
             String stylesheet = jsonPageStyle.getString(JSON_STYLESHEET);
             dataManager.setStylesheet(stylesheet);
         }
@@ -930,10 +938,18 @@ public class CSGFiles implements AppFileComponent {
         File srcCss = new File(PATH_WORK + "css/" + cssFile);
         File destCss = new File(destDir + "/css/cssFile.css");
         FileUtils.copyFile(srcCss, destCss);
-        
-        File srcBannerImg = new File(dataC.getBannerImgPath().split(":")[1]);
-        File srcLeftFooterImg = new File(dataC.getLeftFooterImgPath().split(":")[1]);
-        File srcRightFooterImg = new File(dataC.getRightFooterImgPath().split(":")[1]);
+        File srcBannerImg = new File(dataC.getBannerImgPath());
+        File srcLeftFooterImg = new File(dataC.getLeftFooterImgPath());
+        File srcRightFooterImg = new File(dataC.getRightFooterImgPath());
+        if(dataC.getBannerImgPath().split(":").length<3) {
+            srcBannerImg = new File(dataC.getBannerImgPath().split(":")[1]);
+        }
+        if(dataC.getLeftFooterImgPath().split(":").length<3) {
+            srcLeftFooterImg = new File(dataC.getLeftFooterImgPath().split(":")[1]);
+        }
+        if(dataC.getRightFooterImgPath().split(":").length<3) {
+            srcRightFooterImg = new File(dataC.getRightFooterImgPath().split(":")[1]);
+        }
         File destBannerImg = new File(destDir + "/images/banner" + ".png");
         File destLeftFooterImg = new File(destDir + "/images/leftFooter" + ".png");
         File destRightFooterImg = new File(destDir + "/images/rightFooter" + ".png");
